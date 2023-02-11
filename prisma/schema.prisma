@@ -26,7 +26,7 @@ model User {
   recommendUserId Int? //내가 추천한 회원 id
   gender          String //성별
   status          String //user 상태 (정상, 차단, 탈퇴 등)
-  workRegion      Region[]
+  workRegion      Region[]         @relation("userWorkRegion")
   accessedRegion  String? //마지막 접속 지역
   sms             Boolean //이벤트 혜택 수신
   grade           Grade            @relation(fields: [gradeId], references: [id]) //회원 등급
@@ -56,8 +56,7 @@ model UserType {
 model Region {
   id     Int    @id @default(autoincrement())
   region String //작업지역
-  User   User?  @relation(fields: [userId], references: [id])
-  userId Int?
+  user   User[] @relation("userWorkRegion")
 }
 
 model Point {
@@ -79,7 +78,7 @@ model PointBreakdown {
   type   String //충전(CHARGE), 출금(WITHDRAW), 차감(MINUS), 지급(PLUS)
   point  Int //거래 포인트
   memo   String? //특이사항
-  User   User?    @relation(fields: [userId], references: [id])
+  user   User?    @relation(fields: [userId], references: [id])
   userId Int?
 }
 

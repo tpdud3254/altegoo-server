@@ -29,6 +29,7 @@ export const createAccount = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // TODO:license => 이미지 저장
+    //TODO: 아바타 이미지 저장
 
     let user;
 

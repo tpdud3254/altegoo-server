@@ -1,7 +1,5 @@
-//getUser
-//protectedResolver 로그인해야지 서비스르르 이용할수있는건데 이게 꼭 필요할까?
-
 import prisma from "./prisma";
+import jwt from "jsonwebtoken";
 
 export const existUser = (phone) =>
     prisma.user.findUnique({
@@ -10,4 +8,34 @@ export const existUser = (phone) =>
 
 export const craeteUserId = (code, id) => {
     return code + String(id).padStart(5, "0");
+};
+
+export const auth = async (req, res, next) => {
+    const token = req.headers.auth;
+
+    console.log(token);
+
+    if (!token) {
+        res.status(400).json({
+            result: "INVALID: TOKEN NOT FOUND",
+            msg: "사용자를 찾을 수 없습니다.",
+        });
+    }
+
+    const { id } = jwt.verify(token, process.env.SECRET_KEY);
+
+    const user = await prisma.user.findUnique({
+        where: { id },
+    });
+
+    if (user) {
+        req.id = user.id;
+        next();
+    } else {
+        res.status(400).json({
+            result: "INVALID: USER NOT FOUND",
+            msg: "사용자를 찾을 수 없습니다.",
+        });
+    }
+    return;
 };
