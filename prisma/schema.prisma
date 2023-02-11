@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   id              Int              @id @default(autoincrement()) //database id
-  userId          Int? //user 일련변호 (UserClass와 함께 사용)
+  userId          String? //user 일련변호 (UserClass와 함께 사용)
   userType        UserType         @relation(fields: [userTypeId], references: [id]) //user 구분
   userTypeId      Int
   userName        String //본명

@@ -12,6 +12,6 @@ const usersRouter = express.Router();
 
 //usersRouter.get("/check", () => {});
 
-usersRouter.post("create", createAccount);
+usersRouter.post("/create", createAccount);
 
 export default usersRouter;

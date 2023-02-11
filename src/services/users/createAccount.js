@@ -32,133 +32,152 @@ export const createAccount = async (req, res) => {
 
     let user;
 
-    if (userCode === "P") {
-        //일반회원
-        user = await prisma.user.create({
-            data: {
-                userType: {
-                    connect: { id: userType },
-                },
-                userName,
-                name,
-                password: hashedPassword,
-                phone,
-                birth,
-                gender,
-                status,
-                accessedRegion,
-                sms,
-                grade: {
-                    connect: {
-                        id: grade,
+    try {
+        if (userCode === "P") {
+            //일반회원
+            user = await prisma.user.create({
+                data: {
+                    userType: {
+                        connect: { id: userType },
+                    },
+                    userName,
+                    name,
+                    password: hashedPassword,
+                    phone,
+                    birth,
+                    gender,
+                    status,
+                    accessedRegion,
+                    sms,
+                    grade: {
+                        connect: {
+                            id: grade,
+                        },
+                    },
+                    point: {
+                        create: {
+                            curPoint: 0,
+                        },
                     },
                 },
-                point: {
-                    create: {
-                        curPoint: 0,
+            });
+        } else if (userCode === "S") {
+            const regionArr = [];
+
+            workRegion.map((region) => {
+                const newObj = { id: region };
+
+                regionArr.push(newObj);
+            });
+
+            //기사회원
+            user = await prisma.user.create({
+                data: {
+                    userType: {
+                        connect: { id: userType },
+                    },
+                    userName,
+                    name,
+                    password: hashedPassword,
+                    phone,
+                    birth,
+                    license,
+                    vehicleNumber,
+                    vehicleWeight: {
+                        connect: {
+                            id: vehicleWeight,
+                        },
+                    },
+                    vehicleType: {
+                        connect: {
+                            id: vehicleType,
+                        },
+                    },
+                    recommendUserId,
+                    gender,
+                    status,
+                    workRegion: {
+                        connect: regionArr,
+                    },
+                    accessedRegion,
+                    sms,
+                    grade: {
+                        connect: {
+                            id: grade,
+                        },
+                    },
+                    point: {
+                        create: {
+                            curPoint: 0,
+                        },
                     },
                 },
-            },
-        });
-    } else if (userCode === "S") {
-        const regionArr = [];
+            });
+        } else {
+            //기업회원
+            const regionArr = [];
 
-        workRegion.map((region) => {
-            const newObj = { id: region };
+            workRegion.map((region) => {
+                const newObj = { id: region };
 
-            regionArr.push(newObj);
-        });
+                regionArr.push(newObj);
+            });
 
-        //기사회원
-        user = await prisma.user.create({
-            data: {
-                userType: {
-                    connect: userType,
-                },
-                userName,
-                name,
-                password: hashedPassword,
-                phone,
-                birth,
-                license,
-                vehicleNumber,
-                vehicleWeight,
-                vehicleType,
-                recommendUserId,
-                gender,
-                status,
-                workRegion: {
-                    connect: workRegion,
-                },
-                accessedRegion,
-                sms,
-                grade: {
-                    connect: {
-                        id: grade,
+            //기사회원
+            user = await prisma.user.create({
+                data: {
+                    userType: {
+                        connect: { id: userType },
+                    },
+                    userName,
+                    name,
+                    password: hashedPassword,
+                    phone,
+                    birth,
+                    license,
+                    vehicleNumber,
+                    recommendUserId,
+                    gender,
+                    status,
+                    workRegion: {
+                        connect: regionArr,
+                    },
+                    accessedRegion,
+                    sms,
+                    grade: {
+                        connect: {
+                            id: grade,
+                        },
+                    },
+                    point: {
+                        create: {
+                            curPoint: 0,
+                        },
                     },
                 },
-                point: {
-                    create: {
-                        curPoint: 0,
-                    },
-                },
-            },
-        });
-    } else {
-        //기업회원
-        const regionArr = [];
+            });
+        }
 
-        workRegion.map((region) => {
-            const newObj = { id: region };
+        if (user) {
+            const userId = craeteUserId(userCode, user.id);
 
-            regionArr.push(newObj);
-        });
+            const account = await prisma.user.update({
+                where: { id: user.id },
+                data: {
+                    userId,
+                },
+            });
 
-        //기사회원
-        user = await prisma.user.create({
-            data: {
-                userType: {
-                    connect: userType,
-                },
-                userName,
-                name,
-                password: hashedPassword,
-                phone,
-                birth,
-                license,
-                vehicleNumber,
-                recommendUserId,
-                gender,
-                status,
-                workRegion: {
-                    connect: workRegion,
-                },
-                accessedRegion,
-                sms,
-                grade: {
-                    connect: {
-                        id: grade,
-                    },
-                },
-                point: {
-                    create: {
-                        curPoint: 0,
-                    },
-                },
-            },
-        });
-    }
-
-    if (user) {
-        const userId = craeteUserId(userCode, user.id);
-
-        const account = await prisma.user.update({
-            where: { id: user.id },
-            data: {
-                userId,
-            },
-        });
-    } else {
-        res.status(400).json({ msg: "FAILL CREATE ACCOUNT" });
+            if (account) {
+                delete account.password;
+                res.status(200).json({ msg: "VALID", userData: account });
+            } else {
+                res.status(400).json({ msg: "INVALID: CREATE USERID" });
+            }
+        } else {
+            res.status(400).json({ msg: "INVALID: CREATE ACCOUNT" });
+        }
+    } catch (error) {
+        res.status(400).json({ msg: "INVALID: ERROR", error });
     }
 };
