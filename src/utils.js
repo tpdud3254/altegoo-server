@@ -3,7 +3,10 @@
 
 import prisma from "./prisma";
 
-export const existUser = (phone) => {};
+export const existUser = (phone) =>
+    prisma.user.findUnique({
+        where: { phone },
+    });
 
 export const craeteUserId = (code, id) => {
     return code + String(id).padStart(5, "0");

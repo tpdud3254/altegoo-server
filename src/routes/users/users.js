@@ -1,11 +1,11 @@
 import express from "express";
 import { createAccount } from "../../services/users/createAccount";
+import { login } from "../../services/users/login";
 
 const usersRouter = express.Router();
 
-//createAccount
-//editProfile
 //login
+//editProfile
 //getUser
 //seeProfile
 //changePassword
@@ -13,5 +13,6 @@ const usersRouter = express.Router();
 //usersRouter.get("/check", () => {});
 
 usersRouter.post("/create", createAccount);
+usersRouter.post("/login", login);
 
 export default usersRouter;

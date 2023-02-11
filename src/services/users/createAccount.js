@@ -170,14 +170,24 @@ export const createAccount = async (req, res) => {
 
             if (account) {
                 delete account.password;
-                res.status(200).json({ msg: "VALID", userData: account });
+                res.status(200).json({ result: "VALID", data: account });
             } else {
-                res.status(400).json({ msg: "INVALID: CREATE USERID" });
+                res.status(400).json({
+                    result: "INVALID: CREATE USERID",
+                    msg: "회원가입에 실패하였습니다.",
+                });
             }
         } else {
-            res.status(400).json({ msg: "INVALID: CREATE ACCOUNT" });
+            res.status(400).json({
+                result: "INVALID: CREATE ACCOUNT",
+                msg: "회원가입에 실패하였습니다.",
+            });
         }
     } catch (error) {
-        res.status(400).json({ msg: "INVALID: ERROR", error });
+        res.status(400).json({
+            result: "INVALID: ERROR",
+            error,
+            msg: "회원가입에 실패하였습니다.",
+        });
     }
 };
