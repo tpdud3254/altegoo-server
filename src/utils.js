@@ -22,20 +22,33 @@ export const auth = async (req, res, next) => {
         });
     }
 
-    const { id } = jwt.verify(token, process.env.SECRET_KEY);
+    try {
+        const { id } = jwt.verify(token, process.env.SECRET_KEY);
 
-    const user = await prisma.user.findUnique({
-        where: { id },
-    });
+        if (!id) {
+            res.status(400).json({
+                result: "INVALID: TOKEN NOT FOUND",
+                msg: "사용자를 찾을 수 없습니다.",
+            });
+        }
+        const user = await prisma.user.findUnique({
+            where: { id },
+        });
 
-    if (user) {
-        req.id = user.id;
-        next();
-    } else {
+        if (user) {
+            req.id = user.id;
+            next();
+        } else {
+            res.status(400).json({
+                result: "INVALID: USER NOT FOUND",
+                msg: "사용자를 찾을 수 없습니다.",
+            });
+        }
+    } catch (error) {
         res.status(400).json({
-            result: "INVALID: USER NOT FOUND",
+            result: "INVALID: FAIL",
+            error,
             msg: "사용자를 찾을 수 없습니다.",
         });
     }
-    return;
 };
