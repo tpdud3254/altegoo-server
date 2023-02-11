@@ -39,7 +39,7 @@ model User {
   greeting        String? //인사말
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
-  Order           Order[]
+  order           Order[]
 }
 
 model UserType {
@@ -69,7 +69,7 @@ model Point {
   withdrawalPoint Int     @default(0) //출금포인트
   subtractPoint   Int     @default(0) //차감포인트
   addPoint        Int     @default(0) //지급포인트
-  User            User[]
+  user            User[]
 }
 
 model PointBreakdown {
@@ -85,32 +85,31 @@ model PointBreakdown {
 model Grade {
   id    Int    @id @default(autoincrement())
   grade String //회원 등급
-  User  User[]
+  user  User[]
 }
 
 model Order {
-  id            Int         @id @default(autoincrement())
-  registUser    User        @relation(fields: [userId], references: [id]) //등록자
-  userId        Int
-  acceptUser    Int? //작업자
-  registDate    String //등록날짜
-  registTime    String //등록시간
-  workDate      String //작업날짜
-  workTime      String //작업시간
-  workType      String //상차, 하차, 양사
-  workHeight    String //저층, 중층, 상층
-  workFloor     Int //작업 층
-  phone         String //등록자 전화번호
-  workQuantity  String //작업 물량
-  address       String //작업주소
-  sendAddress   String //양사일 경우 도착 주소
-  cost          Int //작업 금액
-  commission    Float //수수료
-  memo          String? //메모
-  status        OrderStatus @relation(fields: [orderStatusId], references: [id]) //작업 상태 (작업요청, 작업예약, 작업 중, 작업완료)
-  orderStatusId Int
-  private       Boolean //공개여부
-  workGrade     String //작업등급
+  id           Int           @id @default(autoincrement())
+  registUser   User          @relation(fields: [userId], references: [id]) //등록자
+  userId       Int
+  acceptUser   Int? //작업자
+  registDate   String //등록날짜
+  registTime   String //등록시간
+  workDate     String //작업날짜
+  workTime     String //작업시간
+  workType     String //상차, 하차, 양사
+  workHeight   String //저층, 중층, 상층
+  workFloor    Int //작업 층
+  phone        String //등록자 전화번호
+  workQuantity String //작업 물량
+  address      String //작업주소
+  sendAddress  String //양사일 경우 도착 주소
+  cost         Int //작업 금액
+  commission   Float //수수료
+  memo         String? //메모
+  status       OrderStatus[] @relation("orderStatus") //작업 상태 (작업요청, 작업예약, 작업 중, 작업완료)
+  private      Boolean //공개여부
+  workGrade    String //작업등급
 }
 
 model Commission {
@@ -128,7 +127,7 @@ model OrderTheme {
 model OrderStatus {
   id     Int     @id @default(autoincrement())
   status String //작업요청, 작업예약, 작업 중, 작업완료
-  Order  Order[]
+  order  Order[] @relation("orderStatus")
 }
 
 model VehicleType {
