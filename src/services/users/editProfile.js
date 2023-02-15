@@ -1,4 +1,5 @@
 import prisma from "../../prisma";
+import { getUserRestInfo } from "../../utils";
 
 export const editProfile = async (req, res) => {
     const {
@@ -88,9 +89,18 @@ export const editProfile = async (req, res) => {
         if (user) {
             delete user.password;
 
+            const restInfo = await getUserRestInfo(user);
+            delete restInfo.workRegion;
+
             res.status(200).json({
                 result: "VALID",
-                data: { ...user, ...{ workRegion: workRegion } },
+                data: {
+                    user: {
+                        ...user,
+                        ...restInfo,
+                        ...{ workRegion: workRegion },
+                    },
+                },
             });
         } else {
             res.status(400).json({

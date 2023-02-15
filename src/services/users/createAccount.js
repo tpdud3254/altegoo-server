@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import prisma from "../../prisma";
-import { craeteUserId } from "../../utils";
+import { craeteUserId, getUserRestInfo } from "../../utils";
 
 export const createAccount = async (req, res) => {
     const {
@@ -171,7 +171,16 @@ export const createAccount = async (req, res) => {
 
             if (account) {
                 delete account.password;
-                res.status(200).json({ result: "VALID", data: account });
+
+                const userData = {
+                    ...(await getUserRestInfo(account)),
+                    ...account,
+                };
+
+                res.status(200).json({
+                    result: "VALID",
+                    data: { user: userData },
+                });
             } else {
                 res.status(400).json({
                     result: "INVALID: CREATE USERID",

@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { existUser } from "../../utils";
+import prisma from "../../prisma";
+import { existUser, getUserRestInfo } from "../../utils";
 
 export const login = async (req, res) => {
     const { phone, password } = req.body;
@@ -34,10 +35,12 @@ export const login = async (req, res) => {
 
         delete user.password;
 
+        const userData = { ...(await getUserRestInfo(user)), ...user };
+
         if (token) {
             res.status(200).json({
                 result: "VALID",
-                data: { user, token },
+                data: { user: userData, token },
             });
         } else {
             res.status(400).json({

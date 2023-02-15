@@ -1,19 +1,15 @@
-import prisma from "../../prisma";
+import { existUser } from "../../utils";
 
-export const getUser = async (req, res) => {
-    const { id, phone } = req.query;
+export const getUserExist = async (req, res) => {
+    const { phone } = req.query;
 
-    console.log(req.query);
+    console.log(phone);
 
     try {
-        const user = await prisma.user.findUnique({
-            where: id ? { id: parseInt(id) } : { phone: phone },
-        });
-
-        delete user.password;
+        const user = await existUser(phone);
 
         if (user) {
-            res.status(200).json({ result: "VALID", data: user });
+            res.status(200).json({ result: "VALID" });
         } else {
             res.status(400).json({
                 result: "INVALID: USER NOT FOUND",

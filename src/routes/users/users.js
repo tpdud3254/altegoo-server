@@ -1,14 +1,16 @@
 import express from "express";
 import { createAccount } from "../../services/users/createAccount";
-import { getUser } from "../../services/users/getUser";
+import { getUserExist } from "../../services/users/getUserExist";
 import { login } from "../../services/users/login";
 import { setPassword } from "../../services/users/setPassword";
 import { editProfile } from "../../services/users/editProfile";
 import { auth } from "../../utils";
+import { verifyToken } from "../../services/users/verifyToken";
 
 const usersRouter = express.Router();
 
-usersRouter.get("/user", getUser);
+usersRouter.get("/search", getUserExist);
+usersRouter.get("/user", verifyToken);
 
 usersRouter.post("/create", createAccount);
 usersRouter.post("/login", login);
