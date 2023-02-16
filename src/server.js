@@ -7,6 +7,7 @@ import { instrument } from "@socket.io/admin-ui";
 import express from "express";
 import usersRouter from "./routes/users/users";
 import bcrypt from "bcrypt";
+import worksRouter from "./routes/works/works";
 
 const cors = require("cors");
 const app = express();
@@ -18,20 +19,21 @@ app.use(cors());
 
 app.get("/", (_, res) => res.status(200).json({ result: true }));
 app.use("/users", usersRouter);
+app.use("/works", worksRouter);
 app.get("/*", (_, res) => res.redirect("/"));
 
 const handleListen = () => console.log(`Listening on http://localhost:${PORT}`);
 
 const httpServer = http.createServer(app);
 const wsServer = new Server(httpServer, {
-    cors: {
-        origin: ["https://admin.socket.io"],
-        credentials: true,
-    },
+  cors: {
+    origin: ["https://admin.socket.io"],
+    credentials: true,
+  },
 });
 
 instrument(wsServer, {
-    auth: false,
+  auth: false,
 });
 
 // socket.io admin panel auth setting

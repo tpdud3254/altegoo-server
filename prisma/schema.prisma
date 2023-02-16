@@ -104,12 +104,15 @@ model Order {
   phone         String //등록자 전화번호
   workQuantity  String //작업 물량
   address       String //작업주소
-  sendAddress   String //양사일 경우 도착 주소
+  sendAddress   String? //양사일 경우 도착 주소
   cost          Int //작업 금액
   commission    Float //수수료
   onSitePayment Boolean //현장결제
   memo          String? //메모
   status        OrderStatus[] @relation("orderStatus") //작업 상태 (작업요청, 작업예약, 작업 중, 작업완료)
+  // status  OrderStatus? @relation(fields: [statusId], references: [id])
+  // statusId Int
+  
   private       Boolean //공개여부
   workGrade     String //작업등급
 }
@@ -129,7 +132,8 @@ model OrderTheme {
 model OrderStatus {
   id     Int     @id @default(autoincrement())
   status String //작업요청, 작업예약, 작업 중, 작업완료
-  order  Order[] @relation("orderStatus")
+  order  Order[] @relation("orderStatus")//TODO: 연결 변경
+  //  order            Order[]
 }
 
 model VehicleType {
