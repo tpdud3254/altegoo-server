@@ -10,8 +10,8 @@ import { verifyToken } from "../../services/users/verifyToken";
 const usersRouter = express.Router();
 
 usersRouter.get("/search", getUserExist);
-usersRouter.get("/user", verifyToken);
 
+usersRouter.post("/user", verifyToken);
 usersRouter.post("/create", createAccount);
 usersRouter.post("/login", login);
 usersRouter.post("/password", setPassword);

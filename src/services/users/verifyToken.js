@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { getUserRestInfo } from "../../utils";
 
 export const verifyToken = async (req, res) => {
-  const { token } = req.query;
+  const { token } = req.body;
 
   console.log(token);
 
