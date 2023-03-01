@@ -8,50 +8,62 @@ datasource db {
 }
 
 model User {
-  id              Int              @id @default(autoincrement()) //database id
-  userId          String? //user 일련변호 (UserClass와 함께 사용)
-  userType        UserType         @relation(fields: [userTypeId], references: [id]) //user 구분
-  userTypeId      Int
-  userName        String //본명
-  name            String //가입 이름
-  password        String //비밀번호
-  phone           String           @unique //핸드폰번호 (실직적인 user Id)
-  birth           String //생년월일
-  license         String? //사업자등록증 url
-  vehicleNumber   String? //차량번호
-  vehicleWeight   VehicleWeight?   @relation(fields: [vehicleWeightId], references: [id]) //차량무게
-  vehicleWeightId Int?
-  vehicleType     VehicleType?     @relation(fields: [vehicleTypeId], references: [id]) //차량종류
-  vehicleTypeId   Int?
-  recommendUserId Int? //내가 추천한 회원 id
-  gender          String //성별
-  status          String //user 상태 (정상, 차단, 탈퇴 등)
-  workRegion      Region[]         @relation("userWorkRegion")
-  accessedRegion  String? //마지막 접속 지역
-  sms             Boolean //이벤트 혜택 수신
-  grade           Grade            @relation(fields: [gradeId], references: [id]) //회원 등급
-  gradeId         Int
-  point           Point?           @relation(fields: [pointId], references: [id]) //포인트
-  pointId         Int
-  pointBreakdown  PointBreakdown[] //포인트 내역
-  avatar          String? //프로필 사진 url
-  withdrawalDate  DateTime? //탈퇴날짜
-  greeting        String? //인사말
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  order           Order[]
+  id                Int              @id @default(autoincrement()) //database id
+  userId            String? //user 일련변호 (UserClass와 함께 사용)
+  userType          UserType         @relation(fields: [userTypeId], references: [id]) //user 구분
+  userTypeId        Int
+  userName          String //본명
+  name              String //가입 이름
+  password          String //비밀번호
+  phone             String           @unique //핸드폰번호 (실직적인 user Id)
+  birth             String //생년월일
+  license           String? //사업자등록증 url
+  vehiclePermission String? //화물자동차 운송사업 허가증 url
+  vehicle           Vehicle[] //차량정보
+  recommendUserId   Int? //내가 추천한 회원 id
+  gender            String //성별
+  status            String //user 상태 (정상, 차단, 탈퇴 등)
+  workRegion        Region[]         @relation("userWorkRegion")
+  accessedRegion    String? //마지막 접속 지역
+  sms               Boolean //이벤트 혜택 수신
+  grade             Grade            @relation(fields: [gradeId], references: [id]) //회원 등급
+  gradeId           Int
+  point             Point?           @relation(fields: [pointId], references: [id]) //포인트
+  pointId           Int
+  pointBreakdown    PointBreakdown[] //포인트 내역
+  avatar            String? //프로필 사진 url
+  withdrawalDate    DateTime? //탈퇴날짜
+  greeting          String? //인사말
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  order             Order[]
+  VehicleType       VehicleType?     @relation(fields: [vehicleTypeId], references: [id])
+  vehicleTypeId     Int?
+  VehicleWeight     VehicleWeight?   @relation(fields: [vehicleWeightId], references: [id])
+  vehicleWeightId   Int?
 }
 
 model UserType {
   id       Int     @id @default(autoincrement())
   code     String //ex) S, P, F...
   type     String //일반회원(ORDINARY), 기사회원(PERSONAL), 기업회원(COMPANY)
-  category String? //가구, 인테리어, 전자제품, 인력, 청소/철거, 기타업종
+  category String? //건설, 가구, 가전, 청소/인력, 이사, 기타
   User     User[]
 }
 
 //P:일반회원(ORDINARY), S:기사회원(PERSONAL)
-//(COMPANY) F:기업회원(가구), I:기업회원(인테리어), E:기업회원(전자제품), W:기업회원(인력), C :기업회원(청소, 철거), G :기업회원(기타업종)
+//(COMPANY)  C:기업회원(건설), F:기업회원(가구), E:기업회원(가전), H:기업회원(청소/인력), M:기업회원(이사), G:기업회원(기타)
+
+model Vehicle {
+  id              Int           @id @default(autoincrement())
+  number          String
+  type            VehicleType   @relation(fields: [vehicleTypeId], references: [id])
+  vehicleTypeId   Int
+  weight          VehicleWeight @relation(fields: [vehicleWeightId], references: [id])
+  vehicleWeightId Int
+  User            User?         @relation(fields: [userId], references: [id])
+  userId          Int?
+}
 
 model Region {
   id     Int    @id @default(autoincrement())
@@ -112,9 +124,9 @@ model Order {
   status        OrderStatus[] @relation("orderStatus") //작업 상태 (작업요청, 작업예약, 작업 중, 작업완료)
   // status  OrderStatus? @relation(fields: [statusId], references: [id])
   // statusId Int
-  
-  private       Boolean //공개여부
-  workGrade     String //작업등급
+
+  private   Boolean //공개여부
+  workGrade String //작업등급
 }
 
 model Commission {
@@ -132,20 +144,22 @@ model OrderTheme {
 model OrderStatus {
   id     Int     @id @default(autoincrement())
   status String //작업요청, 작업예약, 작업 중, 작업완료
-  order  Order[] @relation("orderStatus")//TODO: 연결 변경
+  order  Order[] @relation("orderStatus") //TODO: 연결 변경
   //  order            Order[]
 }
 
 model VehicleType {
-  id   Int    @id @default(autoincrement())
-  type String // ex) 스카이, 사다리
-  User User[]
+  id      Int       @id @default(autoincrement())
+  type    String // ex) 스카이, 사다리
+  User    User[]
+  Vehicle Vehicle[]
 }
 
 model VehicleWeight {
-  id     Int    @id @default(autoincrement())
-  weight String // ex) 1톤, 2톤
-  User   User[]
+  id      Int       @id @default(autoincrement())
+  weight  String // ex) 1톤, 2톤
+  User    User[]
+  Vehicle Vehicle[]
 }
 
 model Manager {
