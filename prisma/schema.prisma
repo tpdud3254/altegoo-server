@@ -37,10 +37,6 @@ model User {
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
   order             Order[]
-  VehicleType       VehicleType?     @relation(fields: [vehicleTypeId], references: [id])
-  vehicleTypeId     Int?
-  VehicleWeight     VehicleWeight?   @relation(fields: [vehicleWeightId], references: [id])
-  vehicleWeightId   Int?
 }
 
 model UserType {
@@ -151,14 +147,12 @@ model OrderStatus {
 model VehicleType {
   id      Int       @id @default(autoincrement())
   type    String // ex) 스카이, 사다리
-  User    User[]
   Vehicle Vehicle[]
 }
 
 model VehicleWeight {
   id      Int       @id @default(autoincrement())
   weight  String // ex) 1톤, 2톤
-  User    User[]
   Vehicle Vehicle[]
 }
 

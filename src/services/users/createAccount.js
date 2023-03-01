@@ -12,9 +12,8 @@ export const createAccount = async (req, res) => {
         phone,
         birth,
         license,
-        vehicleNumber,
-        vehicleWeight,
-        vehicleType,
+        vehiclePermission,
+        vehicle,
         recommendUserId,
         gender,
         status,
@@ -29,6 +28,7 @@ export const createAccount = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // TODO:license => 이미지 저장
+    // TODO:vehiclePermission => 이미지 저장
     //TODO: 아바타 이미지 저장
 
     let user;
@@ -71,6 +71,38 @@ export const createAccount = async (req, res) => {
                 regionArr.push(newObj);
             });
 
+            const vehicleArr = [];
+
+            async function setVehicle() {
+                const vehicleResult = await Promise.all(
+                    vehicle.map(async (vehicle) => {
+                        const result = await prisma.vehicle.create({
+                            data: {
+                                number: vehicle.number,
+                                type: {
+                                    connect: {
+                                        id: vehicle.type,
+                                    },
+                                },
+                                weight: {
+                                    connect: {
+                                        id: vehicle.weight,
+                                    },
+                                },
+                            },
+                        });
+
+                        if (result) {
+                            const newObj = { id: result.id };
+
+                            vehicleArr.push(newObj);
+                        }
+                    })
+                );
+            }
+
+            await setVehicle();
+
             //기사회원
             user = await prisma.user.create({
                 data: {
@@ -83,16 +115,9 @@ export const createAccount = async (req, res) => {
                     phone,
                     birth,
                     license,
-                    vehicleNumber,
-                    vehicleWeight: {
-                        connect: {
-                            id: vehicleWeight,
-                        },
-                    },
-                    vehicleType: {
-                        connect: {
-                            id: vehicleType,
-                        },
+                    vehiclePermission,
+                    vehicle: {
+                        connect: vehicleArr,
                     },
                     recommendUserId,
                     gender,
@@ -115,7 +140,7 @@ export const createAccount = async (req, res) => {
                 },
             });
         } else {
-            //기업회원
+            //기사회원
             const regionArr = [];
 
             workRegion.map((region) => {
@@ -124,7 +149,38 @@ export const createAccount = async (req, res) => {
                 regionArr.push(newObj);
             });
 
-            //기사회원
+            const vehicleArr = [];
+
+            async function setVehicle() {
+                const vehicleResult = await Promise.all(
+                    vehicle.map(async (vehicle) => {
+                        const result = await prisma.vehicle.create({
+                            data: {
+                                number: vehicle.number,
+                                type: {
+                                    connect: {
+                                        id: vehicle.type,
+                                    },
+                                },
+                                weight: {
+                                    connect: {
+                                        id: vehicle.weight,
+                                    },
+                                },
+                            },
+                        });
+
+                        if (result) {
+                            const newObj = { id: result.id };
+
+                            vehicleArr.push(newObj);
+                        }
+                    })
+                );
+            }
+
+            await setVehicle();
+
             user = await prisma.user.create({
                 data: {
                     userType: {
@@ -136,7 +192,10 @@ export const createAccount = async (req, res) => {
                     phone,
                     birth,
                     license,
-                    vehicleNumber,
+                    vehiclePermission,
+                    vehicle: {
+                        connect: vehicleArr,
+                    },
                     recommendUserId,
                     gender,
                     status,
