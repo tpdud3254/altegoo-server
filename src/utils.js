@@ -2,39 +2,31 @@ import prisma from "./prisma";
 import jwt from "jsonwebtoken";
 import AWS from "aws-sdk";
 import multer from "multer";
-import multerS3 from "multer-s3";
 
-AWS.config.update({
-  region: "ap-northeast-2",
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-});
+const ID = process.env.AWS_ACCESS_KEY_ID;
+const SECRET = process.env.AWS_SECRET_ACCESS_KEY;
+const BUCKET_NAME = "altegoo-bucket";
 
-export const s3 = new AWS.S3();
+const s3 = new AWS.S3({ accessKeyId: ID, secretAccessKey: SECRET });
 
-const allowedExtensions = [".png", ".jpg", "jpeg", ".bmp"];
+export const uploadFile = async (file, type) => {
+  const key = `${type}/${Date.now()}_${file.originalname}`;
 
-export const uploader = multer({
+  console.log(key);
+  const params = { Bucket: BUCKET_NAME, Key: key, Body: file.buffer };
+  s3.upload(params, function (err, data) {
+    if (err) {
+      throw err;
+    }
+    console.log(`File upload successfully. ${data.Location}`);
+    return data.Location;
+  });
+};
+
+export const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fieldSize: 25 * 1024 * 1024 },
 });
-
-// export const imageUploader = multer({
-//     storage: multerS3({
-//       s3: s3,
-//       bucket: "altegoo-bucket",
-//       key: (req, file, callback) => {
-//         console.log("file : ", file);
-//         const uploadDirectory = req.query.directory ?? "";
-//         const extension = path.extname(file.originalname);
-//         if (!allowedExtensions.includes(extension)) {
-//           return callback(new Error("wrong extension"));
-//         }
-//         callback(null, `${uploadDirectory}/${Date.now()}_${file.originalname}`);
-//       },
-//       acl: "public-read-white",
-//     }),
-//   });
 
 export const existUser = (phone) =>
   prisma.user.findUnique({
