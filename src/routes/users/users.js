@@ -6,6 +6,8 @@ import { setPassword } from "../../services/users/setPassword";
 import { editProfile } from "../../services/users/editProfile";
 import { auth, upload, uploadFile } from "../../utils";
 import { verifyToken } from "../../services/users/verifyToken";
+import { saveLicense } from "../../services/users/saveLicense";
+import { saveVehiclePermission } from "../../services/users/saveVehiclePermission";
 
 const usersRouter = express.Router();
 
@@ -17,9 +19,8 @@ usersRouter.post("/login", login);
 usersRouter.post("/password", setPassword);
 usersRouter.post("/edit", auth, editProfile);
 
-usersRouter.post("/image", upload.single("file"), async (req, res) => {
-  const result = await uploadFile(req.file, "license");
-}); //TODO:  함수 분리
+usersRouter.post("/license", upload.single("file"), saveLicense);
+usersRouter.post("/permission", upload.single("file"), saveVehiclePermission);
 
 //TODO:set status (탈퇴시 withdrawalDate와 함께)
 //TODO:get workRegion
