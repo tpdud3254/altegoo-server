@@ -8,20 +8,21 @@ export const getWorkList = async (req, res) => {
     const workList = await prisma.order.findMany({
       include: {
         registUser: { select: { userName: true } },
-        // status: { select: { status: {
-
-        // }} },
       },
       orderBy: {
         id: "desc",
       },
+      // take: 5,
+      // skip: lastUserId ? 1 : 0,
+      // ...(lastUserId && { cursor: { id: lastUserId } }),
+      //TODO: pagination
     });
 
     console.log(workList);
     if (workList) {
       res.status(200).json({
         result: "VALID",
-        data: workList,
+        data: { list: workList },
       });
     } else {
       res.status(400).json({

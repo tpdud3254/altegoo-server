@@ -3,19 +3,22 @@ import { getUserRestInfo } from "../../utils";
 
 export const registWork = async (req, res) => {
   const {
-    workDate,
-    workTime,
-    workType,
-    workHeight,
-    workFloor,
-    upDown,
-    phone,
-    workQuantity,
+    workDateTime,
+    type,
+    bothType,
     address,
-    sendAddress,
-    cost,
-    commission,
-    onSitePayment,
+    otherAddress,
+    floor,
+    otherFloor,
+    phone,
+    directPhone,
+    price,
+    point,
+    volumeType,
+    quantity,
+    time,
+    vehicleType,
+    emergency,
     memo,
   } = req.body;
 
@@ -23,48 +26,29 @@ export const registWork = async (req, res) => {
 
   const id = req.id;
 
-  const now = new Date();
-
-  const registDate = `${now.getFullYear()}-${
-    now.getMonth() < 10 ? "0" + (now.getMonth() + 1) : now.getMonth() + 1
-  }-${now.getDate() < 10 ? "0" + now.getDate() : now.getDate()}`;
-  console.log(id);
-
-  const registTime = `${
-    now.getHours() < 10 ? "0" + now.getHours() : now.getHours()
-  }:${now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes()}`;
-
+  //TODO: 첫 등록시 포인트 지급
   try {
     const regist = await prisma.order.create({
       data: {
-        registUser: {
-          connect: {
-            id,
-          },
-        },
-        registDate,
-        registTime,
-        workDate,
-        workTime,
-        workType,
-        workHeight,
-        workFloor,
-        upDown,
-        phone,
-        workQuantity,
+        registUser: { connect: { id } },
+        workDateTime,
+        type,
+        bothType,
         address,
-        sendAddress,
-        cost,
-        commission,
-        onSitePayment,
+        otherAddress,
+        floor,
+        otherFloor,
+        phone,
+        directPhone,
+        price,
+        point,
+        volumeType,
+        quantity,
+        time,
+        vehicleType,
+        emergency,
         memo,
-        status: {
-          connect: {
-            id: 1,
-          }, //TODO: 임시등록으로 설정한 뒤 서버에서 타이머 돌린 뒤 자동으로 바뀌게 하기 중간에 요청 ㄷ르어오면 타이머 종료한뒤 바로 바꾸고 status값 변경
-        },
-        private: true,
-        workGrade: "NORMAL",
+        status: { connect: { id: 1 } },
       },
     });
     console.log(regist);

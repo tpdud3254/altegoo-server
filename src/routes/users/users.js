@@ -8,10 +8,12 @@ import { auth, upload, uploadFile } from "../../utils";
 import { verifyToken } from "../../services/users/verifyToken";
 import { saveLicense } from "../../services/users/saveLicense";
 import { saveVehiclePermission } from "../../services/users/saveVehiclePermission";
+import { getUserPoint } from "../../services/users/getUserPoint";
 
 const usersRouter = express.Router();
 
 usersRouter.get("/search", getUserExist);
+usersRouter.get("/point", auth, getUserPoint);
 
 usersRouter.post("/user", verifyToken);
 usersRouter.post("/create", createAccount);

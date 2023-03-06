@@ -8,14 +8,14 @@ datasource db {
 }
 
 model User {
-  id                Int              @id @default(autoincrement()) //database id
+  id                Int                @id @default(autoincrement()) //database id
   userId            String? //user 일련변호 (UserClass와 함께 사용)
-  userType          UserType         @relation(fields: [userTypeId], references: [id]) //user 구분
+  userType          UserType           @relation(fields: [userTypeId], references: [id]) //user 구분
   userTypeId        Int
   userName          String //본명
   name              String //가입 이름
   password          String //비밀번호
-  phone             String           @unique //핸드폰번호 (실직적인 user Id)
+  phone             String             @unique //핸드폰번호 (실직적인 user Id)
   birth             String //생년월일
   license           String? //사업자등록증 url
   vehiclePermission String? //화물자동차 운송사업 허가증 url
@@ -23,20 +23,20 @@ model User {
   recommendUserId   Int? //내가 추천한 회원 id
   gender            String //성별
   status            String //user 상태 (정상, 차단, 탈퇴 등)
-  workRegion        Region[]         @relation("userWorkRegion")
+  workRegion        Region[]           @relation("userWorkRegion")
   accessedRegion    String? //마지막 접속 지역
   sms               Boolean //이벤트 혜택 수신
-  grade             Grade            @relation(fields: [gradeId], references: [id]) //회원 등급
+  grade             Grade              @relation(fields: [gradeId], references: [id]) //회원 등급
   gradeId           Int
-  point             Point?           @relation(fields: [pointId], references: [id]) //포인트
-  pointId           Int
+  point             Point?
   pointBreakdown    PointBreakdown[] //포인트 내역
   avatar            String? //프로필 사진 url
   withdrawalDate    DateTime? //탈퇴날짜
   greeting          String? //인사말
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
   order             Order[]
+  orderReservation  OrderReservation[]
 }
 
 model UserType {
@@ -77,7 +77,8 @@ model Point {
   withdrawalPoint Int     @default(0) //출금포인트
   subtractPoint   Int     @default(0) //차감포인트
   addPoint        Int     @default(0) //지급포인트
-  user            User[]
+  user            User    @relation(fields: [userId], references: [id])
+  userId          Int     @unique
 }
 
 model PointBreakdown {
@@ -97,32 +98,31 @@ model Grade {
 }
 
 model Order {
-  id            Int           @id @default(autoincrement())
-  registUser    User          @relation(fields: [userId], references: [id]) //등록자
-  userId        Int
-  acceptUser    Int? //작업자
-  registDate    String //등록날짜
-  registTime    String //등록시간
-  workDate      String //작업날짜
-  workTime      String //작업시간
-  workType      String //상차, 하차, 양사
-  workHeight    String //저층, 중층, 상층
-  workFloor     String //작업 층
-  upDown        String //올림,내림, 양사
-  phone         String //등록자 전화번호
-  workQuantity  String //작업 물량
-  address       String //작업주소
-  sendAddress   String? //양사일 경우 도착 주소
-  cost          Int //작업 금액
-  commission    Float //수수료
-  onSitePayment Boolean //현장결제
-  memo          String? //메모
-  status        OrderStatus[] @relation("orderStatus") //작업 상태 (작업요청, 작업예약, 작업 중, 작업완료)
-  // status  OrderStatus? @relation(fields: [statusId], references: [id])
-  // statusId Int
-
-  private   Boolean //공개여부
-  workGrade String //작업등급
+  id               Int                @id @default(autoincrement())
+  registUser       User               @relation(fields: [userId], references: [id]) //등록자
+  userId           Int
+  acceptUser       Int? //작업자
+  createdAt        DateTime           @default(now()) //등록날짜, 시간
+  workDateTime     String //작업날짜, 시간
+  type             String //올림, 내림, 양사
+  bothType         Int? //1:내림>올림 2:올림>내림
+  address          String //작업주소
+  otherAddress     String? //양사일 경우 도착 주소
+  floor            Int //작업 층
+  otherFloor       Int? //양사일 경우 도착 층
+  phone            String //등록자 전화번호
+  directPhone      String //현장 전화번호
+  price            Int //작업 금액
+  point            Int //포인트
+  volumeType       String //물량:quantity, 시간:time
+  quantity         String? //volumeType === "quantity"
+  time             String? //volumeType === "time"
+  vehicleType      String //1:사다리 2:스카이
+  emergency        Boolean //긴급오더
+  memo             String? //메모
+  status           OrderStatus        @relation(fields: [orderStatusId], references: [id]) //작업 상태 (작업요청, 작업예약, 작업 중, 작업완료)
+  orderStatusId    Int
+  orderReservation OrderReservation[] //예약대기
 }
 
 model Commission {
@@ -140,8 +140,15 @@ model OrderTheme {
 model OrderStatus {
   id     Int     @id @default(autoincrement())
   status String //작업요청, 작업예약, 작업 중, 작업완료
-  order  Order[] @relation("orderStatus") //TODO: 연결 변경
-  //  order            Order[]
+  Order  Order[]
+}
+
+model OrderReservation {
+  id      Int   @id @default(autoincrement())
+  user    User  @relation(fields: [userId], references: [id])
+  userId  Int
+  order   Order @relation(fields: [orderId], references: [id])
+  orderId Int
 }
 
 model VehicleType {
