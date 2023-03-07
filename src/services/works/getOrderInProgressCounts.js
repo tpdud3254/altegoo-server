@@ -8,8 +8,7 @@ export const getOrderInProgressCounts = async (req, res) => {
       },
     },
   });
-
-  if (order) {
+  if (order || order === 0) {
     res.status(200).json({ result: "VALID", data: { count: order } });
   } else {
     res.status(400).json({
