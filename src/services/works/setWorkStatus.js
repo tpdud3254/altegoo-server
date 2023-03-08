@@ -34,10 +34,33 @@ export const setWorkStatus = async (req, res) => {
 
         console.log(deleteResult);
         if (deleteResult) {
-          //TODO: 새 예약자한테 알림
-          res.status(200).json({
-            result: "VALID",
+          const workList = await prisma.order.findMany({
+            include: {
+              registUser: { select: { userName: true } },
+              orderReservation: true,
+            },
+            orderBy: {
+              id: "desc",
+            },
+            // take: 5,
+            // skip: lastUserId ? 1 : 0,
+            // ...(lastUserId && { cursor: { id: lastUserId } }),
+            //TODO: pagination
           });
+
+          if (workList) {
+            res.status(200).json({
+              result: "VALID",
+              data: { list: workList },
+            });
+          } else {
+            res.status(400).json({
+              result: "INVALID: FAIL TO FIND WORK LIST",
+              msg: "작업상태 변경에 실패했습니다.",
+            });
+          }
+          //TODO: 새 예약자한테 알림
+
           return;
         } else {
           res.status(400).json({
@@ -64,9 +87,32 @@ export const setWorkStatus = async (req, res) => {
       });
 
       if (work) {
-        res.status(200).json({
-          result: "VALID",
+        const workList = await prisma.order.findMany({
+          include: {
+            registUser: { select: { userName: true } },
+            orderReservation: true,
+          },
+          orderBy: {
+            id: "desc",
+          },
+          // take: 5,
+          // skip: lastUserId ? 1 : 0,
+          // ...(lastUserId && { cursor: { id: lastUserId } }),
+          //TODO: pagination
         });
+
+        if (workList) {
+          res.status(200).json({
+            result: "VALID",
+            data: { list: workList },
+          });
+        } else {
+          res.status(400).json({
+            result: "INVALID: FAIL TO FIND WORK LIST",
+            msg: "작업상태 변경에 실패했습니다.",
+          });
+        }
+
         return;
       } else {
         res.status(400).json({
@@ -93,9 +139,31 @@ export const setWorkStatus = async (req, res) => {
   });
 
   if (work) {
-    res.status(200).json({
-      result: "VALID",
+    const workList = await prisma.order.findMany({
+      include: {
+        registUser: { select: { userName: true } },
+        orderReservation: true,
+      },
+      orderBy: {
+        id: "desc",
+      },
+      // take: 5,
+      // skip: lastUserId ? 1 : 0,
+      // ...(lastUserId && { cursor: { id: lastUserId } }),
+      //TODO: pagination
     });
+
+    if (workList) {
+      res.status(200).json({
+        result: "VALID",
+        data: { list: workList },
+      });
+    } else {
+      res.status(400).json({
+        result: "INVALID: FAIL TO FIND WORK LIST",
+        msg: "작업상태 변경에 실패했습니다.",
+      });
+    }
   } else {
     res.status(400).json({
       result: "INVALID: FAIL TO FIND WORK LIST",
