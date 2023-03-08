@@ -5,13 +5,11 @@ export const getUserExist = async (req, res) => {
 
   console.log(phone);
   //TODO 예외처리 보강강
-  const user = await existUser(phone);
-  if (user) {
-    res.status(200).json({ result: "VALID", data: { userId: user.id } });
-  } else {
-    res.status(400).json({
-      result: "INVALID: USER NOT FOUND",
-      msg: "사용자를 찾을 수 없습니다.",
-    });
+  try {
+    const user = await existUser(phone);
+    res.json({ result: "VALID", data: { userId: user.id } });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ result: "INVALID", msg: error.message });
   }
 };

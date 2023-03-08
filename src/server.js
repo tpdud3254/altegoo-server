@@ -22,6 +22,11 @@ app.use("/users", usersRouter);
 app.use("/works", worksRouter);
 app.get("/*", (_, res) => res.redirect("/"));
 
+app.use((err, req, res, next) => {
+  console.log("500 err : ", err);
+  res.status(500).json({ result: "INVALID", msg: err.message });
+});
+
 const handleListen = () => console.log(`Listening on http://localhost:${PORT}`);
 
 const httpServer = http.createServer(app);

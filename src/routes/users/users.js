@@ -4,7 +4,7 @@ import { getUserExist } from "../../services/users/getUserExist";
 import { login } from "../../services/users/login";
 import { setPassword } from "../../services/users/setPassword";
 import { editProfile } from "../../services/users/editProfile";
-import { auth, upload, uploadFile } from "../../utils";
+import { asyncWrap, auth, existUser, upload, uploadFile } from "../../utils";
 import { verifyToken } from "../../services/users/verifyToken";
 import { saveLicense } from "../../services/users/saveLicense";
 import { saveVehiclePermission } from "../../services/users/saveVehiclePermission";
@@ -12,7 +12,7 @@ import { getUserPoint } from "../../services/users/getUserPoint";
 
 const usersRouter = express.Router();
 
-usersRouter.get("/search", getUserExist);
+usersRouter.get("/search", asyncWrap(getUserExist));
 usersRouter.get("/point", auth, getUserPoint);
 
 usersRouter.post("/user", verifyToken);

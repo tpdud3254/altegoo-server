@@ -28,10 +28,20 @@ export const upload = multer({
   limits: { fieldSize: 25 * 1024 * 1024 },
 });
 
-export const existUser = (phone) =>
-  prisma.user.findUnique({
+export const existUser = async (phone) => {
+  if (!phone) {
+    throw new Error("사용자를 찾을 수 없습니다.");
+  }
+  const user = await prisma.user.findUnique({
     where: { phone },
   });
+
+  if (!user) {
+    throw new Error("사용자를 찾을 수 없습니다.");
+  } else {
+    return user;
+  }
+};
 
 export const craeteUserId = (code, id) => {
   return code + String(id).padStart(5, "0");
@@ -151,4 +161,15 @@ export const getUserRestInfo = async (user) => {
   };
 
   return info;
+};
+
+export const asyncWrap = (asyncController) => {
+  return async (req, res, next) => {
+    try {
+      await asyncController(req, res);
+    } catch (error) {
+      console.log("asyncWrap error : ", error);
+      next(error);
+    }
+  };
 };
