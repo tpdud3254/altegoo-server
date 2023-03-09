@@ -13,16 +13,20 @@ import { getUserPoint } from "../../services/users/getUserPoint";
 const usersRouter = express.Router();
 
 usersRouter.get("/search", asyncWrap(getUserExist));
-usersRouter.get("/point", auth, getUserPoint);
+usersRouter.get("/point", auth, asyncWrap(getUserPoint));
 
-usersRouter.post("/user", verifyToken);
-usersRouter.post("/create", createAccount);
-usersRouter.post("/login", login);
-usersRouter.post("/password", setPassword);
-usersRouter.post("/edit", auth, editProfile);
+usersRouter.post("/user", asyncWrap(verifyToken));
+usersRouter.post("/create", asyncWrap(createAccount));
+usersRouter.post("/login", asyncWrap(login));
+usersRouter.post("/password", asyncWrap(setPassword));
+usersRouter.post("/edit", auth, asyncWrap(editProfile));
 
-usersRouter.post("/license", upload.single("file"), saveLicense);
-usersRouter.post("/permission", upload.single("file"), saveVehiclePermission);
+usersRouter.post("/license", upload.single("file"), asyncWrap(saveLicense));
+usersRouter.post(
+  "/permission",
+  upload.single("file"),
+  asyncWrap(saveVehiclePermission)
+);
 
 //TODO:set status (탈퇴시 withdrawalDate와 함께)
 //TODO:get workRegion

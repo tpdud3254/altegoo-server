@@ -1,5 +1,5 @@
 import prisma from "../../prisma";
-import { getUserRestInfo } from "../../utils";
+import { setErrorJson } from "../../utils";
 
 export const registWork = async (req, res) => {
   const {
@@ -52,21 +52,11 @@ export const registWork = async (req, res) => {
       },
     });
     console.log(regist);
-    if (regist) {
-      res.status(200).json({
-        result: "VALID",
-      });
-    } else {
-      res.status(400).json({
-        result: "INVALID: FAIL TO REGIST WORK",
-        msg: "작업 등록에 실패하였습니다.",
-      });
-    }
+
+    if (!regist) throw new Error("작업 등록에 실패하였습니다.");
+
+    res.json(setResponseJson(null));
   } catch (error) {
-    res.status(400).json({
-      result: "INVALID: ERROR",
-      error,
-      msg: "작업 등록에 실패하였습니다.",
-    });
+    res.json(setErrorJson(error.message));
   }
 };

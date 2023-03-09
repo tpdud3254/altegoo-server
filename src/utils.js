@@ -29,18 +29,15 @@ export const upload = multer({
 });
 
 export const existUser = async (phone) => {
-  if (!phone) {
-    throw new Error("사용자를 찾을 수 없습니다.");
-  }
+  if (!phone) throw new Error("사용자를 찾을 수 없습니다.");
+
   const user = await prisma.user.findUnique({
     where: { phone },
   });
 
-  if (!user) {
-    throw new Error("사용자를 찾을 수 없습니다.");
-  } else {
-    return user;
-  }
+  if (!user) throw new Error("사용자를 찾을 수 없습니다.");
+
+  return user;
 };
 
 export const craeteUserId = (code, id) => {
@@ -52,41 +49,23 @@ export const auth = async (req, res, next) => {
 
   console.log("token: ", token);
 
-  if (!token) {
-    res.status(400).json({
-      result: "INVALID: TOKEN NOT FOUND",
-      msg: "사용자를 찾을 수 없습니다.",
-    });
-  }
+  if (!token) throw new Error("사용자를 찾을 수 없습니다.");
 
   try {
     const { id } = jwt.verify(token, process.env.SECRET_KEY);
 
-    if (!id) {
-      res.status(400).json({
-        result: "INVALID: TOKEN NOT FOUND",
-        msg: "사용자를 찾을 수 없습니다.",
-      });
-    }
+    if (!id) throw new Error("사용자를 찾을 수 없습니다.");
+
     const user = await prisma.user.findUnique({
       where: { id },
     });
 
-    if (user) {
-      req.id = user.id;
-      next();
-    } else {
-      res.status(400).json({
-        result: "INVALID: USER NOT FOUND",
-        msg: "사용자를 찾을 수 없습니다.",
-      });
-    }
+    if (!user) throw new Error("사용자를 찾을 수 없습니다.");
+
+    req.id = user.id;
+    next();
   } catch (error) {
-    res.status(400).json({
-      result: "INVALID: FAIL",
-      error,
-      msg: "사용자를 찾을 수 없습니다.",
-    });
+    res.json(setErrorJson(error.message));
   }
 };
 
@@ -172,4 +151,12 @@ export const asyncWrap = (asyncController) => {
       next(error);
     }
   };
+};
+
+export const setErrorJson = (msg) => {
+  return { result: "INVALID", msg };
+};
+
+export const setResponseJson = (data) => {
+  return { result: "VALID", data };
 };

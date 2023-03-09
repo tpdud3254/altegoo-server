@@ -1,24 +1,27 @@
 import prisma from "../../prisma";
+import { setErrorJson, setResponseJson } from "../../utils";
 
 export const addReservation = async (req, res) => {
   const { orderId } = req.body;
 
   const id = req.id;
 
-  const reservation = await prisma.orderReservation.create({
-    data: {
-      user: {
-        connect: { id },
-      },
-      order: {
-        connect: {
-          id: orderId,
+  try {
+    const reservation = await prisma.orderReservation.create({
+      data: {
+        user: {
+          connect: { id },
+        },
+        order: {
+          connect: {
+            id: orderId,
+          },
         },
       },
-    },
-  });
+    });
 
-  if (reservation) {
+    if (!reservation) throw new Error("예약대기에 실패했습니다.");
+
     const workList = await prisma.order.findMany({
       include: {
         registUser: { select: { userName: true } },
@@ -33,21 +36,10 @@ export const addReservation = async (req, res) => {
       //TODO: pagination
     });
 
-    if (workList) {
-      res.status(200).json({
-        result: "VALID",
-        data: { list: workList },
-      });
-    } else {
-      res.status(400).json({
-        result: "INVALID: FAIL TO FIND WORK LIST",
-        msg: "예약대기에 실패했습니다.",
-      });
-    }
-  } else {
-    res.status(400).json({
-      result: "INVALID: FAIL TO FIND WORK LIST",
-      msg: "예약대기에 실패했습니다.",
-    });
+    if (!workList) throw new Error("예약대기에 실패했습니다.");
+
+    res.json(setResponseJson({ list: workList }));
+  } catch (error) {
+    res.json(setErrorJson(error.message));
   }
 };

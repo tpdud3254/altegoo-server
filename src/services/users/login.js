@@ -1,7 +1,11 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import prisma from "../../prisma";
-import { existUser, getUserRestInfo } from "../../utils";
+import {
+  existUser,
+  getUserRestInfo,
+  setErrorJson,
+  setResponseJson,
+} from "../../utils";
 
 export const login = async (req, res) => {
   const { phone, password } = req.body;
@@ -10,25 +14,11 @@ export const login = async (req, res) => {
 
   const user = await existUser(phone);
 
-  if (!user) {
-    res.status(400).json({
-      result: "INVALID: USER NOT FOUND",
-      msg: "사용자를 찾을 수 없습니다.",
-    });
-
-    return;
-  }
+  if (!user) throw new Error("사용자를 찾을 수 없습니다.");
 
   const checkPassword = await bcrypt.compare(password, user.password);
 
-  if (!checkPassword) {
-    res.status(400).json({
-      result: "INVALID: INCORRECT PASSWORD",
-      msg: "비밀번호가 일치하지 않습니다.",
-    });
-
-    return;
-  }
+  if (!checkPassword) throw new Error("비밀번호가 일치하지 않습니다.");
 
   try {
     const token = await jwt.sign({ id: user.id }, process.env.SECRET_KEY);
@@ -37,18 +27,10 @@ export const login = async (req, res) => {
 
     const userData = { ...(await getUserRestInfo(user)), ...user };
 
-    if (token) {
-      res.status(200).json({
-        result: "VALID",
-        data: { user: userData, token },
-      });
-    } else {
-      res.status(400).json({
-        result: "INVALID: LOGIN FAIL",
-        msg: "로그인에 실패하였습니다.",
-      });
-    }
+    if (!token) throw new Error("로그인에 실패하였습니다.");
+
+    res.json(setResponseJson({ user: userData, token }));
   } catch (error) {
-    res.status(400).json({ result: "INVALID: ERROR", error });
+    res.json(setErrorJson(error.message));
   }
 };

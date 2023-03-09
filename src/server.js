@@ -6,7 +6,6 @@ import { Server } from "socket.io";
 import { instrument } from "@socket.io/admin-ui";
 import express from "express";
 import usersRouter from "./routes/users/users";
-import bcrypt from "bcrypt";
 import worksRouter from "./routes/works/works";
 
 const cors = require("cors");
@@ -24,7 +23,10 @@ app.get("/*", (_, res) => res.redirect("/"));
 
 app.use((err, req, res, next) => {
   console.log("500 err : ", err);
-  res.status(500).json({ result: "INVALID", msg: err.message });
+  res.status(500).json({
+    result: "INVALID",
+    msg: "서버와의 통신이 원활하지 않습니다. 나중에 다시 시도해주세요.",
+  });
 });
 
 const handleListen = () => console.log(`Listening on http://localhost:${PORT}`);

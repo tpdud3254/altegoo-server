@@ -1,6 +1,11 @@
 import bcrypt from "bcrypt";
 import prisma from "../../prisma";
-import { craeteUserId, getUserRestInfo } from "../../utils";
+import {
+  craeteUserId,
+  getUserRestInfo,
+  setErrorJson,
+  setResponseJson,
+} from "../../utils";
 
 export const createAccount = async (req, res) => {
   const {
@@ -27,8 +32,6 @@ export const createAccount = async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  // TODO:license => 이미지 저장
-  // TODO:vehiclePermission => 이미지 저장
   //TODO: 아바타 이미지 저장
 
   let user;
@@ -218,46 +221,28 @@ export const createAccount = async (req, res) => {
       });
     }
 
-    if (user) {
-      const userId = craeteUserId(userCode, user.id);
+    if (!user) throw new Error("회원가입에 실패하였습니다.");
 
-      const account = await prisma.user.update({
-        where: { id: user.id },
-        data: {
-          userId,
-        },
-      });
+    const userId = craeteUserId(userCode, user.id);
 
-      if (account) {
-        delete account.password;
+    const account = await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        userId,
+      },
+    });
 
-        const userData = {
-          ...(await getUserRestInfo(account)),
-          ...account,
-        };
+    if (!account) throw new Error("회원가입에 실패하였습니다.");
+    delete account.password;
 
-        res.status(200).json({
-          result: "VALID",
-          data: { user: userData },
-        });
-      } else {
-        res.status(400).json({
-          result: "INVALID: CREATE USERID",
-          msg: "회원가입에 실패하였습니다.",
-        });
-      }
-    } else {
-      res.status(400).json({
-        result: "INVALID: CREATE ACCOUNT",
-        msg: "회원가입에 실패하였습니다.",
-      });
-    }
+    const userData = {
+      ...(await getUserRestInfo(account)),
+      ...account,
+    };
+
+    res.json(setResponseJson({ user: userData }));
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      result: "INVALID: ERROR",
-      error,
-      msg: "회원가입에 실패하였습니다.",
-    });
+    res.json(setErrorJson(error.message));
   }
 };
