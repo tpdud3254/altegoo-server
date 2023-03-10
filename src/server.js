@@ -25,7 +25,7 @@ app.use((err, req, res, next) => {
   console.log("500 err : ", err);
   res.status(500).json({
     result: "INVALID",
-    msg: "서버와의 통신이 원활하지 않습니다. 나중에 다시 시도해주세요.",
+    msg: err.message,
   });
 });
 

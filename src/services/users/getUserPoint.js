@@ -20,7 +20,7 @@ export const getUserPoint = async (req, res) => {
 
     console.log(point);
 
-    if (point) throw new Error("포인트 정보를 불러올 수 없습니다.");
+    if (!point) throw new Error("포인트 정보를 불러올 수 없습니다.");
 
     res.json(setResponseJson({ point: point.point }));
   } catch (error) {

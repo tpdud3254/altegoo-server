@@ -158,5 +158,5 @@ export const setErrorJson = (msg) => {
 };
 
 export const setResponseJson = (data) => {
-  return { result: "VALID", data };
+  return { result: "VALID", data: data };
 };
