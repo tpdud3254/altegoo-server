@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 import http from "http";
-// import SocketIO from "socket.io";
 import { Server } from "socket.io";
 import { instrument } from "@socket.io/admin-ui";
 import express from "express";
@@ -45,25 +44,38 @@ app.use((err, req, res, next) => {
 const handleListen = () => console.log(`Listening on http://localhost:${PORT}`);
 
 const httpServer = http.createServer(app);
-const wsServer = new Server(httpServer, {
-  cors: {
-    origin: ["https://admin.socket.io"],
-    credentials: true,
-  },
+const webSocketServer = new WebSocket.Server({
+  server: httpServer,
 });
 
-instrument(wsServer, {
-  auth: false,
-});
+webSocketServer.on("connection", (ws, request) => {
+  // 연결한 클라이언트 ip 확인
+  const ip = request.socket.remoteAddress;
 
-// socket.io admin panel auth setting
-// instrument(wsServer, {
-//     auth: {
-//         type: "basic",
-//         username: "admin",
-//         password:
-//             "$2b$10$heqvAkYMez.Va6Et2uXInOnkCT6/uQj1brkrbyG3LpopDklcq7ZOS",
-//     },
-// });
+  console.log(`클라이언트 [${ip}] 접속`);
+
+  // 연결이 성공
+  if (ws.readyState === ws.OPEN) {
+    console.log(`[${ip}] 연결 성공`);
+  }
+
+  // 메세지를 받았을 때 이벤트 처리
+  ws.on("message", (msg) => {
+    console.log(`${msg} [${ip}]`);
+    ws.send(`${msg} 메세지를 확인했어요.`);
+  });
+
+  // 에러 처리
+  ws.on("error", (error) => {
+    console.log(`에러 발생 : ${error} [${ip}]`);
+  });
+
+  // 연결 종료 처리
+  ws.on("close", () => {
+    console.log(`[${ip}] 연결 종료`);
+  });
+
+  // setInterval(() => ws.send("hello"), 3000);
+});
 
 httpServer.listen(PORT, handleListen);
