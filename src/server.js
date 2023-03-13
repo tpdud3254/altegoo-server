@@ -7,6 +7,7 @@ import express from "express";
 import usersRouter from "./routes/users/users";
 import worksRouter from "./routes/works/works";
 import adminRouter from "./routes/admin/admin";
+import { WebSocket } from "ws";
 
 const cors = require("cors");
 const app = express();
