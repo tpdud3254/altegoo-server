@@ -18,31 +18,31 @@ const getUsers = async (req, res) => {
 
         if (!users) throw new Error("유저 리스트를 불러올 수 없습니다.");
 
-        // async function getRecommendUser() {
-        //     const usersList = await Promise.all(
-        //         users.map(async (user, index) => {
-        //             if (user.recommendUserId) {
-        //                 const recommendUser = await prisma.user.findUnique({
-        //                     where: { id: user.recommendUserId },
-        //                     select: { userName: true, userId: true },
-        //                 });
+        async function getRecommendUser() {
+            const usersList = await Promise.all(
+                users.map(async (user, index) => {
+                    if (user.recommendUserId) {
+                        const recommendUser = await prisma.user.findUnique({
+                            where: { id: user.recommendUserId },
+                            select: { userName: true, userId: true },
+                        });
 
-        //                 console.log(recommendUser);
-        //                 users[index] = {
-        //                     recommendUser: recommendUser,
-        //                     ...users[index],
-        //                 };
-        //             } else {
-        //                 users[index] = {
-        //                     recommendUser: null,
-        //                     ...users[index],
-        //                 };
-        //             }
-        //         })
-        //     );
-        // }
+                        console.log(recommendUser);
+                        users[index] = {
+                            recommendUser: recommendUser,
+                            ...users[index],
+                        };
+                    } else {
+                        users[index] = {
+                            recommendUser: null,
+                            ...users[index],
+                        };
+                    }
+                })
+            );
+        }
 
-        // await getRecommendUser();
+        await getRecommendUser();
 
         console.log(users);
 
