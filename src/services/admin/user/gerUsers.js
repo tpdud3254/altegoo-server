@@ -51,7 +51,6 @@ const getUsers = async (req, res) => {
     console.log(error.message);
     res.json(setErrorJson(error.message));
   }
-  await prisma.$disconnect();
 };
 
 export default getUsers;
