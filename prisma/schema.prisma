@@ -62,9 +62,10 @@ model Vehicle {
 }
 
 model Region {
-  id     Int    @id @default(autoincrement())
+  id     Int     @id @default(autoincrement())
   region String //작업지역
-  user   User[] @relation("userWorkRegion")
+  user   User[]  @relation("userWorkRegion")
+  Order  Order[]
 }
 
 model Point {
@@ -106,8 +107,13 @@ model Order {
   workDateTime     String //작업날짜, 시간
   type             String //올림, 내림, 양사
   bothType         Int? //1:내림>올림 2:올림>내림
-  address          String //작업주소
-  otherAddress     String? //양사일 경우 도착 주소
+  address          String //작업주소 (TODO: deprecated)
+  otherAddress     String? //양사일 경우 도착 주소 (TODO: deprecated)
+  address1         String? //작업주소 전체 (TODO: 필수로 변경)
+  simpleAddress1   String? //작업주소 (00동까지만)
+  address2         String? //도착 주소 전체 (양사일 경우)
+  simpleAddress2   String? //도착 주소 (00동까지만)
+  region           Region?            @relation(fields: [regionId], references: [id]) //지역 코드 (회원 지역 코드랑 똑같음) (TODO: 필수로 변경)
   floor            Int //작업 층
   otherFloor       Int? //양사일 경우 도착 층
   phone            String //등록자 전화번호
@@ -123,6 +129,7 @@ model Order {
   status           OrderStatus        @relation(fields: [orderStatusId], references: [id]) //작업 상태 (작업요청, 작업예약, 작업 중, 작업완료)
   orderStatusId    Int
   orderReservation OrderReservation[] //예약대기
+  regionId         Int?
 }
 
 model Commission {
