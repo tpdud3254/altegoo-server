@@ -39,37 +39,43 @@ export const getMyAcceptList = async (req, res) => {
 
         let result = [];
 
+        async function getTodayList() {
+            const list = await Promise.all(
+                list.map((order, index) => {
+                    const workDateTime = new Date(order.workDateTime);
+                    const today = new Date();
+                    today.setDate(today.getDate() + 1);
+                    console.log(
+                        `${workDateTime.getMonth()}-${workDateTime.getDate()} : ${
+                            order.orderStatusId
+                        }`
+                    );
+                    console.log(`${today.getMonth()}-${today.getDate()}`);
+                    if (workDateTime > today) {
+                        if (
+                            order.orderStatusId === 2 &&
+                            workDateTime.getMonth() === today.getMonth() &&
+                            workDateTime.getDate() === today.getDate()
+                        ) {
+                            //오늘 날짜
+                            // result.push(order);
+                            result = [order, ...result];
+                            console.log(order);
+                        } else if (
+                            order.orderStatusId === 3 &&
+                            workDateTime.getMonth() === today.getMonth() &&
+                            workDateTime.getDate() === today.getDate() &&
+                            workDateTime.getHours() + 1 <= today.getHours()
+                        )
+                            result.push(order);
+                        else console.log("eles");
+                    }
+                })
+            );
+        }
+
         if (list.length > 0) {
-            list.map((order, index) => {
-                const workDateTime = new Date(order.workDateTime);
-                const today = new Date();
-                today.setDate(today.getDate() + 1);
-                console.log(
-                    `${workDateTime.getMonth()}-${workDateTime.getDate()} : ${
-                        order.orderStatusId
-                    }`
-                );
-                console.log(`${today.getMonth()}-${today.getDate()}`);
-                if (workDateTime > today) {
-                    if (
-                        order.orderStatusId === 2 &&
-                        workDateTime.getMonth() === today.getMonth() &&
-                        workDateTime.getDate() === today.getDate()
-                    ) {
-                        //오늘 날짜
-                        // result.push(order);
-                        result = [order, ...result];
-                        console.log(order);
-                    } else if (
-                        order.orderStatusId === 3 &&
-                        workDateTime.getMonth() === today.getMonth() &&
-                        workDateTime.getDate() === today.getDate() &&
-                        workDateTime.getHours() + 1 <= today.getHours()
-                    )
-                        result.push(order);
-                    else console.log("eles");
-                }
-            });
+            await getTodayList();
         }
         console.log(result);
         if (!list) throw new Error("작업 불러오기에 실패하였습니다.");
