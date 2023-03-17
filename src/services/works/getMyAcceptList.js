@@ -37,7 +37,7 @@ export const getMyAcceptList = async (req, res) => {
             orderBy: { id: "desc" },
         });
 
-        const result = [];
+        let result = [];
 
         if (list.length > 0) {
             list.map((order, index) => {
