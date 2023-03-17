@@ -39,8 +39,8 @@ export const getMyAcceptList = async (req, res) => {
             list.map((order, index) => {
                 const workDateTime = new Date(order.workDateTime);
                 const today = new Date();
-                console.log(workDateTime);
-                console.log(today);
+                console.log(workDateTime.getDate());
+                console.log(today.getDate());
                 if (workDateTime < today) {
                     result.push(order);
                 }
