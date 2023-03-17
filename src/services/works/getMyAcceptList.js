@@ -44,7 +44,7 @@ export const getMyAcceptList = async (req, res) => {
                 list.map((order, index) => {
                     const workDateTime = new Date(order.workDateTime);
                     const today = new Date();
-                    today.setDate(today.getDate() + 1);
+                    // today.setDate(today.getDate() + 1);
                     console.log(
                         `${workDateTime.getMonth()}-${workDateTime.getDate()} : ${
                             order.orderStatusId
