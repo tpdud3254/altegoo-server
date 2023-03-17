@@ -45,7 +45,20 @@ export const getMyAcceptList = async (req, res) => {
                 const today = new Date();
                 today.setDate(today.getDate() + 1);
                 if (workDateTime > today) {
-                    result.push(order);
+                    if (
+                        order.orderStatusId === 2 &&
+                        workDateTime.getMonth() === today.getMonth() &&
+                        workDateTime.getDate() === today.getDate()
+                    )
+                        //오늘 날짜
+                        result.push(order);
+                    else if (
+                        order.orderStatusId === 3 &&
+                        workDateTime.getMonth() === today.getMonth() &&
+                        workDateTime.getDate() === today.getDate() &&
+                        workDateTime.getHours() + 1 <= today.getHours()
+                    )
+                        result.push(order);
                 }
             });
         }
