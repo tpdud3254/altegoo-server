@@ -30,6 +30,10 @@ export const getMyAcceptList = async (req, res) => {
                     },
                 ],
             },
+            include: {
+                registUser: { select: { userName: true } },
+                orderReservation: true,
+            },
             orderBy: { id: "desc" },
         });
 
@@ -40,13 +44,8 @@ export const getMyAcceptList = async (req, res) => {
                 const workDateTime = new Date(order.workDateTime);
                 const today = new Date();
                 today.setDate(today.getDate() + 1);
-                console.log(workDateTime.getDate());
-                console.log(today.getDate());
-                if (workDateTime < today) {
-                    console.log(order);
+                if (workDateTime > today) {
                     result.push(order);
-                } else {
-                    console.log("else");
                 }
             });
         }
