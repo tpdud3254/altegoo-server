@@ -28,7 +28,7 @@ export const setWorkStatus = async (req, res) => {
                         id: orderId,
                     },
                     data: {
-                        acceptUser: id,
+                        acceptUser: reservation.orderReservation[0].userId,
                     },
                 });
 
