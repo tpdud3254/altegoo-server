@@ -51,18 +51,14 @@ export const getMyAcceptList = async (req, res) => {
                         }`
                     );
                     console.log(`${today.getMonth()}-${today.getDate()}`);
-                    // console.log(order);
-                    // if (workDateTime >= today) {
                     if (
                         order.orderStatusId === 2 &&
                         workDateTime.getMonth() === today.getMonth() &&
                         workDateTime.getDate() === today.getDate()
-                    ) {
+                    )
                         //오늘 날짜
                         result.push(order);
-                        // result = [order, ...result];
-                        // console.log(order);
-                    } else if (
+                    else if (
                         order.orderStatusId === 3 &&
                         workDateTime.getMonth() === today.getMonth() &&
                         workDateTime.getDate() === today.getDate() &&
@@ -70,7 +66,6 @@ export const getMyAcceptList = async (req, res) => {
                     )
                         result.push(order);
                     else console.log("eles");
-                    // }
                 })
             );
         }
