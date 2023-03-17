@@ -23,6 +23,7 @@ export const getWorkList = async (req, res) => {
 
         if (!workList) throw new Error("작업리스트 조회에 실패했습니다.");
 
+        //TODO: 삭제
         workList.map((work, index) => {
             if (work.address.includes("서울")) workList[index].regionCode = 1;
             else if (work.address.includes("인천"))
