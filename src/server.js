@@ -56,6 +56,7 @@ webSocketServer.on("connection", (ws, request) => {
     const ip = request.socket.remoteAddress;
 
     console.log(`클라이언트 [${ip}] 접속`);
+    console.log("socket.id", request.socket);
 
     // 연결이 성공
     if (ws.readyState === ws.OPEN) {
@@ -79,6 +80,18 @@ webSocketServer.on("connection", (ws, request) => {
         console.log(`[${ip}] 연결 종료`);
     });
 
+    process.on("REGIST", (param) => {
+        //TODO: 자기 자신은 받지 않기
+        ws.send(
+            JSON.stringify({
+                type: "REGIST",
+                tts_msg: param.msg,
+                exceptionUserId: param.userId,
+            })
+        );
+    });
+
+    // ws.close;
     // setInterval(() => ws.send("hello"), 3000);
 });
 

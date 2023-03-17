@@ -23,21 +23,26 @@ async function testFunc(req, res) {
     // } = req.body;
 
     // console.log(req.body);
-    // const id = req.id;
+    const id = req.id;
 
-    const firstOrder = await prisma.user.findMany({
-        where: { id },
-        select: { order: true, point: { select: { id: true } } },
+    // const firstOrder = await prisma.user.findMany({
+    //     where: { id },
+    //     select: { order: true, point: { select: { id: true } } },
+    // });
+
+    // if (firstOrder[0].order.length === 0) {
+    //     const point = await prisma.point.update({
+    //         where: { id: firstOrder[0].point.id },
+    //         data: { curPoint: 10000 },
+    //     });
+
+    //     console.log(point);
+    // }
+
+    process.emit("REGIST", {
+        msg: `에 작업이 등록되었습니다.`,
+        userId: id,
     });
-
-    if (firstOrder[0].order.length === 0) {
-        const point = await prisma.point.update({
-            where: { id: firstOrder[0].point.id },
-            data: { curPoint: 10000 },
-        });
-
-        console.log(point);
-    }
 }
 
 usersRouter.post("/user", asyncWrap(verifyToken));
