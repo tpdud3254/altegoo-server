@@ -114,6 +114,9 @@ export const setWorkStatus = async (req, res) => {
                     },
                 },
             },
+            include: {
+                registUser: { select: { userId: true } },
+            },
         });
 
         if (!work) throw new Error("작업상태 변경에 실패했습니다.");
@@ -134,6 +137,12 @@ export const setWorkStatus = async (req, res) => {
 
         if (!workList) throw new Error("작업상태 변경에 실패했습니다.");
 
+        if (status === 5) {
+            console.log(work);
+            // const registUser = await prisma.point.update({
+            //     where: { userId: wo },
+            // });
+        }
         res.json(setResponseJson({ list: workList }));
     } catch (error) {
         res.json(setErrorJson(error.message));
