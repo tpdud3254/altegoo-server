@@ -57,7 +57,9 @@ export const getMyAcceptList = async (req, res) => {
                         workDateTime.getDate() === today.getDate()
                     ) {
                         //오늘 날짜
-                        result.push(order);
+                        // result.push(order);
+                        result = [order, ...result];
+                        console.log(order);
                     } else if (
                         order.orderStatusId === 3 &&
                         workDateTime.getMonth() === today.getMonth() &&
