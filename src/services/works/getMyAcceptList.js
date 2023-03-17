@@ -52,9 +52,10 @@ export const getMyAcceptList = async (req, res) => {
                     );
                     console.log(`${today.getMonth()}-${today.getDate()}`);
                     if (
-                        order.orderStatusId === 2 &&
-                        workDateTime.getMonth() === today.getMonth() &&
-                        workDateTime.getDate() === today.getDate()
+                        (order.orderStatusId === 2 &&
+                            workDateTime.getMonth() === today.getMonth() &&
+                            workDateTime.getDate() === today.getDate()) ||
+                        (order.orderStatusId === 2 && workDateTime < today)
                     )
                         //오늘 날짜
                         result.push(order);
