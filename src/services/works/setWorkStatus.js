@@ -102,23 +102,41 @@ export const setWorkStatus = async (req, res) => {
             }
         }
 
-        const work = await prisma.order.update({
-            where: {
-                id: orderId,
-            },
-            data: {
-                acceptUser: id,
-                status: {
-                    connect: {
-                        id: status,
+        let work;
+        if (status === 2) {
+            work = await prisma.order.update({
+                where: {
+                    id: orderId,
+                },
+                data: {
+                    acceptUser: id,
+                    status: {
+                        connect: {
+                            id: status,
+                        },
                     },
                 },
-            },
-            include: {
-                registUser: { select: { id: true } },
-            },
-        });
-
+                include: {
+                    registUser: { select: { id: true } },
+                },
+            });
+        } else {
+            work = await prisma.order.update({
+                where: {
+                    id: orderId,
+                },
+                data: {
+                    status: {
+                        connect: {
+                            id: status,
+                        },
+                    },
+                },
+                include: {
+                    registUser: { select: { id: true } },
+                },
+            });
+        }
         if (!work) throw new Error("작업상태 변경에 실패했습니다.");
 
         const workList = await prisma.order.findMany({
