@@ -29,8 +29,23 @@ export const registWork = async (req, res) => {
 
     const id = req.id;
 
-    //TODO: 첫 등록시 포인트 지급
     try {
+        //첫 등록시 포인트
+        const firstOrder = await prisma.user.findMany({
+            where: { id },
+            select: {
+                order: true,
+                point: { select: { id: true, curPoint: true } },
+            },
+        });
+
+        if (firstOrder[0].order.length === 0) {
+            const point = await prisma.point.update({
+                where: { id: firstOrder[0].point.id },
+                data: { curPoint: firstOrder[0].point.curPoint + 10000 },
+            });
+        }
+
         const regist = await prisma.order.create({
             data: {
                 registUser: { connect: { id } },
@@ -62,7 +77,7 @@ export const registWork = async (req, res) => {
 
         if (!regist) throw new Error("작업 등록에 실패하였습니다.");
 
-        res.json(setResponseJson(null));
+        res.json(setResponseJson({ order: regist }));
     } catch (error) {
         res.json(setErrorJson(error.message));
     }

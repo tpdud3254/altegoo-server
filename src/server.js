@@ -65,8 +65,8 @@ webSocketServer.on("connection", (ws, request) => {
     // 메세지를 받았을 때 이벤트 처리
     ws.on("message", (msg) => {
         console.log(`${msg} [${ip}]`);
-        const data = JSON.parse(mgs);
-        if (data.type === "REGIST") ws.send(data.msg);
+        // const data = JSON.parse(msg);
+        // if (data.type === "REGIST") ws.send(data.msg);
     });
 
     // 에러 처리
