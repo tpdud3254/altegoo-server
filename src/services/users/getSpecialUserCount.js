@@ -5,7 +5,7 @@ export const getSpecialUserCount = async (req, res) => {
     try {
         const userCount = await prisma.user.count({
             where: {
-                userType: { type: "COMPANY" },
+                userType: [{ type: "COMPANY" }, { type: "ORDINARY" }],
             },
         });
 
