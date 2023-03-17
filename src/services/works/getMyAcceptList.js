@@ -44,7 +44,7 @@ export const getMyAcceptList = async (req, res) => {
                 list.map((order, index) => {
                     const workDateTime = new Date(order.workDateTime);
                     const today = new Date();
-                    // today.setDate(today.getDate() + 1);
+                    today.setDate(today.getDate() + 1);
                     console.log(
                         `${workDateTime.getMonth()}-${workDateTime.getDate()} : ${
                             order.orderStatusId
@@ -52,25 +52,25 @@ export const getMyAcceptList = async (req, res) => {
                     );
                     console.log(`${today.getMonth()}-${today.getDate()}`);
                     console.log(order);
-                    if (workDateTime >= today) {
-                        if (
-                            order.orderStatusId === 2 &&
-                            workDateTime.getMonth() === today.getMonth() &&
-                            workDateTime.getDate() === today.getDate()
-                        ) {
-                            //오늘 날짜
-                            result.push(order);
-                            // result = [order, ...result];
-                            console.log(order);
-                        } else if (
-                            order.orderStatusId === 3 &&
-                            workDateTime.getMonth() === today.getMonth() &&
-                            workDateTime.getDate() === today.getDate() &&
-                            workDateTime.getHours() + 1 <= today.getHours()
-                        )
-                            result.push(order);
-                        else console.log("eles");
-                    }
+                    // if (workDateTime >= today) {
+                    if (
+                        order.orderStatusId === 2 &&
+                        workDateTime.getMonth() === today.getMonth() &&
+                        workDateTime.getDate() === today.getDate()
+                    ) {
+                        //오늘 날짜
+                        result.push(order);
+                        // result = [order, ...result];
+                        console.log(order);
+                    } else if (
+                        order.orderStatusId === 3 &&
+                        workDateTime.getMonth() === today.getMonth() &&
+                        workDateTime.getDate() === today.getDate() &&
+                        workDateTime.getHours() + 1 <= today.getHours()
+                    )
+                        result.push(order);
+                    else console.log("eles");
+                    // }
                 })
             );
         }
