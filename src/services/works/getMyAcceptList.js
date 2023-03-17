@@ -40,8 +40,8 @@ export const getMyAcceptList = async (req, res) => {
         let result = [];
 
         async function getTodayList() {
-            const list = await Promise.all(
-                list.map((order, index) => {
+            const today = await Promise.all(
+                today.map((order, index) => {
                     const workDateTime = new Date(order.workDateTime);
                     const today = new Date();
                     today.setDate(today.getDate() + 1);
