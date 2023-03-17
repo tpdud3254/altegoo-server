@@ -138,19 +138,35 @@ export const setWorkStatus = async (req, res) => {
         if (!workList) throw new Error("작업상태 변경에 실패했습니다.");
 
         if (status === 5) {
-            const curPoints = await prisma.point.findFirst({
+            const registUserPoint = await prisma.point.findFirst({
                 where: { userId: work.registUser.id },
                 select: { curPoint: true },
             });
-            console.log(curPoints);
-            // const registUser = await prisma.point.update({
-            //     where: { userId: work.registUser.id },
-            //     data: {
-            //         curPoint:
-            //         }),
-            //     },
-            // });
+            const registUser = await prisma.point.update({
+                where: { userId: work.registUser.id },
+                data: {
+                    curPoint: registUserPoint.curPoint + work.point,
+                },
+            });
+
+            const acceptUserPoint = await prisma.point.findFirst({
+                where: { userId: work.registUser.id },
+                select: { curPoint: true },
+            });
+            const acceptUser = await prisma.point.update({
+                where: { userId: work.acceptUser },
+                data: {
+                    curPoint: acceptUserPoint.curPoint + work.price,
+                },
+            });
+
+            if (!registUser || !acceptUser) {
+                throw new Error(
+                    "포인트 변경에 실패했습니다. 관리자에게 문의해주세요."
+                );
+            }
         }
+        //TODO: 오류나면 원복,,
         res.json(setResponseJson({ list: workList }));
     } catch (error) {
         res.json(setErrorJson(error.message));
