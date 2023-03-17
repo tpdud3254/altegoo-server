@@ -77,15 +77,15 @@ export const registWork = async (req, res) => {
 
         if (!regist) throw new Error("작업 등록에 실패하였습니다.");
 
-        const time = new Date(workDateTime);
+        const orderTime = new Date(workDateTime);
         if (emergency) {
             process.emit("REGIST", {
-                msg: `긴급 작업이 등록되었습니다.            ${time.getHours()}시 ${time.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                msg: `긴급 작업이 등록되었습니다.            ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
                 userId: id,
             });
         } else {
             process.emit("REGIST", {
-                msg: `${time.getHours()}시 ${time.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                msg: `${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
                 userId: id,
             });
         }
