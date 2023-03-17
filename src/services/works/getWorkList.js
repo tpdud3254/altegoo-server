@@ -1,4 +1,5 @@
 import prisma from "../../prisma";
+import { webSocketServer } from "../../server";
 import { setErrorJson, setResponseJson } from "../../utils";
 
 export const getWorkList = async (req, res) => {
@@ -74,7 +75,6 @@ export const getWorkList = async (req, res) => {
         });
 
         console.log(workList);
-
         res.json(setResponseJson({ list: workList }));
     } catch (error) {
         res.json(setErrorJson(error.message));
