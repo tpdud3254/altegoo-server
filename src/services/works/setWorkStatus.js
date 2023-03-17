@@ -153,6 +153,10 @@ export const setWorkStatus = async (req, res) => {
                 where: { userId: work.acceptUser },
                 select: { curPoint: true },
             });
+
+            console.log("acceptUserPoint : ", acceptUserPoint);
+            console.log("work.acceptUser : ", work.acceptUser);
+            console.log("work.price : ", work.price);
             const acceptUser = await prisma.point.update({
                 where: { userId: work.acceptUser },
                 data: {

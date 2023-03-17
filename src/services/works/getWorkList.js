@@ -75,7 +75,7 @@ export const getWorkList = async (req, res) => {
             }
         });
 
-        console.log(workList);
+        // console.log(workList);
         res.json(setResponseJson({ list: workList }));
     } catch (error) {
         res.json(setErrorJson(error.message));
