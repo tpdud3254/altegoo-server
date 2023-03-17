@@ -150,7 +150,7 @@ export const setWorkStatus = async (req, res) => {
             });
 
             const acceptUserPoint = await prisma.point.findFirst({
-                where: { userId: work.registUser.id },
+                where: { userId: work.acceptUser },
                 select: { curPoint: true },
             });
             const acceptUser = await prisma.point.update({
