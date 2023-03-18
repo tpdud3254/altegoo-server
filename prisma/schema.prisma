@@ -109,9 +109,11 @@ model Order {
   bothType         Int? //1:내림>올림 2:올림>내림
   address          String //작업주소 (TODO: deprecated)
   otherAddress     String? //양사일 경우 도착 주소 (TODO: deprecated)
-  address1         String? //작업주소 전체 (TODO: 필수로 변경)
+  address1         String? //작업주소 앞 (TODO: 필수로 변경)
+  datailAddress1   String? //작업주소 뒤
   simpleAddress1   String? //작업주소 (00동까지만)
   address2         String? //도착 주소 전체 (양사일 경우)
+  datailAddress2   String? //작업주소 뒤
   simpleAddress2   String? //도착 주소 (00동까지만)
   region           Region?            @relation(fields: [regionId], references: [id]) //지역 코드 (회원 지역 코드랑 똑같음) (TODO: 필수로 변경)
   floor            Int //작업 층

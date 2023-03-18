@@ -9,6 +9,7 @@ import { deleteReservation } from "../../services/works/deleteReservation";
 import { getMyWorkList } from "../../services/works/getMyWorkList";
 import { getMyAcceptList } from "../../services/works/getMyAcceptList";
 import { getMyRegistList } from "../../services/works/getMyRegistList";
+import { getWorkInfo } from "../../services/works/getWorkInfo";
 
 const worksRouter = express.Router();
 
@@ -17,6 +18,7 @@ worksRouter.get("/mylist", auth, asyncWrap(getMyWorkList));
 worksRouter.get("/count/progress", auth, asyncWrap(getOrderInProgressCounts));
 worksRouter.get("/mylist/accept", auth, asyncWrap(getMyAcceptList));
 worksRouter.get("/mylist/regist", auth, asyncWrap(getMyRegistList));
+worksRouter.get("/work", auth, asyncWrap(getWorkInfo));
 
 worksRouter.post("/upload", auth, asyncWrap(registWork));
 worksRouter.post("/reservation", auth, asyncWrap(addReservation));
