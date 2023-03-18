@@ -8,6 +8,7 @@ import usersRouter from "./routes/users/users";
 import worksRouter from "./routes/works/works";
 import adminRouter from "./routes/admin/admin";
 import { WebSocket } from "ws";
+import pointsRouter from "./routes/points/points";
 // import { Server } from "socket.io";
 
 const cors = require("cors");
@@ -32,6 +33,7 @@ app.use(cors());
 app.get("/", (_, res) => res.status(200).json({ result: true }));
 app.use("/users", usersRouter);
 app.use("/works", worksRouter);
+app.use("/points", pointsRouter);
 app.use("/admin", adminRouter);
 app.get("/*", (_, res) => res.redirect("/"));
 
