@@ -9,7 +9,7 @@ export const getWorkList = async (req, res) => {
     try {
         const workList = await prisma.order.findMany({
             include: {
-                registUser: { select: { userName: true } },
+                registUser: { select: { id: true } },
                 orderReservation: true,
             },
             orderBy: {

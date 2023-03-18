@@ -31,7 +31,7 @@ export const getMyAcceptList = async (req, res) => {
                 ],
             },
             include: {
-                registUser: { select: { userName: true } },
+                registUser: { select: { id: true } },
                 orderReservation: true,
             },
             orderBy: { id: "desc" },

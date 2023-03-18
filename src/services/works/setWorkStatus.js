@@ -30,6 +30,10 @@ export const setWorkStatus = async (req, res) => {
                     data: {
                         acceptUser: reservation.orderReservation[0].userId,
                     },
+                    include: {
+                        registUser: { select: { id: true } },
+                        orderReservation: true,
+                    },
                 });
 
                 if (!work) throw new Error("작업상태 변경에 실패했습니다.");
@@ -43,7 +47,7 @@ export const setWorkStatus = async (req, res) => {
 
                 const workList = await prisma.order.findMany({
                     include: {
-                        registUser: { select: { userName: true } },
+                        registUser: { select: { id: true } },
                         orderReservation: true,
                     },
                     orderBy: {
@@ -76,13 +80,17 @@ export const setWorkStatus = async (req, res) => {
                             },
                         },
                     },
+                    include: {
+                        registUser: { select: { id: true } },
+                        orderReservation: true,
+                    },
                 });
 
                 if (!work) throw new Error("작업상태 변경에 실패했습니다.");
 
                 const workList = await prisma.order.findMany({
                     include: {
-                        registUser: { select: { userName: true } },
+                        registUser: { select: { id: true } },
                         orderReservation: true,
                     },
                     orderBy: {
@@ -118,6 +126,7 @@ export const setWorkStatus = async (req, res) => {
                 },
                 include: {
                     registUser: { select: { id: true } },
+                    orderReservation: true,
                 },
             });
         } else {
@@ -134,6 +143,7 @@ export const setWorkStatus = async (req, res) => {
                 },
                 include: {
                     registUser: { select: { id: true } },
+                    orderReservation: true,
                 },
             });
         }
@@ -141,7 +151,7 @@ export const setWorkStatus = async (req, res) => {
 
         const workList = await prisma.order.findMany({
             include: {
-                registUser: { select: { userName: true } },
+                registUser: { select: { id: true } },
                 orderReservation: true,
             },
             orderBy: {
@@ -172,9 +182,6 @@ export const setWorkStatus = async (req, res) => {
                 select: { curPoint: true },
             });
 
-            console.log("acceptUserPoint : ", acceptUserPoint);
-            console.log("work.acceptUser : ", work.acceptUser);
-            console.log("work.price : ", work.price);
             const acceptUser = await prisma.point.update({
                 where: { userId: work.acceptUser },
                 data: {
