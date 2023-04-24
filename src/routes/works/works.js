@@ -11,6 +11,12 @@ import { getMyAcceptList } from "../../services/works/getMyAcceptList";
 import { getMyRegistList } from "../../services/works/getMyRegistList";
 import { getWorkInfo } from "../../services/works/getWorkInfo";
 import { acceptOrder } from "../../services/works/acceptOrder";
+import { cancleOrder } from "../../services/works/cancleOrder";
+import { startMoving } from "../../services/works/startMoving";
+import { startWork } from "../../services/works/startWork";
+import { doneWork } from "../../services/works/doneWork";
+import { terminateWork } from "../../services/works/terminateWork";
+import { removeOrder } from "../../services/works/removeOrder";
 
 const worksRouter = express.Router();
 
@@ -22,9 +28,6 @@ worksRouter.get("/mylist/regist", auth, asyncWrap(getMyRegistList));
 worksRouter.get("/work", auth, asyncWrap(getWorkInfo));
 
 worksRouter.post("/upload", auth, asyncWrap(registWork));
-worksRouter.post("/reservation", auth, asyncWrap(addReservation));
-
-worksRouter.delete("/reservation", auth, asyncWrap(deleteReservation));
 
 worksRouter.patch("/status", auth, asyncWrap(setWorkStatus));
 
@@ -33,13 +36,28 @@ worksRouter.patch("/status", auth, asyncWrap(setWorkStatus));
 //작업예약
 worksRouter.patch("/order/accept", auth, asyncWrap(acceptOrder));
 
-//작업취소
 //예약취소
+worksRouter.patch("/order/cancle", auth, asyncWrap(cancleOrder));
+
 //예약대기
+worksRouter.patch("/order/reservation", auth, asyncWrap(addReservation));
+
 //예약대기취소
+worksRouter.delete("/order/reservation", auth, asyncWrap(deleteReservation));
+
 //작업출발
+worksRouter.patch("/order/accept", auth, asyncWrap(startMoving));
+
 //작업시작
+worksRouter.patch("/order/start", auth, asyncWrap(startWork));
+
 //작업완료
+worksRouter.patch("/order/done", auth, asyncWrap(doneWork));
+
 //작업종료
+worksRouter.patch("/order/confirm", auth, asyncWrap(terminateWork));
+
+//작업취소
+worksRouter.delete("/order/remove", auth, asyncWrap(removeOrder));
 
 export default worksRouter;
