@@ -33,10 +33,10 @@ worksRouter.patch("/status", auth, asyncWrap(setWorkStatus));
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-//작업예약
+//작업예약 //acceptUser
 worksRouter.patch("/order/accept", auth, asyncWrap(acceptOrder));
 
-//예약취소
+//예약취소 //acceptUser
 worksRouter.patch("/order/cancle", auth, asyncWrap(cancleOrder));
 
 //예약대기
@@ -45,19 +45,19 @@ worksRouter.patch("/order/reservation", auth, asyncWrap(addReservation));
 //예약대기취소
 worksRouter.delete("/order/reservation", auth, asyncWrap(deleteReservation));
 
-//작업출발
+//작업출발 //acceptUser
 worksRouter.patch("/order/accept", auth, asyncWrap(startMoving));
 
-//작업시작
+//작업시작 //acceptUser
 worksRouter.patch("/order/start", auth, asyncWrap(startWork));
 
-//작업완료
+//작업완료 //acceptUser
 worksRouter.patch("/order/done", auth, asyncWrap(doneWork));
 
-//작업종료
+//작업종료 //registUser
 worksRouter.patch("/order/confirm", auth, asyncWrap(terminateWork));
 
-//작업취소
-worksRouter.delete("/order/remove", auth, asyncWrap(removeOrder));
+//작업취소 //registUser
+worksRouter.patch("/order/remove", auth, asyncWrap(removeOrder));
 
 export default worksRouter;
