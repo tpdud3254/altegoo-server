@@ -1,8 +1,8 @@
 import prisma from "../../prisma";
-import { checkRegistUser, setErrorJson } from "../../utils";
+import { checkRegistUser, setErrorJson, setResponseJson } from "../../utils";
 
 export const removeOrder = async (req, res) => {
-  const { orderId } = req.body;
+  const { id: orderId } = req.body;
   const id = req.id;
 
   try {

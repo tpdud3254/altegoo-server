@@ -169,6 +169,9 @@ export const checkAcceptUser = async (orderId, id) => {
     },
   });
 
+  console.log("order.acceptUser : ", order.acceptUser);
+  console.log("acceptUser id : ", id);
+
   if (order.acceptUser !== id) throw new Error("사용자와 작업자 불일치");
 
   return true;
@@ -179,9 +182,18 @@ export const checkRegistUser = async (orderId, id) => {
     where: {
       id: orderId,
     },
+    select: {
+      registUser: {
+        select: {
+          id: true,
+        },
+      },
+    },
   });
 
-  if (order.registUser !== id) throw new Error("사용자와 등록자 불일치");
+  console.log("order.registUser.id : ", order.registUser.id);
+  console.log("registUser id : ", id);
+  if (order.registUser.id !== id) throw new Error("사용자와 등록자 불일치");
 
   return true;
 };

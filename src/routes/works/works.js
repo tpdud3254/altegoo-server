@@ -27,11 +27,14 @@ worksRouter.get("/mylist/accept", auth, asyncWrap(getMyAcceptList));
 worksRouter.get("/mylist/regist", auth, asyncWrap(getMyRegistList));
 worksRouter.get("/work", auth, asyncWrap(getWorkInfo));
 
-worksRouter.post("/upload", auth, asyncWrap(registWork));
-
 worksRouter.patch("/status", auth, asyncWrap(setWorkStatus));
 
 ///////////////////////////////////////////////////////////////////////////////////////
+//작업등록
+worksRouter.post("/upload", auth, asyncWrap(registWork));
+
+//작업취소 //registUser
+worksRouter.patch("/remove", auth, asyncWrap(removeOrder));
 
 //작업예약 //acceptUser
 worksRouter.patch("/order/accept", auth, asyncWrap(acceptOrder));
@@ -46,7 +49,7 @@ worksRouter.patch("/order/reservation", auth, asyncWrap(addReservation));
 worksRouter.delete("/order/reservation", auth, asyncWrap(deleteReservation));
 
 //작업출발 //acceptUser
-worksRouter.patch("/order/accept", auth, asyncWrap(startMoving));
+worksRouter.patch("/order/move", auth, asyncWrap(startMoving));
 
 //작업시작 //acceptUser
 worksRouter.patch("/order/start", auth, asyncWrap(startWork));
@@ -56,8 +59,5 @@ worksRouter.patch("/order/done", auth, asyncWrap(doneWork));
 
 //작업종료 //registUser
 worksRouter.patch("/order/confirm", auth, asyncWrap(terminateWork));
-
-//작업취소 //registUser
-worksRouter.patch("/order/remove", auth, asyncWrap(removeOrder));
 
 export default worksRouter;

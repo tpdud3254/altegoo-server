@@ -13,11 +13,14 @@ export const acceptOrder = async (req, res) => {
         id: orderId,
       },
       select: {
-        orderStatusId,
+        orderStatusId: true,
       },
     });
 
-    if (order.orderStatusId === 2) throw new Error("이미 예약된 작업");
+    console.log("order.orderStatusId : ", order.orderStatusId);
+    if (order.orderStatusId === 7) throw new Error("취소된 작업입니다.");
+    if (order.orderStatusId === 2) throw new Error("예약이 불가합니다.");
+    if (order.orderStatusId >= 3) throw new Error("이미 시작된 작업입니다.");
 
     const updatedOrder = await prisma.order.update({
       where: {

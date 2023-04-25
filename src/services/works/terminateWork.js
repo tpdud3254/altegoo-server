@@ -54,6 +54,20 @@ export const terminateWork = async (req, res) => {
         throw new Error("포인트 변경에 실패했습니다. 관리자에게 문의해주세요.");
       }
 
+      const workList = await prisma.order.findMany({
+        include: {
+          registUser: { select: { id: true } },
+          orderReservation: true,
+        },
+        orderBy: {
+          id: "desc",
+        },
+        // take: 5,
+        // skip: lastUserId ? 1 : 0,
+        // ...(lastUserId && { cursor: { id: lastUserId } }),
+        //TODO: pagination
+      });
+
       //TODO: 오류나면 원복,,
       res.json(setResponseJson({ list: workList }));
     }
