@@ -37,6 +37,8 @@ model User {
   updatedAt         DateTime           @updatedAt
   order             Order[]
   orderReservation  OrderReservation[]
+  pushToken         String             @default("none")
+  //TODO: 디비 새로 파면 디폴트값없애고 pushToken === "none"일시 예외처리도 없애
 }
 
 model UserType {
