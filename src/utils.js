@@ -2,10 +2,11 @@ import prisma from "./prisma";
 import jwt from "jsonwebtoken";
 import AWS from "aws-sdk";
 import multer from "multer";
-
+import axios from "axios";
 const ID = process.env.AWS_ACCESS_KEY_ID;
 const SECRET = process.env.AWS_SECRET_ACCESS_KEY;
 const BUCKET_NAME = "altegoo-bucket";
+import { Expo } from "expo-server-sdk";
 
 const s3 = new AWS.S3({ accessKeyId: ID, secretAccessKey: SECRET });
 
@@ -197,3 +198,48 @@ export const checkRegistUser = async (orderId, id) => {
 
   return true;
 };
+
+const EXPO_PUSH_SERVER = "https://exp.host/--/api/v2/push/send";
+
+export const sendPushToUser = async (expoToken, title, body) => {
+  try {
+    const response = await axios.post(EXPO_PUSH_SERVER, {
+      to: expoToken,
+      title,
+      body,
+      sound: "default",
+    });
+
+    console.log(response);
+    if (!response) throw new Error("푸시 알림 전송에 실패하였습니다.");
+
+    return response;
+  } catch (error) {
+    return false;
+  }
+};
+
+//TODO: test
+export const sendPushToUser2 = async (expoToken, title, body) => {
+  let messages = [];
+
+  for (let pushToken of somePushTokens) {
+    // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
+
+    // Check that all your push tokens appear to be valid Expo push tokens
+    if (!Expo.isExpoPushToken(pushToken)) {
+      console.error(`Push token ${pushToken} is not a valid Expo push token`);
+      continue;
+    }
+
+    // Construct a message (see https://docs.expo.io/push-notifications/sending-notifications/)
+    messages.push({
+      to: pushToken,
+      sound: "default",
+      body: "This is a test notification",
+      data: { withSome: "data" },
+    });
+  }
+};
+
+export const sendPushToSpecificUsers = async (expoTokenList, title, body) => {};
