@@ -1,5 +1,5 @@
 import prisma from "../../prisma";
-import { setErrorJson, setResponseJson } from "../../utils";
+import { sendPushToUsers, setErrorJson, setResponseJson } from "../../utils";
 
 export const registWork = async (req, res) => {
     const {
@@ -77,7 +77,73 @@ export const registWork = async (req, res) => {
 
         if (!regist) throw new Error("작업 등록에 실패하였습니다.");
 
+        const users = await prisma.user.findMany({
+            where: {
+                AND: [
+                    {
+                        NOT: {
+                            userTypeId: 7,
+                        },
+                    },
+                    {
+                        NOT: {
+                            id: 56,
+                        },
+                    },
+                    {
+                        NOT: {
+                            pushToken: "none",
+                        },
+                    },
+                ],
+            },
+            select: {
+                id: true,
+                pushToken: true,
+                workRegion: true,
+            },
+        });
+
         const orderTime = new Date(workDateTime);
+
+        const expoTokenList = [];
+
+        if (emergency) {
+            users.map((value, index) => {
+                if (value.workRegion.length > 0) {
+                    let correctRegion = false;
+
+                    value.workRegion.map((region) => {
+                        if (region.id === 1) correctRegion = true;
+                    });
+
+                    if (correctRegion) {
+                        expoTokenList.push(value.pushToken);
+                    }
+                }
+            });
+
+            const pushResponse = await sendPushToUsers(
+                expoTokenList,
+                "작업 요청",
+                `${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`
+            );
+
+            console.log(pushResponse);
+        } else {
+            users.map((value, index) => {
+                expoTokenList.push(value.pushToken);
+            });
+
+            const pushResponse = await sendPushToUsers(
+                expoTokenList,
+                "긴급 작업 요청",
+                `${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`
+            );
+
+            console.log(pushResponse);
+        }
+
         if (emergency) {
             process.emit("REGIST", {
                 msg: `긴급 작업이 등록되었습니다.            ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,

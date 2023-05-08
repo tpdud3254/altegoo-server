@@ -179,4 +179,14 @@ model Manager {
   managerId  String //관리자 ID
   password   String //관리자 PASSWORD
   accessedAt DateTime //마지막 접속 날짜
+  Notice     Notice[]
+}
+
+model Notice {
+  id          Int     @id @default(autoincrement())
+  manager     Manager @relation(fields: [managerId], references: [id])
+  managerId   Int
+  title       String?
+  body        String?
+  performance String?
 }
