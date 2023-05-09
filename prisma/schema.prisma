@@ -134,6 +134,7 @@ model Order {
   orderStatusId    Int
   orderReservation OrderReservation[] //예약대기
   regionId         Int?
+  pushStatus       String? //BEFORE_24HOURS, BEFORE_12HOURS, BEFORE_2HOURS, BEFORE_10MINS, AFTER_WORKDATETIME, DONE
 }
 
 model Commission {

@@ -10,6 +10,7 @@ import adminRouter from "./routes/admin/admin";
 import pointsRouter from "./routes/points/points";
 import pushRouter from "./routes/push/push";
 import { WebSocket } from "ws";
+import { scheduleJob } from "node-schedule";
 
 // import { Server } from "socket.io";
 
@@ -99,5 +100,13 @@ webSocketServer.on("connection", (ws, request) => {
   // ws.close;
   // setInterval(() => ws.send("hello"), 3000);
 });
+
+const date = new Date();
+date.setMinutes(date.getMinutes() + 1);
+const job = scheduleJob(date, function () {
+  console.log("The answer to life, the universe, and everything!");
+});
+
+console.log("job  :", job);
 
 httpServer.listen(PORT, handleListen);
