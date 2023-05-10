@@ -2,6 +2,8 @@ import prisma from "../../prisma";
 import {
     checkAcceptUser,
     deletePushForWorks,
+    getUserExpoToken,
+    sendPushToUser,
     setErrorJson,
     setResponseJson,
 } from "../../utils";
@@ -34,6 +36,11 @@ export const doneWork = async (req, res) => {
             if (!updatedOrder) throw new Error("작업상태 변경에 실패했습니다.");
 
             deletePushForWorks(updatedOrder);
+            sendPushToUser(
+                await getUserExpoToken(updatedOrder.registUser.id),
+                "완료된 작업이 있습니다.",
+                "작업을 최종 완료해주세요."
+            );
 
             const workList = await prisma.order.findMany({
                 include: {

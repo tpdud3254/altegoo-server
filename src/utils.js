@@ -265,7 +265,7 @@ const getMins = (workDateTime, mins) => {
     return compareDateTime;
 };
 
-const getUserExpoToken = async (id) => {
+export const getUserExpoToken = async (id) => {
     const user = await prisma.user.findUnique({
         where: { id },
         select: { pushToken: true },

@@ -1,77 +1,90 @@
 import prisma from "../../prisma";
-import { checkRegistUser, setErrorJson, setResponseJson } from "../../utils";
+import {
+    checkRegistUser,
+    sendPushToUser,
+    setErrorJson,
+    setResponseJson,
+} from "../../utils";
 
 export const terminateWork = async (req, res) => {
-  const { id: orderId } = req.body;
-  const id = req.id;
+    const { id: orderId } = req.body;
+    const id = req.id;
 
-  if (!orderId || !id) throw new Error("작업 상태를 변경할 수 없습니다.");
+    if (!orderId || !id) throw new Error("작업 상태를 변경할 수 없습니다.");
 
-  try {
-    if (await checkRegistUser(orderId, id)) {
-      const work = await prisma.order.update({
-        where: {
-          id: orderId,
-        },
-        data: {
-          status: {
-            connect: {
-              id: 6,
-            },
-          },
-        },
-        include: {
-          registUser: { select: { id: true } },
-          orderReservation: true,
-        },
-      });
+    try {
+        if (await checkRegistUser(orderId, id)) {
+            const work = await prisma.order.update({
+                where: {
+                    id: orderId,
+                },
+                data: {
+                    status: {
+                        connect: {
+                            id: 6,
+                        },
+                    },
+                },
+                include: {
+                    registUser: { select: { id: true } },
+                    orderReservation: true,
+                },
+            });
 
-      const registUserPoint = await prisma.point.findFirst({
-        where: { userId: work.registUser.id },
-        select: { curPoint: true },
-      });
+            const registUserPoint = await prisma.point.findFirst({
+                where: { userId: work.registUser.id },
+                select: { curPoint: true },
+            });
 
-      const registUser = await prisma.point.update({
-        where: { userId: work.registUser.id },
-        data: {
-          curPoint: registUserPoint.curPoint + work.point,
-        },
-      });
+            const registUser = await prisma.point.update({
+                where: { userId: work.registUser.id },
+                data: {
+                    curPoint: registUserPoint.curPoint + work.point,
+                },
+            });
 
-      const acceptUserPoint = await prisma.point.findFirst({
-        where: { userId: work.acceptUser },
-        select: { curPoint: true },
-      });
+            const acceptUserPoint = await prisma.point.findFirst({
+                where: { userId: work.acceptUser },
+                select: { curPoint: true },
+            });
 
-      const acceptUser = await prisma.point.update({
-        where: { userId: work.acceptUser },
-        data: {
-          curPoint: acceptUserPoint.curPoint + work.price,
-        },
-      });
+            const acceptUser = await prisma.point.update({
+                where: { userId: work.acceptUser },
+                data: {
+                    curPoint: acceptUserPoint.curPoint + work.price,
+                },
+            });
 
-      if (!registUser || !acceptUser) {
-        throw new Error("포인트 변경에 실패했습니다. 관리자에게 문의해주세요.");
-      }
+            if (!registUser || !acceptUser) {
+                throw new Error(
+                    "포인트 변경에 실패했습니다. 관리자에게 문의해주세요."
+                );
+            }
 
-      const workList = await prisma.order.findMany({
-        include: {
-          registUser: { select: { id: true } },
-          orderReservation: true,
-        },
-        orderBy: {
-          id: "desc",
-        },
-        // take: 5,
-        // skip: lastUserId ? 1 : 0,
-        // ...(lastUserId && { cursor: { id: lastUserId } }),
-        //TODO: pagination
-      });
+            sendPushToUser(
+                await getUserExpoToken(work.acceptUser),
+                "작업이 완료 되었습니다.",
+                "포인트가 지급 되었습니다."
+            );
 
-      //TODO: 오류나면 원복,,
-      res.json(setResponseJson({ list: workList }));
+            const workList = await prisma.order.findMany({
+                include: {
+                    registUser: { select: { id: true } },
+                    orderReservation: true,
+                },
+                orderBy: {
+                    id: "desc",
+                },
+                // take: 5,
+                // skip: lastUserId ? 1 : 0,
+                // ...(lastUserId && { cursor: { id: lastUserId } }),
+                //TODO: pagination
+            });
+
+            //TODO: 오류나면 원복,,
+            res.json(setResponseJson({ list: workList }));
+        }
+    } catch (error) {
+        res.json(setErrorJson(error.message));
     }
-  } catch (error) {
-    res.json(setErrorJson(error.message));
-  }
 };

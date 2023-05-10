@@ -108,7 +108,7 @@ export const registWork = async (req, res) => {
 
         const expoTokenList = [];
 
-        if (emergency) {
+        if (!emergency) {
             users.map((value, index) => {
                 if (value.workRegion.length > 0) {
                     let correctRegion = false;

@@ -2,6 +2,8 @@ import prisma from "../../prisma";
 import {
     checkAcceptUser,
     deletePushForWorks,
+    getUserExpoToken,
+    sendPushToUser,
     setErrorJson,
     setResponseJson,
 } from "../../utils";
@@ -40,14 +42,17 @@ export const cancelOrder = async (req, res) => {
 
                 if (!work) throw new Error("작업상태 변경에 실패했습니다.");
 
+                sendPushToUser(
+                    await getUserExpoToken(work.acceptUser),
+                    "대기 중인 예약이 확정되었습니다.",
+                    "예약 작업을 확인해주세요."
+                );
                 const deleteResult = await prisma.orderReservation.delete({
                     where: { id: reservation.orderReservation[0].id },
                 });
 
                 if (!deleteResult)
                     throw new Error("작업상태 변경에 실패했습니다.");
-
-                //TODO: 새 예약자한테 알림
             } else {
                 //예약대기가 없을 경우 그냥 삭제
                 const work = await prisma.order.update({
