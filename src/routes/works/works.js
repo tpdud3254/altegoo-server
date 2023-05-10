@@ -11,7 +11,7 @@ import { getMyAcceptList } from "../../services/works/getMyAcceptList";
 import { getMyRegistList } from "../../services/works/getMyRegistList";
 import { getWorkInfo } from "../../services/works/getWorkInfo";
 import { acceptOrder } from "../../services/works/acceptOrder";
-import { cancleOrder } from "../../services/works/cancleOrder";
+import { cancelOrder } from "../../services/works/cancelOrder";
 import { startMoving } from "../../services/works/startMoving";
 import { startWork } from "../../services/works/startWork";
 import { doneWork } from "../../services/works/doneWork";
@@ -40,7 +40,7 @@ worksRouter.patch("/remove", auth, asyncWrap(removeOrder));
 worksRouter.patch("/order/accept", auth, asyncWrap(acceptOrder));
 
 //예약취소 //acceptUser
-worksRouter.patch("/order/cancle", auth, asyncWrap(cancleOrder));
+worksRouter.patch("/order/cancel", auth, asyncWrap(cancelOrder));
 
 //예약대기
 worksRouter.patch("/order/reservation", auth, asyncWrap(addReservation));
