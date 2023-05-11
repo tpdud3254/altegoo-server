@@ -83,11 +83,11 @@ export const registWork = async (req, res) => {
                     {
                         NOT: {
                             userTypeId: 7,
-                        },
+                        }, //일반회원 제외
                     },
                     {
                         NOT: {
-                            id: 56,
+                            id, //자기 자신 제외
                         },
                     },
                     {
@@ -108,13 +108,25 @@ export const registWork = async (req, res) => {
 
         const expoTokenList = [];
 
-        if (!emergency) {
+        if (emergency) {
+            users.map((value, index) => {
+                expoTokenList.push(value.pushToken);
+            });
+
+            const pushResponse = await sendPushToUsers(
+                expoTokenList,
+                "긴급 작업 요청",
+                `${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`
+            );
+
+            console.log(pushResponse);
+        } else {
             users.map((value, index) => {
                 if (value.workRegion.length > 0) {
                     let correctRegion = false;
 
                     value.workRegion.map((region) => {
-                        if (region.id === 1) correctRegion = true;
+                        if (region.id === regionId) correctRegion = true;
                     });
 
                     if (correctRegion) {
@@ -126,18 +138,6 @@ export const registWork = async (req, res) => {
             const pushResponse = await sendPushToUsers(
                 expoTokenList,
                 "작업 요청",
-                `${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`
-            );
-
-            console.log(pushResponse);
-        } else {
-            users.map((value, index) => {
-                expoTokenList.push(value.pushToken);
-            });
-
-            const pushResponse = await sendPushToUsers(
-                expoTokenList,
-                "긴급 작업 요청",
                 `${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`
             );
 

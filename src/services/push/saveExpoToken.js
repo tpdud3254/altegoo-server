@@ -1,5 +1,5 @@
 import prisma from "../../prisma";
-import { setErrorJson } from "../../utils";
+import { setErrorJson, setResponseJson } from "../../utils";
 
 export const saveExpoToken = async (req, res) => {
     const { token } = req.body;
