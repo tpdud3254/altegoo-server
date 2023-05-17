@@ -291,7 +291,7 @@ export const addPushForWorks = async (order) => {
     const pushToken = await getUserExpoToken(order.acceptUser);
 
     //TODO: test 주석
-    // if (!pushToken) return;
+    if (!pushToken) return;
 
     const orderDateTime = new Date(order.workDateTime);
     const orderHours = orderDateTime.getHours();
@@ -417,14 +417,15 @@ function chunkArr(data = [], size = 10) {
     return arr;
 }
 
-export const sendPushToUser = async (expoToken, title, body) => {
+export const sendPushToUser = async (expoToken, title, body, data) => {
     try {
         const response = await axios.post(EXPO_PUSH_SERVER, {
             to: expoToken,
             title,
             body,
+            data,
             sound: "default",
-            priority: "normal",
+            priority: "high",
         });
 
         if (!response) throw new Error("푸시 알림 전송에 실패하였습니다.");
@@ -435,7 +436,7 @@ export const sendPushToUser = async (expoToken, title, body) => {
     }
 };
 
-export const sendPushToUsers = async (expoTokenList, title, body) => {
+export const sendPushToUsers = async (expoTokenList, title, body, data) => {
     try {
         const chunkedArr = chunkArr(expoTokenList, 100);
         const responseArr = [];
@@ -446,8 +447,9 @@ export const sendPushToUsers = async (expoTokenList, title, body) => {
                     to: [...value],
                     title,
                     body,
+                    data,
                     sound: "default",
-                    priority: "normal",
+                    priority: "high",
                 });
 
                 if (!response)
@@ -462,7 +464,7 @@ export const sendPushToUsers = async (expoTokenList, title, body) => {
     }
 };
 
-export const sendPushToAllUsers = async (title, body) => {
+export const sendPushToAllUsers = async (title, body, data) => {
     try {
         const userTokenList = await prisma.user.findMany({
             select: {
@@ -484,8 +486,9 @@ export const sendPushToAllUsers = async (title, body) => {
                     to: [...value],
                     title,
                     body,
+                    data,
                     sound: "default",
-                    priority: "normal",
+                    priority: "high",
                 });
 
                 if (!response)
