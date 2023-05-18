@@ -120,7 +120,11 @@ export const registWork = async (req, res) => {
             const pushResponse = await sendPushToUsers(
                 expoTokenList,
                 "긴급 작업 요청",
-                `${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`
+                `${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                {
+                    screen: "OrderDetail",
+                    order: regist,
+                }
             );
 
             console.log(pushResponse);
@@ -142,7 +146,10 @@ export const registWork = async (req, res) => {
             const pushResponse = await sendPushToUsers(
                 expoTokenList,
                 "작업 요청",
-                `${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`
+                `${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                {
+                    screen: "Home",
+                }
             );
 
             console.log(pushResponse);

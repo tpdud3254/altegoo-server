@@ -39,7 +39,8 @@ export const doneWork = async (req, res) => {
             sendPushToUser(
                 await getUserExpoToken(updatedOrder.registUser.id),
                 "완료된 작업이 있습니다.",
-                "작업을 최종 완료해주세요."
+                "작업을 최종 완료해주세요.",
+                { screen: "CompleteOrder", order: updatedOrder }
             );
 
             const workList = await prisma.order.findMany({

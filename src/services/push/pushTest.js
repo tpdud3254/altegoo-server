@@ -24,7 +24,19 @@ export const pushTest = async (req, res) => {
     //     "send!"
     // );
 
-    // const response = await sendPushToAllUsers("send?", "send!");
+    const order = await prisma.order.findUnique({
+        where: {
+            id: 120,
+        },
+    });
+    const response = await sendPushToAllUsers("Home?", "Home!", {
+        screen: "Home",
+        order,
+    });
 
-    deletePushForWorks({ id: 101 });
+    // deletePushForWorks({ id: 101 });
+
+    // process.emit("REGIST", {
+    //     msg: `안녕하세요`,
+    // });
 };

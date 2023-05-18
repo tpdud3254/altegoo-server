@@ -45,7 +45,11 @@ export const cancelOrder = async (req, res) => {
                 sendPushToUser(
                     await getUserExpoToken(work.acceptUser),
                     "대기 중인 예약이 확정되었습니다.",
-                    "예약 작업을 확인해주세요."
+                    "예약 작업을 확인해주세요.",
+                    {
+                        screen: "OrderDetail",
+                        order: work,
+                    }
                 );
                 const deleteResult = await prisma.orderReservation.delete({
                     where: { id: reservation.orderReservation[0].id },

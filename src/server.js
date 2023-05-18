@@ -63,7 +63,7 @@ webSocketServer.on("connection", (ws, request) => {
     const ip = request.socket.remoteAddress;
 
     console.log(`클라이언트 [${ip}] 접속`);
-    console.log("socket.id", request.socket);
+    // console.log("socket.id", request.socket);
 
     // 연결이 성공
     if (ws.readyState === ws.OPEN) {

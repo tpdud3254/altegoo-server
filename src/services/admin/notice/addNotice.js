@@ -24,7 +24,10 @@ export const addNotice = async (req, res) => {
 
         if (!updatedNotice) throw new Error("공지 추가에 실패하였습니다.");
 
-        const pushResponse = await sendPushToAllUsers(title, body);
+        const pushResponse = await sendPushToAllUsers(title, body, {
+            screen: "NoticeDetail",
+            noticeId: updatedNotice.id,
+        });
 
         if (!pushResponse) console.log("do something");
 

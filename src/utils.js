@@ -348,7 +348,8 @@ export const addPushForWorks = async (order) => {
                 "작업 시작 예정",
                 `${orderHours}시 ${orderMins}분 ${getRegionToString(
                     order.regionId
-                )}지역의 작업이 2시간 뒤 시작될 예정입니다.`
+                )}지역의 작업이 2시간 뒤 시작될 예정입니다.`,
+                { screen: "OrderProgress", order }
             );
         });
         if (before2HoursJob) schedules.push(before2HoursJob);
@@ -361,7 +362,8 @@ export const addPushForWorks = async (order) => {
                 "작업 시작 예정",
                 `${orderHours}시 ${orderMins}분 ${getRegionToString(
                     order.regionId
-                )}지역의 작업이 10분 뒤 시작될 예정입니다.`
+                )}지역의 작업이 10분 뒤 시작될 예정입니다.`,
+                { screen: "OrderProgress", order }
             );
         });
 
@@ -372,7 +374,8 @@ export const addPushForWorks = async (order) => {
         const push = await sendPushToUser(
             pushToken,
             "작업 시작",
-            "작업 시작을 누르고 작업을 시작해 주세요."
+            "작업 시작을 누르고 작업을 시작해 주세요.",
+            { screen: "OrderProgress", order }
         );
     });
 
@@ -382,7 +385,8 @@ export const addPushForWorks = async (order) => {
         const push = await sendPushToUser(
             pushToken,
             "작업 진행 중 이신가요?",
-            "작업이 완료되면 작업 완료를 눌러주세요."
+            "작업이 완료되면 작업 완료를 눌러주세요.",
+            { screen: "OrderProgress", order }
         );
     });
 
