@@ -155,6 +155,7 @@ export const registWork = async (req, res) => {
             console.log(pushResponse);
         }
 
+        //TODO: 푸시한 뒤 일정시간 지난뒤 에 해보기
         if (emergency) {
             process.emit("REGIST", {
                 msg: `긴급 작업이 등록되었습니다.            ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
