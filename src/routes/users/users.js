@@ -22,34 +22,6 @@ usersRouter.get("/user/recommend", auth, asyncWrap(getRecommendUser));
 usersRouter.get("/special/count", asyncWrap(getSpecialUserCount));
 usersRouter.get("/user", asyncWrap(getUserWithId));
 
-usersRouter.get("/test", auth, asyncWrap(testFunc));
-async function testFunc(req, res) {
-    //   const {
-    // } = req.body;
-
-    // console.log(req.body);
-    const id = req.id;
-
-    // const firstOrder = await prisma.user.findMany({
-    //     where: { id },
-    //     select: { order: true, point: { select: { id: true } } },
-    // });
-
-    // if (firstOrder[0].order.length === 0) {
-    //     const point = await prisma.point.update({
-    //         where: { id: firstOrder[0].point.id },
-    //         data: { curPoint: 10000 },
-    //     });
-
-    //     console.log(point);
-    // }
-
-    process.emit("REGIST", {
-        msg: `에 작업이 등록되었습니다.`,
-        userId: id,
-    });
-}
-
 usersRouter.post("/user", asyncWrap(verifyToken));
 usersRouter.post("/create", asyncWrap(createAccount));
 usersRouter.post("/login", asyncWrap(login));

@@ -290,7 +290,6 @@ export const initPushForWorks = async () => {
 export const addPushForWorks = async (order) => {
     const pushToken = await getUserExpoToken(order.acceptUser);
 
-    //TODO: test 주석
     if (!pushToken) return;
 
     const orderDateTime = new Date(order.workDateTime);
@@ -304,14 +303,6 @@ export const addPushForWorks = async (order) => {
     const after5Hours = getHours(order.workDateTime, -5);
 
     const schedules = [];
-
-    //TODO: test code
-    console.log("before24Hours : ", before24Hours);
-    console.log("before12Hours : ", before12Hours);
-    console.log("before2Hours : ", before2Hours);
-    console.log("before10Mins : ", before10Mins);
-    console.log("orderDateTime : ", orderDateTime);
-    console.log("after5Hours : ", after5Hours);
 
     if (before24Hours) {
         const before24HoursJob = scheduleJob(before24Hours, async function () {
