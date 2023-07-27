@@ -94,11 +94,6 @@ export const registWork = async (req, res) => {
                             id, //자기 자신 제외
                         },
                     },
-                    {
-                        NOT: {
-                            pushToken: "none",
-                        },
-                    },
                 ],
             },
             select: {

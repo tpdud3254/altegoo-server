@@ -273,7 +273,7 @@ export const getUserExpoToken = async (id) => {
 
     if (!user) return false;
 
-    return user.pushToken === "none" ? false : user.pushToken;
+    return user.pushToken;
 };
 
 export const initPushForWorks = async () => {
@@ -469,7 +469,7 @@ export const sendPushToAllUsers = async (title, body, data) => {
 
         const expoTokenList = [];
         userTokenList.map((value) => {
-            if (value.pushToken !== "none") expoTokenList.push(value.pushToken); //TODO: ㅇ에러처리 수정
+            expoTokenList.push(value.pushToken);
         });
 
         const chunkedArr = chunkArr(expoTokenList, 100);

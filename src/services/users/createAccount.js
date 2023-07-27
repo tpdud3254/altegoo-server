@@ -9,22 +9,23 @@ import {
 
 export const createAccount = async (req, res) => {
     const {
-        userCode,
         userType,
-        userName,
         name,
-        password,
         phone,
+        password,
         birth,
-        license,
-        vehiclePermission,
-        vehicle,
-        recommendUserId,
         gender,
-        status,
+        sms,
+        license,
+        recommendUserId,
+        companyName,
+        companyPersonName,
+        workCategory,
+        vehicle,
+        vehiclePermission,
         workRegion,
         accessedRegion,
-        sms,
+        status,
         grade,
     } = req.body;
 
@@ -37,17 +38,16 @@ export const createAccount = async (req, res) => {
     let user;
 
     try {
-        if (userCode === "P") {
+        if (userType === "NORMAL") {
             //일반회원
             user = await prisma.user.create({
                 data: {
                     userType: {
-                        connect: { id: userType },
+                        connect: { id: 1 },
                     },
-                    userName,
                     name,
-                    password: hashedPassword,
                     phone,
+                    password: hashedPassword,
                     birth,
                     gender,
                     status,
@@ -65,7 +65,7 @@ export const createAccount = async (req, res) => {
                     },
                 },
             });
-        } else if (userCode === "S") {
+        } else if (userType === "DRIVER") {
             const regionArr = [];
 
             workRegion.map((region) => {
@@ -110,9 +110,8 @@ export const createAccount = async (req, res) => {
             user = await prisma.user.create({
                 data: {
                     userType: {
-                        connect: { id: userType },
+                        connect: { id: 2 },
                     },
-                    userName,
                     name,
                     password: hashedPassword,
                     phone,
@@ -143,73 +142,26 @@ export const createAccount = async (req, res) => {
                 },
             });
         } else {
-            //기업회원
-            const regionArr = [];
-
-            workRegion.map((region) => {
-                const newObj = { id: region };
-
-                regionArr.push(newObj);
-            });
-
-            const vehicleArr = [];
-
-            async function setVehicle() {
-                if (!vehicle) {
-                    return;
-                }
-                const vehicleResult = await Promise.all(
-                    vehicle.map(async (vehicle) => {
-                        const result = await prisma.vehicle.create({
-                            data: {
-                                number: vehicle.number,
-                                type: {
-                                    connect: {
-                                        id: vehicle.type,
-                                    },
-                                },
-                                weight: {
-                                    connect: {
-                                        id: vehicle.weight,
-                                    },
-                                },
-                            },
-                        });
-
-                        if (result) {
-                            const newObj = { id: result.id };
-
-                            vehicleArr.push(newObj);
-                        }
-                    })
-                );
-            }
-
-            await setVehicle();
-
             user = await prisma.user.create({
                 data: {
                     userType: {
-                        connect: { id: userType },
+                        connect: { id: 3 },
                     },
-                    userName,
                     name,
                     password: hashedPassword,
                     phone,
                     birth,
                     license,
-                    vehiclePermission,
-                    vehicle: {
-                        connect: vehicleArr,
-                    },
                     recommendUserId,
                     gender,
                     status,
-                    workRegion: {
-                        connect: regionArr,
-                    },
                     accessedRegion,
                     sms,
+                    companyName,
+                    companyPersonName,
+                    workCategory: {
+                        connect: { id: workCategory },
+                    },
                     grade: {
                         connect: {
                             id: grade,

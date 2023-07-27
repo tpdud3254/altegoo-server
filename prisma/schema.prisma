@@ -8,49 +8,47 @@ datasource db {
 }
 
 model User {
+  //TODO: userName 삭제
   id                Int                @id @default(autoincrement()) //database id
-  userId            String? //user 일련변호 (UserClass와 함께 사용)
+  userNumber        String? //user 일련변호 (UserClass와 함께 사용) (TODO: userId => userNumber로 이름 변경 없어질지도 모름)
   userType          UserType           @relation(fields: [userTypeId], references: [id]) //user 구분
   userTypeId        Int
-  userName          String //본명
-  name              String //가입 이름
-  password          String //비밀번호
+  name              String //본명
   phone             String             @unique //핸드폰번호 (실직적인 user Id)
+  password          String //비밀번호
   birth             String //생년월일
+  gender            String //성별
+  sms               Boolean //이벤트 혜택 수신
+  status            String //user 상태 (정상, 차단, 탈퇴 등)
+  recommendUserId   Int? //내가 추천한 회원 id
   license           String? //사업자등록증 url
   vehiclePermission String? //화물자동차 운송사업 허가증 url
+  companyName       String? //회사 이름
+  companyPersonName String? //회사 담당자 이름
   vehicle           Vehicle[] //차량정보
-  recommendUserId   Int? //내가 추천한 회원 id
-  gender            String //성별
-  status            String //user 상태 (정상, 차단, 탈퇴 등)
+  WorkCategory      WorkCategory?      @relation(fields: [workCategoryId], references: [id])
+  workCategoryId    Int?
   workRegion        Region[]           @relation("userWorkRegion")
+  avatar            String? //프로필 사진 url
+  greeting          String? //인사말
   accessedRegion    String? //마지막 접속 지역
-  sms               Boolean //이벤트 혜택 수신
+  withdrawalDate    DateTime? //탈퇴날짜
   grade             Grade              @relation(fields: [gradeId], references: [id]) //회원 등급
   gradeId           Int
   point             Point?
   pointBreakdown    PointBreakdown[] //포인트 내역
-  avatar            String? //프로필 사진 url
-  withdrawalDate    DateTime? //탈퇴날짜
-  greeting          String? //인사말
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
   order             Order[]
   orderReservation  OrderReservation[]
-  pushToken         String             @default("none")
-  //TODO: 디비 새로 파면 디폴트값없애고 pushToken === "none"일시 예외처리도 없애
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  pushToken         String
 }
 
 model UserType {
-  id       Int     @id @default(autoincrement())
-  code     String //ex) S, P, F...
-  type     String //일반회원(ORDINARY), 기사회원(PERSONAL), 기업회원(COMPANY)
-  category String? //건설, 가구, 가전, 청소/인력, 이사, 기타
-  User     User[]
+  id   Int    @id @default(autoincrement())
+  type String //일반회원(NORMAL), 기사회원(DRIVER), 기업회원(COMPANY)
+  User User[]
 }
-
-//P:일반회원(ORDINARY), S:기사회원(PERSONAL)
-//(COMPANY)  C:기업회원(건설), F:기업회원(가구), E:기업회원(가전), H:기업회원(청소/인력), M:기업회원(이사), G:기업회원(기타)
 
 model Vehicle {
   id              Int           @id @default(autoincrement())
@@ -61,6 +59,15 @@ model Vehicle {
   vehicleWeightId Int
   User            User?         @relation(fields: [userId], references: [id])
   userId          Int?
+}
+
+//P:일반회원(ORDINARY), S:기사회원(PERSONAL)
+//(COMPANY)  C:기업회원(건설), F:기업회원(가구), E:기업회원(가전), H:기업회원(청소/인력), M:기업회원(이사), G:기업회원(기타)
+model WorkCategory {
+  id   Int    @id @default(autoincrement())
+  name String
+  code String
+  user User[]
 }
 
 model Region {
