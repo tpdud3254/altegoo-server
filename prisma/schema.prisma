@@ -41,7 +41,7 @@ model User {
   orderReservation  OrderReservation[]
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
-  pushToken         String
+  pushToken         String?
 }
 
 model UserType {
