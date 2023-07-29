@@ -24,7 +24,7 @@ const getUsers = async (req, res) => {
                     if (user.recommendUserId) {
                         const recommendUser = await prisma.user.findUnique({
                             where: { id: user.recommendUserId },
-                            select: { userName: true, userId: true },
+                            select: { name: true, userId: true },
                         });
 
                         console.log(recommendUser);

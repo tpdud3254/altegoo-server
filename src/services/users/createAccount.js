@@ -178,21 +178,21 @@ export const createAccount = async (req, res) => {
 
         if (!user) throw new Error("회원가입에 실패하였습니다.");
 
-        const userId = craeteUserId(userCode, user.id);
+        // const userId = craeteUserId(userCode, user.id);
 
-        const account = await prisma.user.update({
-            where: { id: user.id },
-            data: {
-                userId,
-            },
-        });
+        // const account = await prisma.user.update({
+        //     where: { id: user.id },
+        //     data: {
+        //         userId,
+        //     },
+        // });
 
-        if (!account) throw new Error("회원가입에 실패하였습니다.");
-        delete account.password;
+        // if (!account) throw new Error("회원가입에 실패하였습니다.");
+        delete user.password;
 
         const userData = {
-            ...(await getUserRestInfo(account)),
-            ...account,
+            // ...(await getUserRestInfo(user)), TODO:fix
+            ...user,
         };
 
         res.json(setResponseJson({ user: userData }));
