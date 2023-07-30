@@ -72,6 +72,8 @@ export const auth = async (req, res, next) => {
 };
 
 export const getUserRestInfo = async (user) => {
+    if (true) return {}; //TODO: fix
+
     const userType = user.userTypeId
         ? await prisma.userType.findUnique({
               where: {
