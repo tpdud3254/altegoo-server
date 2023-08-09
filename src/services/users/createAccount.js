@@ -87,11 +87,20 @@ export const createAccount = async (req, res) => {
                                         id: vehicle.type,
                                     },
                                 },
-                                weight: {
-                                    connect: {
-                                        id: vehicle.weight,
+                                ...(vehicle.weight && {
+                                    weight: {
+                                        connect: {
+                                            id: vehicle.weight,
+                                        },
                                     },
-                                },
+                                }),
+                                ...(vehicle.floor && {
+                                    floor: {
+                                        connect: {
+                                            id: vehicle.floor,
+                                        },
+                                    },
+                                }),
                             },
                         });
 
@@ -113,55 +122,49 @@ export const createAccount = async (req, res) => {
                         connect: { id: 2 },
                     },
                     name,
-                    password: hashedPassword,
                     phone,
+                    password: hashedPassword,
                     birth,
+                    gender,
+                    status,
+                    accessedRegion,
+                    sms,
+                    grade: {
+                        connect: {
+                            id: grade,
+                        },
+                    },
+                    point: {
+                        create: {
+                            curPoint: 0,
+                        },
+                    },
                     license,
                     vehiclePermission,
                     vehicle: {
                         connect: vehicleArr,
                     },
                     recommendUserId,
-                    gender,
-                    status,
                     workRegion: {
                         connect: regionArr,
-                    },
-                    accessedRegion,
-                    sms,
-                    grade: {
-                        connect: {
-                            id: grade,
-                        },
-                    },
-                    point: {
-                        create: {
-                            curPoint: 0,
-                        },
                     },
                 },
             });
         } else {
+            //기업회원
             user = await prisma.user.create({
                 data: {
                     userType: {
                         connect: { id: 3 },
                     },
                     name,
-                    password: hashedPassword,
                     phone,
+                    password: hashedPassword,
                     birth,
-                    license,
-                    recommendUserId,
                     gender,
                     status,
                     accessedRegion,
                     sms,
-                    companyName,
-                    companyPersonName,
-                    workCategory: {
-                        connect: { id: workCategory },
-                    },
                     grade: {
                         connect: {
                             id: grade,
@@ -172,6 +175,13 @@ export const createAccount = async (req, res) => {
                             curPoint: 0,
                         },
                     },
+                    license,
+                    companyName,
+                    companyPersonName,
+                    workCategory: {
+                        connect: { id: workCategory },
+                    },
+                    recommendUserId,
                 },
             });
         }

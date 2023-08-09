@@ -26,7 +26,7 @@ model User {
   companyName       String? //회사 이름
   companyPersonName String? //회사 담당자 이름
   vehicle           Vehicle[] //차량정보
-  WorkCategory      WorkCategory?      @relation(fields: [workCategoryId], references: [id])
+  workCategory      WorkCategory?      @relation(fields: [workCategoryId], references: [id])
   workCategoryId    Int?
   workRegion        Region[]           @relation("userWorkRegion")
   avatar            String? //프로필 사진 url
@@ -51,14 +51,16 @@ model UserType {
 }
 
 model Vehicle {
-  id              Int           @id @default(autoincrement())
+  id              Int            @id @default(autoincrement())
   number          String
-  type            VehicleType   @relation(fields: [vehicleTypeId], references: [id])
+  type            VehicleType    @relation(fields: [vehicleTypeId], references: [id])
   vehicleTypeId   Int
-  weight          VehicleWeight @relation(fields: [vehicleWeightId], references: [id])
-  vehicleWeightId Int
-  User            User?         @relation(fields: [userId], references: [id])
+  floor           VehicleFloor?  @relation(fields: [vehicleFloorId], references: [id])
+  vehicleFloorId  Int?
+  User            User?          @relation(fields: [userId], references: [id])
   userId          Int?
+  weight          VehicleWeight? @relation(fields: [vehicleWeightId], references: [id])
+  vehicleWeightId Int?
 }
 
 //P:일반회원(ORDINARY), S:기사회원(PERSONAL)
@@ -179,6 +181,12 @@ model VehicleType {
 model VehicleWeight {
   id      Int       @id @default(autoincrement())
   weight  String // ex) 1톤, 2톤
+  Vehicle Vehicle[]
+}
+
+model VehicleFloor {
+  id      Int       @id @default(autoincrement())
+  floor   String // ex) 10층, 15층
   Vehicle Vehicle[]
 }
 
