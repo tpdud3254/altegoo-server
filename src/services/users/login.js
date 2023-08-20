@@ -25,9 +25,8 @@ export const login = async (req, res) => {
 
         delete user.password;
 
-        // TODO:fix
         const userData = {
-            // ...(await getUserRestInfo(user)),
+            ...(await getUserRestInfo(user)),
             ...user,
         };
 

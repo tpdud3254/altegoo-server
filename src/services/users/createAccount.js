@@ -201,7 +201,7 @@ export const createAccount = async (req, res) => {
         delete user.password;
 
         const userData = {
-            // ...(await getUserRestInfo(user)), TODO:fix
+            ...(await getUserRestInfo(user)),
             ...user,
         };
 
