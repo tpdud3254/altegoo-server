@@ -76,7 +76,7 @@ model Region {
   id     Int     @id @default(autoincrement())
   region String //작업지역
   user   User[]  @relation("userWorkRegion")
-  Order  Order[]
+  order  Order[]
 }
 
 model Point {
@@ -115,34 +115,36 @@ model Order {
   userId           Int
   acceptUser       Int? //작업자
   createdAt        DateTime           @default(now()) //등록날짜, 시간
-  workDateTime     String //작업날짜, 시간
-  type             String //올림, 내림, 양사
-  bothType         Int? //1:내림>올림 2:올림>내림
-  address          String //작업주소 (TODO: deprecated)
-  otherAddress     String? //양사일 경우 도착 주소 (TODO: deprecated)
-  address1         String? //작업주소 앞 (TODO: 필수로 변경)
-  detailAddress1   String? //작업주소 뒤
-  simpleAddress1   String? //작업주소 (00동까지만)
-  address2         String? //도착 주소 전체 (양사일 경우)
-  detailAddress2   String? //작업주소 뒤
-  simpleAddress2   String? //도착 주소 (00동까지만)
-  region           Region?            @relation(fields: [regionId], references: [id]) //지역 코드 (회원 지역 코드랑 똑같음) (TODO: 필수로 변경)
-  floor            Int //작업 층
-  otherFloor       Int? //양사일 경우 도착 층
+  vehicleType      String //1:사다리차 2:스카이차
+  direction        String? //올림, 내림, 양사
+  floor            String? //작업 층 (올림, 내림일 경우)
+  downFloor        String? //작업 층 (양사일 경우)
+  upFloor          String? //작업 층 (양사일 경우)
+  volume           String //물량, 시간
+  time             String? //volume === "시간"
+  quantity         String? //volume === "물량"
+  dateTime         String //작업날짜, 시간
+  address1         String //작업주소1
+  address2         String? //작업주소2 (양사일 경우)
+  detailAddress1   String //작업주소1 상세
+  detailAddress2   String? //작업주소2 상세 (양사일 경우)
+  simpleAddress1   String? //api 조회를 위한 간략한 작업주소1
+  simpleAddress2   String? //api 조회를 위한 간략한 작업주소2
+  region           Region?            @relation(fields: [regionId], references: [id])
+  regionId         Int?
   phone            String //등록자 전화번호
-  directPhone      String //현장 전화번호
-  price            Int //작업 금액
-  point            Int //포인트
-  volumeType       String //물량:quantity, 시간:time
-  quantity         String? //volumeType === "quantity"
-  time             String? //volumeType === "time"
-  vehicleType      String //1:사다리 2:스카이
-  emergency        Boolean //긴급오더
+  directPhone      String? //현장 전화번호
+  emergency        Boolean //긴급오더 여부
   memo             String? //메모
+  price            Int //작업 금액
+  emergencyPrice   Int? //긴급오더 비용
+  usePoint         Int //사용한 포인트
+  totalPrice       Int //총 금액
+  tax              Int //부가세
+  savePoint        Int //적립 예정 포인트
   status           OrderStatus        @relation(fields: [orderStatusId], references: [id]) //작업 상태 (작업요청, 작업예약, 작업 중, 작업완료)
   orderStatusId    Int
   orderReservation OrderReservation[] //예약대기
-  regionId         Int?
   pushStatus       String? //BEFORE_24HOURS, BEFORE_12HOURS, BEFORE_2HOURS, BEFORE_10MINS, AFTER_WORKDATETIME, DONE
 }
 
@@ -161,7 +163,7 @@ model OrderTheme {
 model OrderStatus {
   id     Int     @id @default(autoincrement())
   status String //작업요청, 작업예약, 작업 중, 작업완료
-  Order  Order[]
+  order  Order[]
 }
 
 model OrderReservation {
