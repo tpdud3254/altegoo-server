@@ -1,10 +1,12 @@
 import express from "express";
 import { asyncWrap, auth } from "../../utils";
 import { getMyWorkList } from "../../services/orders/getMyWorkList";
+import { getMyOrderList } from "../../services/orders/getMyOrderList";
 
 const ordersRouter = express.Router();
 
 ordersRouter.get("/mylist", auth, asyncWrap(getMyWorkList));
+ordersRouter.get("/mylist/all", auth, asyncWrap(getMyOrderList));
 
 // ordersRouter.get("/list", auth, asyncWrap(getWorkList));
 // ordersRouter.get("/count/progress", auth, asyncWrap(getOrderInProgressCounts));
