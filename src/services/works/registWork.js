@@ -99,7 +99,8 @@ export const registWork = async (req, res) => {
 
         console.log("setPoint : ", setPoint);
 
-        if (!setPoint) throw new Error("작업 등록에 실패하였습니다.");
+        if (!setPoint && setPoint !== 0)
+            throw new Error("작업 등록에 실패하였습니다.");
         //TODO: 대응
 
         const users = await prisma.user.findMany({

@@ -12,6 +12,7 @@ import pushRouter from "./routes/push/push";
 import { WebSocket } from "ws";
 import { gracefulShutdown } from "node-schedule";
 import { initPushForWorks } from "./utils";
+import ordersRouter from "./routes/orders/orders";
 
 // import { Server } from "socket.io";
 
@@ -37,6 +38,7 @@ app.use(cors());
 app.get("/", (_, res) => res.status(200).json({ result: true }));
 app.use("/users", usersRouter);
 app.use("/works", worksRouter);
+app.use("/orders", ordersRouter);
 app.use("/points", pointsRouter);
 app.use("/push", pushRouter);
 app.use("/admin", adminRouter);
