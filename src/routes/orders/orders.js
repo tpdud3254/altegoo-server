@@ -3,12 +3,15 @@ import { asyncWrap, auth } from "../../utils";
 import { getMyWorkList } from "../../services/orders/getMyWorkList";
 import { getMyOrderList } from "../../services/orders/getMyOrderList";
 import { getOrder } from "../../services/orders/getOrder";
+import { deleteOrder } from "../../services/orders/deleteOrder";
 
 const ordersRouter = express.Router();
 
 ordersRouter.get("/mylist", auth, asyncWrap(getMyWorkList));
 ordersRouter.get("/mylist/all", auth, asyncWrap(getMyOrderList));
 ordersRouter.get("/info", asyncWrap(getOrder));
+
+ordersRouter.delete("/delete", auth, asyncWrap(deleteOrder));
 
 // ordersRouter.get("/list", auth, asyncWrap(getWorkList));
 // ordersRouter.get("/count/progress", auth, asyncWrap(getOrderInProgressCounts));
