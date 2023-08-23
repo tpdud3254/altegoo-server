@@ -4,12 +4,14 @@ import { getMyWorkList } from "../../services/orders/getMyWorkList";
 import { getMyOrderList } from "../../services/orders/getMyOrderList";
 import { getOrder } from "../../services/orders/getOrder";
 import { deleteOrder } from "../../services/orders/deleteOrder";
+import { getMyAcceptList } from "../../services/orders/getMyAcceptList";
 
 const ordersRouter = express.Router();
 
-ordersRouter.get("/mylist", auth, asyncWrap(getMyWorkList));
-ordersRouter.get("/mylist/all", auth, asyncWrap(getMyOrderList));
+ordersRouter.get("/mylist", auth, asyncWrap(getMyWorkList)); //홈
+ordersRouter.get("/mylist/all", auth, asyncWrap(getMyOrderList)); //작업내역
 ordersRouter.get("/info", asyncWrap(getOrder));
+ordersRouter.get("/accept", auth, asyncWrap(getMyAcceptList));
 
 ordersRouter.delete("/delete", auth, asyncWrap(deleteOrder));
 
