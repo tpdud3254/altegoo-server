@@ -132,6 +132,8 @@ model Order {
   simpleAddress2   String? //api 조회를 위한 간략한 작업주소2
   region           Region?            @relation(fields: [regionId], references: [id])
   regionId         Int?
+  latitude         String?
+  longitude        String?
   phone            String //등록자 전화번호
   directPhone      String? //현장 전화번호
   emergency        Boolean //긴급오더 여부

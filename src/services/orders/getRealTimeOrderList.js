@@ -13,7 +13,7 @@ export const getRealTimeOrderList = async (req, res) => {
                 orderReservation: true,
             },
             orderBy: {
-                dateTime: "desc",
+                dateTime: "asc",
             },
             // take: 5,
             // skip: lastUserId ? 1 : 0,

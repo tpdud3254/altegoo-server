@@ -19,6 +19,8 @@ export const registWork = async (req, res) => {
         simpleAddress1,
         simpleAddress2,
         region,
+        latitude,
+        longitude,
         phone,
         directPhone,
         memo,
@@ -45,7 +47,7 @@ export const registWork = async (req, res) => {
             },
         });
 
-        console.log(firstOrder.order.length);
+        console.log("firstOrder.order.length : ", firstOrder.order.length);
 
         if (firstOrder.order.length === 0) {
             const point = await prisma.point.update({
@@ -73,6 +75,8 @@ export const registWork = async (req, res) => {
                 detailAddress2,
                 simpleAddress2,
                 region: { connect: { id: region } },
+                latitude,
+                longitude,
                 phone,
                 directPhone,
                 emergency,
