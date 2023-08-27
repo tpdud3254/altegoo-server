@@ -31,15 +31,16 @@ export const terminateWork = async (req, res) => {
                 },
             });
 
+            //TODO: 포인트 작업 수정
             const registUserPoint = await prisma.point.findFirst({
-                where: { userId: work.registUser.id },
+                where: { userId: work.userId },
                 select: { curPoint: true },
             });
 
             const registUser = await prisma.point.update({
-                where: { userId: work.registUser.id },
+                where: { userId: work.userId },
                 data: {
-                    curPoint: registUserPoint.curPoint + work.point,
+                    curPoint: registUserPoint.curPoint + work.savePoint,
                 },
             });
 
@@ -51,7 +52,7 @@ export const terminateWork = async (req, res) => {
             const acceptUser = await prisma.point.update({
                 where: { userId: work.acceptUser },
                 data: {
-                    curPoint: acceptUserPoint.curPoint + work.price,
+                    curPoint: acceptUserPoint.curPoint + work.totalPrice,
                 },
             });
 

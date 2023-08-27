@@ -1,5 +1,5 @@
 import prisma from "../../prisma";
-import { setErrorJson, setResponseJson } from "../../utils";
+import { deletePushForWorks, setErrorJson, setResponseJson } from "../../utils";
 
 export const deleteOrder = async (req, res) => {
     const id = req.id;
@@ -14,6 +14,8 @@ export const deleteOrder = async (req, res) => {
         console.log(order);
 
         if (!order) throw new Error("오더 취소 요청에 실패했습니다.");
+
+        deletePushForWorks(order); //TODO: 확인하기
 
         res.json(setResponseJson({ order }));
     } catch (error) {
