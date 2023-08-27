@@ -7,7 +7,12 @@ export const getRealTimeOrderList = async (req, res) => {
     console.log(id);
     try {
         const order = await prisma.order.findMany({
-            where: { OR: [{ orderStatusId: 1 }, { orderStatusId: 2 }] },
+            where: {
+                AND: {
+                    NOT: { userId: id },
+                    OR: [{ orderStatusId: 1 }, { orderStatusId: 2 }],
+                },
+            },
             include: {
                 registUser: { select: { id: true } },
                 orderReservation: true,
