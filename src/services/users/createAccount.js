@@ -113,7 +113,7 @@ export const createAccount = async (req, res) => {
                 );
             }
 
-            await setVehicle();
+            if (vehicle && vehicle.length > 0) await setVehicle();
 
             //기사회원
             user = await prisma.user.create({
@@ -141,9 +141,11 @@ export const createAccount = async (req, res) => {
                     },
                     license,
                     vehiclePermission,
-                    vehicle: {
-                        connect: vehicleArr,
-                    },
+                    ...(vehicleArr.length > 0 && {
+                        vehicle: {
+                            connect: vehicleArr,
+                        },
+                    }),
                     recommendUserId,
                     workRegion: {
                         connect: regionArr,
