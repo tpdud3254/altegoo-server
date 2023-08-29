@@ -14,6 +14,9 @@ import { getSpecialUserCount } from "../../services/users/getSpecialUserCount";
 import { getRecommendUser } from "../../services/users/getRecommendUser";
 import { getUserWithId } from "../../services/users/getUserWithId";
 import { addVehicle } from "../../services/users/addVehicle";
+import { addLicense } from "../../services/users/addLicense";
+import { addPermission } from "../../services/users/addPermission";
+import { modifyRegion } from "../../services/users/ModifyRegion";
 
 const usersRouter = express.Router();
 
@@ -30,6 +33,9 @@ usersRouter.post("/password", asyncWrap(setPassword));
 usersRouter.post("/edit", auth, asyncWrap(editProfile));
 
 usersRouter.post("/setting/vehicle", auth, asyncWrap(addVehicle));
+usersRouter.post("/setting/region", auth, asyncWrap(modifyRegion));
+usersRouter.post("/setting/license", auth, asyncWrap(addLicense));
+usersRouter.post("/setting/permission", auth, asyncWrap(addPermission));
 usersRouter.post("/license", upload.single("file"), asyncWrap(saveLicense));
 usersRouter.post(
     "/permission",
