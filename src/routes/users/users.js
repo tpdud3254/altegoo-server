@@ -13,6 +13,7 @@ import prisma from "../../prisma";
 import { getSpecialUserCount } from "../../services/users/getSpecialUserCount";
 import { getRecommendUser } from "../../services/users/getRecommendUser";
 import { getUserWithId } from "../../services/users/getUserWithId";
+import { addVehicle } from "../../services/users/addVehicle";
 
 const usersRouter = express.Router();
 
@@ -28,6 +29,7 @@ usersRouter.post("/login", asyncWrap(login));
 usersRouter.post("/password", asyncWrap(setPassword));
 usersRouter.post("/edit", auth, asyncWrap(editProfile));
 
+usersRouter.post("/setting/vehicle", auth, asyncWrap(addVehicle));
 usersRouter.post("/license", upload.single("file"), asyncWrap(saveLicense));
 usersRouter.post(
     "/permission",
