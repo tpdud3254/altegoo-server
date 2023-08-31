@@ -94,13 +94,15 @@ model Point {
 }
 
 model PointBreakdown {
-  id     Int      @id @default(autoincrement())
-  date   DateTime //충전, 출금, 차감, 지급 날짜
-  type   String //충전(CHARGE), 출금(WITHDRAW), 차감(MINUS), 지급(PLUS)
-  point  Int //거래 포인트
-  memo   String? //특이사항
-  user   User?    @relation(fields: [userId], references: [id])
-  userId Int?
+  id        Int      @id @default(autoincrement())
+  date      DateTime //충전, 출금, 적립, 사용 날짜
+  content   String //포인트 내역 내용
+  type      String //충전, 출금, 적립, 사용
+  point     Int //거래 포인트
+  restPoint Int //나머지 포인트
+  memo      String? //특이사항
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
 }
 
 model Grade {
