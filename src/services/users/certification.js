@@ -52,7 +52,7 @@ export const certification = (req, res) => {
             const str = `${dtim.trim()}${no.trim()}${token_val.trim()}`;
 
             const hash = crypto
-                .createHmac("sha256")
+                .createHash("sha256")
                 .update(str)
                 .digest("base64");
 
