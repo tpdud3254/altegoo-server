@@ -5,8 +5,6 @@ const client_id = "2d981f65-0f61-4a27-b076-5ed681f30763";
 const client_secret = "c26a268437276d584bbc0361224ff79a";
 
 function Certification() {
-    getToken();
-
     const getToken = async () => {
         try {
             const response = await axios.post(
@@ -30,6 +28,7 @@ function Certification() {
             console.error(error);
         }
     };
+    getToken();
 }
 
 export default Certification;
