@@ -1,6 +1,5 @@
 import axios from "axios";
 import { setErrorJson, setResponseJson } from "../../utils";
-const crypto = require("crypto");
 
 const NICE_SERVER = "https://svc.niceapi.co.kr:22001";
 const client_id = "2d981f65-0f61-4a27-b076-5ed681f30763";
@@ -23,6 +22,7 @@ export const certification = (req, res) => {
                 curDate.getSeconds()
             )}`;
             const no = "qwerty123456098765poiuytxcv567";
+            const timestamp = Date.now();
 
             const response = await axios.post(
                 NICE_SERVER + "/digital/niceid/api/v1.0/common/crypto/token",
@@ -38,9 +38,7 @@ export const certification = (req, res) => {
                     headers: {
                         Authorization:
                             "bearer " +
-                            btoa(
-                                `${response.data.dataBody.access_token}:${timestamp}:${client_id}`
-                            ),
+                            btoa(`${access_token}:${timestamp}:${client_id}`),
                         client_id,
                         productID: "2101979031",
                     },
