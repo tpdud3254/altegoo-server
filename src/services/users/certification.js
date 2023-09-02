@@ -49,7 +49,7 @@ export const certification = (req, res) => {
                 NICE_SERVER + "/digital/niceid/api/v1.0/common/crypto/token",
                 {
                     req_dtim: dtim,
-                    req_no: "123148814",
+                    req_no: "qwerty123456098765poiuytxcv567",
                     enc_mode: "1",
                 },
                 {
