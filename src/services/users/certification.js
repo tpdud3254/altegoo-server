@@ -35,7 +35,7 @@ export const certification = (req, res) => {
                 response.data.dataBody.access_token
             );
 
-            const timestamp = new Date().getTime() / 1000;
+            const timestamp = new Date().getTime();
             const curDate = new Date();
             const dtim = `${curDate.getFullYear()}${numberWithZero(
                 curDate.getMonth() + 1
