@@ -6,6 +6,10 @@ const client_id = "2d981f65-0f61-4a27-b076-5ed681f30763";
 const client_secret = "c26a268437276d584bbc0361224ff79a";
 
 export const certification = (req, res) => {
+    const numberWithZero = (num) => {
+        return num < 10 ? "0" + num : num;
+    };
+
     const getToken = async () => {
         const params = new URLSearchParams();
 
@@ -32,10 +36,19 @@ export const certification = (req, res) => {
             );
 
             const timestamp = new Date().getTime() / 1000;
+            const curDate = new Date();
+            const dtim = `${curDate.getFullYear()}${numberWithZero(
+                curDate.getMonth() + 1
+            )}${numberWithZero(curDate.getDate())}${numberWithZero(
+                curDate.getHours()
+            )}${numberWithZero(curDate.getMinutes())}${numberWithZero(
+                curDate.getSeconds()
+            )}`;
+
             const response2 = await axios.post(
                 NICE_SERVER + "/digital/niceid/api/v1.0/common/crypto/token",
                 {
-                    req_dtim: timestamp,
+                    req_dtim: dtim,
                     req_no: "123148814",
                     enc_mode: "1",
                 },
