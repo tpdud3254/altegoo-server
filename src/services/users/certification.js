@@ -50,9 +50,12 @@ export const certification = (req, res) => {
             const response2 = await axios.post(
                 NICE_SERVER + "/digital/niceid/api/v1.0/common/crypto/token",
                 {
-                    req_dtim: dtim,
-                    req_no: "qwerty123456098765poiuytxcv567",
-                    enc_mode: "1",
+                    dataHeader: { CNTY_CD: "ko" },
+                    dataBody: {
+                        req_dtim: dtim,
+                        req_no: "qwerty123456098765poiuytxcv567",
+                        enc_mode: "1",
+                    },
                 },
                 {
                     headers: {
