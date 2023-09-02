@@ -1,5 +1,6 @@
 import axios from "axios";
 import { setErrorJson, setResponseJson } from "../../utils";
+const crypto = require("crypto");
 
 const NICE_SERVER = "https://svc.niceapi.co.kr:22001";
 const client_id = "2d981f65-0f61-4a27-b076-5ed681f30763";
@@ -50,11 +51,12 @@ export const certification = (req, res) => {
             const token_val = response.data.dataBody.token_val;
             const str = `${dtim.trim()}${no.trim()}${token_val.trim()}`;
 
-            let hashAlgorithm = crypto.createHash("sha256");
-            let hashing = hashAlgorithm.update(str);
-            let hashedString = hashing.digest("base64");
+            const hash = crypto
+                .createHmac("sha256")
+                .update(str)
+                .digest("base64");
 
-            console.log("hashedString : ", hashedString);
+            console.log("hash : ", hash);
 
             res.json(setResponseJson({ response: response.data }));
         } catch (error) {
