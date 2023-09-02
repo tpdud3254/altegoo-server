@@ -1,4 +1,5 @@
 import axios from "axios";
+import queryString from "query-string";
 
 const NICE_SERVER = "https://svc.niceapi.co.kr:22001";
 const client_id = "2d981f65-0f61-4a27-b076-5ed681f30763";
@@ -14,9 +15,11 @@ export const certification = () => {
         try {
             const response = await axios.post(
                 NICE_SERVER + "/digital/niceid/oauth/oauth/token",
-                {
-                    params,
-                },
+                queryString.stringify({
+                    grant_type: "client_credentials",
+                    scope: "default",
+                }),
+
                 {
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",

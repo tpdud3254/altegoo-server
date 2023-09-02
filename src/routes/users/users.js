@@ -33,7 +33,8 @@ usersRouter.post("/create", asyncWrap(createAccount));
 usersRouter.post("/login", asyncWrap(login));
 usersRouter.post("/password", asyncWrap(setPassword));
 usersRouter.post("/edit", auth, asyncWrap(editProfile));
-usersRouter.post("/certification", asyncWrap(certification));
+usersRouter.get("/certification", asyncWrap(certification));
+// usersRouter.post("/certification", asyncWrap(certification));
 
 usersRouter.post("/setting/password", auth, asyncWrap(changePassword));
 usersRouter.post("/setting/vehicle", auth, asyncWrap(addVehicle));
