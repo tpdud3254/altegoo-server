@@ -17,6 +17,7 @@ import { addVehicle } from "../../services/users/addVehicle";
 import { addLicense } from "../../services/users/addLicense";
 import { addPermission } from "../../services/users/addPermission";
 import { modifyRegion } from "../../services/users/ModifyRegion";
+import { changePassword } from "../../services/users/changePassword";
 
 const usersRouter = express.Router();
 
@@ -31,6 +32,7 @@ usersRouter.post("/create", asyncWrap(createAccount));
 usersRouter.post("/login", asyncWrap(login));
 usersRouter.post("/password", asyncWrap(setPassword));
 usersRouter.post("/edit", auth, asyncWrap(editProfile));
+usersRouter.post("/setting/password", auth, asyncWrap(changePassword));
 
 usersRouter.post("/setting/vehicle", auth, asyncWrap(addVehicle));
 usersRouter.post("/setting/region", auth, asyncWrap(modifyRegion));
