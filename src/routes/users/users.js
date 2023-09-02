@@ -16,7 +16,7 @@ import { getUserWithId } from "../../services/users/getUserWithId";
 import { addVehicle } from "../../services/users/addVehicle";
 import { addLicense } from "../../services/users/addLicense";
 import { addPermission } from "../../services/users/addPermission";
-import { modifyRegion } from "../../services/users/ModifyRegion";
+import { modifyRegion } from "../../services/users/modifyRegion";
 import { changePassword } from "../../services/users/changePassword";
 
 const usersRouter = express.Router();
