@@ -34,7 +34,7 @@ export const certification = (req, res) => {
                 {
                     req_dtim: new Date(),
                     req_no: "123148814",
-                    enc_mode: "AES128",
+                    enc_mode: "1",
                 },
                 {
                     headers: {
