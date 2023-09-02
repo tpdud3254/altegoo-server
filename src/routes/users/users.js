@@ -18,7 +18,7 @@ import { addLicense } from "../../services/users/addLicense";
 import { addPermission } from "../../services/users/addPermission";
 import { modifyRegion } from "../../services/users/modifyRegion";
 import { changePassword } from "../../services/users/changePassword";
-import certification from "../../services/certification";
+import { certification } from "../../services/certification";
 
 const usersRouter = express.Router();
 

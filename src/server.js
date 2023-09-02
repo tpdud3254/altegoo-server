@@ -13,7 +13,6 @@ import { WebSocket } from "ws";
 import { gracefulShutdown } from "node-schedule";
 import { initPushForWorks } from "./utils";
 import ordersRouter from "./routes/orders/orders";
-import Certification from "./services/certification";
 
 // import { Server } from "socket.io";
 

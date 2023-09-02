@@ -30,5 +30,3 @@ export const certification = () => {
     };
     getToken();
 };
-
-export default certification;
