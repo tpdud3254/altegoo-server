@@ -25,8 +25,7 @@ export const certification = (req, res) => {
                         "Content-Type":
                             "aapplication/x-www-form-urlencoded;charset=utf-8",
                         Authorization:
-                            "Basic " +
-                            `${client_id}:${client_secret}`.toString("base64"),
+                            "Basic " + btoa(`${client_id}:${client_secret}`),
                     },
                 }
             );
