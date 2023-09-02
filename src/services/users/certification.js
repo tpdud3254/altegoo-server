@@ -26,7 +26,10 @@ export const certification = (req, res) => {
                 }
             );
 
-            console.log("certi response : ", response.data);
+            console.log(
+                "certi response : ",
+                response.data.dataBody.access_token
+            );
 
             const timestamp = new Date().getTime() / 1000;
             const response2 = await axios.post(
