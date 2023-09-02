@@ -43,7 +43,7 @@ app.use("/orders", ordersRouter);
 app.use("/points", pointsRouter);
 app.use("/push", pushRouter);
 app.use("/admin", adminRouter);
-app.use("/certification", Certification);
+
 app.get("/*", (_, res) => res.redirect("/"));
 
 app.use((err, req, res, next) => {
