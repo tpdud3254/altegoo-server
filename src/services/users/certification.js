@@ -30,10 +30,7 @@ export const certification = (req, res) => {
                 }
             );
 
-            console.log(
-                "certi response : ",
-                response.data.dataBody.access_token
-            );
+            console.log("certi response : ", response.data.dataBody);
 
             const timestamp = Date.now();
             const curDate = new Date();
