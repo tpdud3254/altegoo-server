@@ -45,6 +45,8 @@ export const certification = (req, res) => {
                 curDate.getSeconds()
             )}`;
 
+            console.log(timestamp);
+
             const response2 = await axios.post(
                 NICE_SERVER + "/digital/niceid/api/v1.0/common/crypto/token",
                 {
