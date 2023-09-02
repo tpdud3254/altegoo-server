@@ -6,12 +6,16 @@ const client_secret = "c26a268437276d584bbc0361224ff79a";
 
 export const certification = () => {
     const getToken = async () => {
+        const params = new URLSearchParams();
+
+        params.append("grant_type", "client_credentials");
+        params.append("scope", "default");
+
         try {
             const response = await axios.post(
                 NICE_SERVER + "/digital/niceid/oauth/oauth/token",
                 {
-                    grant_type: "client_credentials",
-                    scope: "default",
+                    params,
                 },
                 {
                     headers: {
