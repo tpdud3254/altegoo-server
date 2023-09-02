@@ -32,7 +32,7 @@ export const certification = (req, res) => {
             const response2 = await axios.post(
                 NICE_SERVER + "/digital/niceid/api/v1.0/common/crypto/token",
                 {
-                    req_dtim: new Date.now(),
+                    req_dtim: new Date(),
                     req_no: "123148814",
                     enc_mode: "AES128",
                 },
