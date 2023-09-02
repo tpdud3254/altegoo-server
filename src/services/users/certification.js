@@ -47,7 +47,7 @@ export const certification = (req, res) => {
                                 `${response.data.dataBody.access_token}:${timestamp}:${client_id}`
                             ),
                         client_id,
-                        productID: 2101979031,
+                        productID: "2101979031",
                     },
                 }
             );
