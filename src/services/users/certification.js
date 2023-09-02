@@ -27,6 +27,29 @@ export const certification = (req, res) => {
             );
 
             console.log("certi response : ", response.data);
+
+            const timestamp = new Date().getTime() / 1000;
+            const response2 = await axios.post(
+                NICE_SERVER + "/digital/niceid/api/v1.0/common/crypto/token",
+                {
+                    req_dtim: new Date.now(),
+                    req_no: "123148814",
+                    enc_mode: "AES128",
+                },
+                {
+                    headers: {
+                        Authorization:
+                            "bearer " +
+                            btoa(
+                                `${response.data.dataBody.access_token}:${timestamp}:${client_id}`
+                            ),
+                        client_id,
+                        productID: 2101979031,
+                    },
+                }
+            );
+
+            console.log("certi response2 : ", response2);
             res.json(setResponseJson({ response: response.data }));
         } catch (error) {
             console.log(error);
