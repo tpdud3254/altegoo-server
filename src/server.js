@@ -13,6 +13,7 @@ import { WebSocket } from "ws";
 import { gracefulShutdown } from "node-schedule";
 import { initPushForWorks } from "./utils";
 import ordersRouter from "./routes/orders/orders";
+import Certification from "./services/Certification";
 
 // import { Server } from "socket.io";
 
@@ -42,6 +43,7 @@ app.use("/orders", ordersRouter);
 app.use("/points", pointsRouter);
 app.use("/push", pushRouter);
 app.use("/admin", adminRouter);
+app.use("/certification", Certification);
 app.get("/*", (_, res) => res.redirect("/"));
 
 app.use((err, req, res, next) => {
