@@ -35,7 +35,7 @@ export const certification = (req, res) => {
                 response.data.dataBody.access_token
             );
 
-            const timestamp = new Date().getTime();
+            const timestamp = Date.now();
             const curDate = new Date();
             const dtim = `${curDate.getFullYear()}${numberWithZero(
                 curDate.getMonth() + 1
@@ -46,7 +46,7 @@ export const certification = (req, res) => {
             )}`;
 
             console.log(timestamp);
-
+            1693673249081;
             const response2 = await axios.post(
                 NICE_SERVER + "/digital/niceid/api/v1.0/common/crypto/token",
                 {
