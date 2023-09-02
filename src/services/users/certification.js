@@ -15,10 +15,6 @@ export const certification = (req, res) => {
         try {
             const response = await axios.post(
                 NICE_SERVER + "/digital/niceid/oauth/oauth/token",
-                // queryString.stringify({
-                //     grant_type: "client_credentials",
-                //     scope: "default",
-                // }),
                 params,
                 {
                     headers: {
@@ -30,8 +26,8 @@ export const certification = (req, res) => {
                 }
             );
 
-            console.log("certi response : ", response);
-            res.json(setResponseJson({ response: response }));
+            console.log("certi response : ", response.data);
+            res.json(setResponseJson({ response: response.data }));
         } catch (error) {
             console.log(error);
             res.json(setErrorJson(error.message));
