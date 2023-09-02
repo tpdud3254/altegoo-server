@@ -21,15 +21,16 @@ export const certification = () => {
                 params,
                 {
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                        Authorization: (
-                            "Basic " + `${client_id}:${client_secret}`
-                        ).toString("base64"),
+                        "Content-Type":
+                            "aapplication/x-www-form-urlencoded;charset=utf-8",
+                        Authorization:
+                            "Basic " +
+                            `${client_id}:${client_secret}`.toString("base64"),
                     },
                 }
             );
 
-            console.log(response);
+            console.log("certi response : ", response);
         } catch (error) {
             console.error(error);
         }
