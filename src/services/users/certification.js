@@ -23,7 +23,7 @@ export const certification = (req, res) => {
                 {
                     headers: {
                         "Content-Type":
-                            "aapplication/x-www-form-urlencoded;charset=utf-8",
+                            "application/x-www-form-urlencoded;charset=utf-8",
                         Authorization:
                             "Basic " + btoa(`${client_id}:${client_secret}`),
                     },
@@ -33,7 +33,7 @@ export const certification = (req, res) => {
             console.log("certi response : ", response);
             res.json(setResponseJson({ response: response }));
         } catch (error) {
-            console.log(error.message);
+            console.log(error);
             res.json(setErrorJson(error.message));
         }
     };
