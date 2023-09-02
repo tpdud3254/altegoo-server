@@ -1,5 +1,6 @@
 import axios from "axios";
 import { setErrorJson, setResponseJson } from "../../utils";
+const crypto = require("crypto");
 
 const NICE_SERVER = "https://svc.niceapi.co.kr:22001";
 const client_id = "2d981f65-0f61-4a27-b076-5ed681f30763";
