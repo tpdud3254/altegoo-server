@@ -1,4 +1,5 @@
 import axios from "axios";
+import { setErrorJson, setResponseJson } from "../../utils";
 
 const NICE_SERVER = "https://svc.niceapi.co.kr:22001";
 const client_id = "2d981f65-0f61-4a27-b076-5ed681f30763";
@@ -31,8 +32,10 @@ export const certification = () => {
             );
 
             console.log("certi response : ", response);
+            res.json(setResponseJson({ response: response }));
         } catch (error) {
-            console.error(error);
+            console.log(error.message);
+            res.json(setErrorJson(error.message));
         }
     };
     getToken();
