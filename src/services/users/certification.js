@@ -49,6 +49,9 @@ export const certification = (req, res) => {
             console.log("certi response: ", response.data);
 
             const token_val = response.data.dataBody.token_val;
+            const site_code = response.data.dataBody.site_code;
+            const token_version_id = response.data.dataBody.token_version_id;
+
             const str = `${dtim.trim()}${no.trim()}${token_val.trim()}`;
 
             const hash = crypto
@@ -58,7 +61,32 @@ export const certification = (req, res) => {
 
             console.log("hash : ", hash);
 
-            res.json(setResponseJson({ response: response.data }));
+            const key = hash.substring(0, 16); //abcdefghijklmnop
+            const iv = hash.substring(hash.length - 16, hash.length); //3456789qwerty123
+            const hmac_key = hash.substring(0, 32); // abcdefghijklmnopqrstuvwxyz123456
+
+            console.log("key : ", key);
+            console.log("iv : ", iv);
+            console.log("hmac_key : ", hmac_key);
+
+            const reqData = {
+                requestno: no,
+                returnurl:
+                    "https://master.d1p7wg3e032x9j.amplifyapp.com/certification",
+                sitecode: site_code,
+                methodtype: "post",
+                popupyn: "Y",
+                receivedata: "datadata",
+            };
+
+            const encrypted = CryptoJS.AES.encrypt(key);
+            const enc_data = btoa(encrypted);
+            const integrity_value = btoa(CryptoJS.HmacSHA256(enc_data));
+            res.json(
+                setResponseJson({
+                    data: { token_version_id, enc_data, integrity_value },
+                })
+            );
         } catch (error) {
             console.log(error);
             res.json(setErrorJson(error.message));
@@ -98,5 +126,4 @@ export const certification = (req, res) => {
 // )}${numberWithZero(curDate.getMinutes())}${numberWithZero(
 //     curDate.getSeconds()
 // )}`;
-
 // console.log("timestamp: ", timestamp);
