@@ -19,6 +19,7 @@ import { addPermission } from "../../services/users/addPermission";
 import { modifyRegion } from "../../services/users/modifyRegion";
 import { changePassword } from "../../services/users/changePassword";
 import { certification } from "../../services/users/certification";
+import { decoding } from "../../services/users/decoding";
 
 const usersRouter = express.Router();
 
@@ -27,13 +28,15 @@ usersRouter.get("/point", auth, asyncWrap(getUserPoint));
 usersRouter.get("/user/recommend", auth, asyncWrap(getRecommendUser));
 usersRouter.get("/special/count", asyncWrap(getSpecialUserCount));
 usersRouter.get("/user", asyncWrap(getUserWithId));
+usersRouter.get("/certification", asyncWrap(certification));
 
 usersRouter.post("/user", asyncWrap(verifyToken));
 usersRouter.post("/create", asyncWrap(createAccount));
 usersRouter.post("/login", asyncWrap(login));
 usersRouter.post("/password", asyncWrap(setPassword));
 usersRouter.post("/edit", auth, asyncWrap(editProfile));
-usersRouter.get("/certification", asyncWrap(certification));
+usersRouter.post("/certification", asyncWrap(decoding));
+
 // usersRouter.post("/certification", asyncWrap(certification));
 
 usersRouter.post("/setting/password", auth, asyncWrap(changePassword));
