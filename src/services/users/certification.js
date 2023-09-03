@@ -71,9 +71,9 @@ export const certification = (req, res) => {
             const iv = hash.substring(hash.length - 16, hash.length);
             const hmac_key = hash.substring(0, 32);
 
-            console.log("key : ", key);
-            console.log("iv : ", iv);
-            console.log("hmac_key : ", hmac_key);
+            console.log("key : ", key, " / len : ", key.length);
+            console.log("iv : ", iv, " / len : ", iv.length);
+            console.log("hmac_key : ", hmac_key, " / len : ", hmac_key.length);
 
             const reqData = {
                 requestno: no,
@@ -102,6 +102,7 @@ export const certification = (req, res) => {
             console.log("encrypted : ", encrypted);
 
             const enc_data = encrypted;
+
             const hmacSha256 = hmac256(
                 Buffer.from(hmac_key, "utf-8"),
                 Buffer.from(enc_data, "base64")
