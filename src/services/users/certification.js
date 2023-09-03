@@ -67,7 +67,7 @@ export const certification = (req, res) => {
 
             console.log("hash : ", hash);
 
-            const key = hash.substring(0, 16);
+            const key = hash.digest().slice(0, 16);
             const iv = hash.substring(hash.length - 16, hash.length);
             const hmac_key = hash.substring(0, 32);
 
@@ -85,9 +85,10 @@ export const certification = (req, res) => {
                 receivedata: "datadata",
             };
 
+            console.log("key : ", key);
             const cipher = crypto.createCipheriv(
                 "aes-256-cbc",
-                Buffer.from(key),
+                key,
                 Buffer.from(iv)
             );
 
