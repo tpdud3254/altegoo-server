@@ -1,7 +1,6 @@
 import axios from "axios";
 import { setErrorJson, setResponseJson } from "../../utils";
 const crypto = require("crypto");
-const CryptoJS = require("crypto-js");
 
 const NICE_SERVER = "https://svc.niceapi.co.kr:22001";
 const client_id = "2d981f65-0f61-4a27-b076-5ed681f30763";
@@ -13,6 +12,12 @@ export const certification = (req, res) => {
         const numberWithZero = (num) => {
             return num < 10 ? "0" + num : num;
         };
+
+        function hmac256(secretKey, message) {
+            const hmac = crypto.createHmac("sha256", secretKey);
+            hmac.update(message);
+            return hmac.digest();
+        }
 
         try {
             const curDate = new Date();
@@ -62,9 +67,9 @@ export const certification = (req, res) => {
 
             console.log("hash : ", hash);
 
-            const key = hash.substring(0, 16); //abcdefghijklmnop
-            const iv = hash.substring(hash.length - 16, hash.length); //3456789qwerty123
-            const hmac_key = hash.substring(0, 32); // abcdefghijklmnopqrstuvwxyz123456
+            const key = hash.substring(0, 16);
+            const iv = hash.substring(hash.length - 16, hash.length);
+            const hmac_key = hash.substring(0, 32);
 
             console.log("key : ", key);
             console.log("iv : ", iv);
@@ -80,9 +85,27 @@ export const certification = (req, res) => {
                 receivedata: "datadata",
             };
 
-            const encrypted = CryptoJS.AES.encrypt(key);
-            const enc_data = btoa(encrypted);
-            const integrity_value = btoa(CryptoJS.HmacSHA256(enc_data));
+            const secureKey = Buffer.from(key, "utf-8");
+
+            const cipher = crypto.createCipheriv(
+                "aes-256-cbc",
+                secureKey,
+                Buffer.from(iv, "utf-8")
+            );
+            let encrypted = cipher.update(reqData.trim(), "utf-8", "base64");
+            encrypted += cipher.final("base64");
+
+            console.log("encrypted : ", encrypted);
+
+            const enc_data = encrypted;
+            const hmacSha256 = hmac256(
+                Buffer.from(hmac_key, "utf-8"),
+                Buffer.from(enc_data, "base64")
+            );
+            const integrity_value = hmacSha256.toString("base64");
+
+            console.log(integrity_value);
+
             res.json(
                 setResponseJson({
                     data: { token_version_id, enc_data, integrity_value },
