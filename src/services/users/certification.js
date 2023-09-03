@@ -110,16 +110,16 @@ export const certification = (req, res) => {
             const textEncoder = new TextEncoder();
 
             const hmacSha256 = hmac256(
-                textEncoder.encode(hmac_key),
-                textEncoder.encode(enc_data)
-                // Buffer.from(hmac_key, "utf-8"),
-                // Buffer.from(enc_data, "base64")
+                // textEncoder.encode(hmac_key),
+                // textEncoder.encode(enc_data)
+                Buffer.from(hmac_key, "utf-8"),
+                Buffer.from(enc_data, "base64")
             );
 
             console.log("hmacSha256 : ", hmacSha256);
-            const integrity_value = btoa(hmacSha256);
+            const integrity_value = hmacSha256.toString("base64");
 
-            console.log("integrity_value: ".integrity_value);
+            console.log("integrity_value: ", integrity_value);
 
             res.json(
                 setResponseJson({
