@@ -22,10 +22,10 @@ export const decoding = async (req, res) => {
 
         console.log("복호화된 데이터:", decryptedData);
 
-        const eucKrBuffer = iconv.encode(decryptedData, "euc-kr");
-        const eucKrString = eucKrBuffer.toString();
+        // const eucKrBuffer = iconv.encode(decryptedData, "euc-kr");
+        // const eucKrString = eucKrBuffer.toString();
 
-        res.json(setResponseJson({ data: eucKrString }));
+        res.json(setResponseJson({ data: decryptedData }));
     } catch (error) {
         res.json(setErrorJson(error.message));
     }
