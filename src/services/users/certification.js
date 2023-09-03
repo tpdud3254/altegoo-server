@@ -85,12 +85,12 @@ export const certification = (req, res) => {
                 receivedata: "datadata",
             };
 
-            // const secureKey = Buffer.from(key, "utf-8");
+            const secureKey = Buffer.from(key, "utf-8");
 
             // console.log("secureKey : ", secureKey);
             const cipher = crypto.createCipheriv(
                 "aes-256-cbc",
-                key,
+                secureKey,
                 Buffer.from(iv, "utf-8")
             );
 
@@ -135,7 +135,6 @@ export const certification = (req, res) => {
 };
 
 //access_token 발급 (유효기간 50년)
-
 // const params = new URLSearchParams();
 
 //         params.append("grant_type", "client_credentials");
