@@ -107,9 +107,13 @@ export const certification = (req, res) => {
 
             const enc_data = encrypted;
 
+            const textEncoder = new TextEncoder();
+
             const hmacSha256 = hmac256(
-                Buffer.from(hmac_key, "utf-8"),
-                Buffer.from(enc_data, "base64")
+                textEncoder.encode(hmac_key),
+                textEncoder.encode(enc_data)
+                // Buffer.from(hmac_key, "utf-8"),
+                // Buffer.from(enc_data, "base64")
             );
 
             console.log("hmacSha256 : ", hmacSha256);
