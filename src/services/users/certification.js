@@ -117,7 +117,7 @@ export const certification = (req, res) => {
             );
 
             console.log("hmacSha256 : ", hmacSha256);
-            const integrity_value = hmacSha256.toString("base64");
+            const integrity_value = btoa(hmacSha256);
 
             console.log("integrity_value: ".integrity_value);
 
