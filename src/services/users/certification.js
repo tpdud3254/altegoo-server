@@ -67,7 +67,7 @@ export const certification = (req, res) => {
 
             console.log("hash : ", hash);
 
-            const key = hash.substring(0, 32);
+            const key = hash.substring(0, 16);
             const iv = hash.substring(hash.length - 16, hash.length);
             const hmac_key = hash.substring(0, 32);
 
