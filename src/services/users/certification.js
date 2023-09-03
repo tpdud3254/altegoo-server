@@ -81,7 +81,7 @@ export const certification = (req, res) => {
                 returnurl:
                     "https://master.d1p7wg3e032x9j.amplifyapp.com/certification",
                 sitecode: site_code,
-                methodtype: "post",
+                methodtype: "get",
                 popupyn: "Y",
                 receivedata: "datadata",
             });
