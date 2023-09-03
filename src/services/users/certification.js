@@ -66,7 +66,7 @@ export const certification = (req, res) => {
 
             console.log("hash : ", hash);
 
-            const key = resultVal.slice(0, 16);
+            const key = resultVal.slice(0, 32);
             const iv = resultVal.substring(
                 resultVal.length - 16,
                 resultVal.length
