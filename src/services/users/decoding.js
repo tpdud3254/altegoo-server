@@ -17,7 +17,7 @@ export const decoding = async (req, res) => {
             Buffer.from(iv)
         );
         let decryptedData = decipher.update(encryptedBuffer, null, "utf-8");
-        decryptedData += decipher.final("utf-8");
+        decryptedData += decipher.final("euc-kr");
 
         console.log("복호화된 데이터:", decryptedData);
         res.json(setResponseJson({ data: decryptedData }));
