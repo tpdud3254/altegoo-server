@@ -85,16 +85,11 @@ export const certification = (req, res) => {
                 receivedata: "datadata",
             };
 
-            const secureKey = Buffer.from(key, "utf-8");
-
-            // console.log("secureKey : ", secureKey);
             const cipher = crypto.createCipheriv(
                 "aes-256-cbc",
-                secureKey,
-                Buffer.from(iv, "utf-8")
+                Buffer.from(key),
+                Buffer.from(iv)
             );
-
-            console.log("cipher : ", cipher);
 
             let encrypted = cipher.update(
                 JSON.stringify(reqData).trim(),
