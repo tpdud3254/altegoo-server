@@ -1,5 +1,6 @@
 import { setErrorJson, setResponseJson } from "../../utils";
 const crypto = require("crypto");
+const iconv = require("iconv-lite");
 
 export const decoding = async (req, res) => {
     const { enc_data, key, iv } = req.body;
@@ -17,10 +18,14 @@ export const decoding = async (req, res) => {
             Buffer.from(iv)
         );
         let decryptedData = decipher.update(encryptedBuffer, null, "utf-8");
-        decryptedData += decipher.final("euc-kr");
+        decryptedData += decipher.final("utf-8");
 
         console.log("복호화된 데이터:", decryptedData);
-        res.json(setResponseJson({ data: decryptedData }));
+
+        const eucKrBuffer = iconv.encode(decryptedData, "euc-kr");
+        const eucKrString = eucKrBuffer.toString();
+
+        res.json(setResponseJson({ data: eucKrString }));
     } catch (error) {
         res.json(setErrorJson(error.message));
     }
