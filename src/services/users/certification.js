@@ -58,18 +58,17 @@ export const certification = (req, res) => {
             const site_code = response.data.dataBody.site_code;
             const token_version_id = response.data.dataBody.token_version_id;
 
+            //대칭키 생성
             const str = `${dtim.trim()}${no.trim()}${token_val.trim()}`;
+            const sha256Hash = crypto.createHash("sha256").update(str).digest();
+            console.log("sha256Hash : ", sha256Hash);
+            const hashedData = sha256Hash.toString("base64");
+            console.log("hashedData : ", hashedData);
 
-            const hash = crypto.createHash("sha256").update(str).digest();
-
-            const resultVal = Buffer.from(hash).toString("base64");
-
-            console.log("hash : ", hash);
-
-            const key = resultVal.slice(0, 32);
-            const iv = resultVal.substring(
-                resultVal.length - 16,
-                resultVal.length
+            const key = hashedData.substring(0, 16);
+            const iv = hashedData.substring(
+                hashedData.length - 16,
+                hashedData.length
             );
             const hmac_key = resultVal.substring(0, 32);
 
@@ -77,6 +76,7 @@ export const certification = (req, res) => {
             console.log("iv : ", iv, " / len : ", iv.length);
             console.log("hmac_key : ", hmac_key, " / len : ", hmac_key.length);
 
+            //요청 데이터 암호화
             const reqData = JSON.stringify({
                 requestno: no,
                 returnurl:
@@ -88,38 +88,56 @@ export const certification = (req, res) => {
             });
 
             const cipher = crypto.createCipheriv(
-                "aes-256-cbc",
+                "aes-128-cbc",
                 Buffer.from(key),
-                Buffer.from(iv)
+                iv
             );
 
-            const encrypted = Buffer.concat([
-                cipher.update(reqData, "utf-8"),
-                cipher.final(),
-            ]);
+            let encryptedData = cipher.update(reqData, "utf-8", "base64");
+            encryptedData += cipher.final("base64");
 
-            const enc_data = encrypted.toString("base64");
+            //무결성체크값 생성
+            const hmac = crypto.createHmac("sha256", hmac_key);
+            hmac.update(encryptedData);
+            const integrityCheckValue = hmac.digest("base64");
 
-            console.log("enc_data : ", enc_data);
+            // const cipher = crypto.createCipheriv(
+            //     "aes-256-cbc",
+            //     Buffer.from(key),
+            //     Buffer.from(iv)
+            // );
 
-            const textEncoder = new TextEncoder();
+            // const encrypted = Buffer.concat([
+            //     cipher.update(reqData, "utf-8"),
+            //     cipher.final(),
+            // ]);
 
-            const hmacSha256 = hmac256(
-                // textEncoder.encode(hmac_key),
-                // textEncoder.encode(enc_data)
-                Buffer.from(hmac_key, "utf-8"),
-                Buffer.from(enc_data)
-            );
+            // const enc_data = encrypted.toString("base64");
 
-            console.log("hmacSha256 : ", hmacSha256);
+            // console.log("enc_data : ", enc_data);
+
+            // const textEncoder = new TextEncoder();
+
+            // const hmacSha256 = hmac256(
+            //     // textEncoder.encode(hmac_key),
+            //     // textEncoder.encode(enc_data)
+            //     Buffer.from(hmac_key, "utf-8"),
+            //     Buffer.from(enc_data)
+            // );
+
+            // console.log("hmacSha256 : ", hmacSha256);
+            // // const integrity_value = hmacSha256.toString("base64");
             // const integrity_value = hmacSha256.toString("base64");
-            const integrity_value = hmacSha256.toString("base64");
 
-            console.log("integrity_value: ", integrity_value);
+            // console.log("integrity_value: ", integrity_value);
 
             res.json(
                 setResponseJson({
-                    data: { token_version_id, enc_data, integrity_value },
+                    data: {
+                        token_version_id,
+                        enc_data: encryptedData,
+                        integrity_value: integrityCheckValue,
+                    },
                 })
             );
         } catch (error) {
