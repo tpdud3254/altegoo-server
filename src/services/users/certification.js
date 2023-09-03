@@ -100,42 +100,14 @@ export const certification = (req, res) => {
             hmac.update(encryptedData);
             const integrityCheckValue = hmac.digest("base64");
 
-            // const cipher = crypto.createCipheriv(
-            //     "aes-256-cbc",
-            //     Buffer.from(key),
-            //     Buffer.from(iv)
-            // );
-
-            // const encrypted = Buffer.concat([
-            //     cipher.update(reqData, "utf-8"),
-            //     cipher.final(),
-            // ]);
-
-            // const enc_data = encrypted.toString("base64");
-
-            // console.log("enc_data : ", enc_data);
-
-            // const textEncoder = new TextEncoder();
-
-            // const hmacSha256 = hmac256(
-            //     // textEncoder.encode(hmac_key),
-            //     // textEncoder.encode(enc_data)
-            //     Buffer.from(hmac_key, "utf-8"),
-            //     Buffer.from(enc_data)
-            // );
-
-            // console.log("hmacSha256 : ", hmacSha256);
-            // // const integrity_value = hmacSha256.toString("base64");
-            // const integrity_value = hmacSha256.toString("base64");
-
-            // console.log("integrity_value: ", integrity_value);
-
             res.json(
                 setResponseJson({
                     data: {
                         token_version_id,
                         enc_data: encryptedData,
                         integrity_value: integrityCheckValue,
+                        key,
+                        iv,
                     },
                 })
             );
