@@ -87,11 +87,15 @@ export const certification = (req, res) => {
 
             const secureKey = Buffer.from(key, "utf-8");
 
+            console.log("secureKey : ", secureKey);
             const cipher = crypto.createCipheriv(
                 "aes-256-cbc",
                 secureKey,
                 Buffer.from(iv, "utf-8")
             );
+
+            console.log("cipher : ", cipher);
+
             let encrypted = cipher.update(reqData.trim(), "utf-8", "base64");
             encrypted += cipher.final("base64");
 
@@ -102,9 +106,11 @@ export const certification = (req, res) => {
                 Buffer.from(hmac_key, "utf-8"),
                 Buffer.from(enc_data, "base64")
             );
+
+            console.log("hmacSha256 : ", hmacSha256);
             const integrity_value = hmacSha256.toString("base64");
 
-            console.log(integrity_value);
+            console.log("integrity_value: ".integrity_value);
 
             res.json(
                 setResponseJson({
