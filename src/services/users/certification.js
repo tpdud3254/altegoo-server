@@ -61,7 +61,6 @@ export const certification = (req, res) => {
             //대칭키 생성
             const str = `${dtim.trim()}${no.trim()}${token_val.trim()}`;
             const sha256Hash = crypto.createHash("sha256").update(str).digest();
-            console.log("sha256Hash : ", sha256Hash);
             const hashedData = sha256Hash.toString("base64");
             console.log("hashedData : ", hashedData);
 
@@ -70,7 +69,7 @@ export const certification = (req, res) => {
                 hashedData.length - 16,
                 hashedData.length
             );
-            const hmac_key = resultVal.substring(0, 32);
+            const hmac_key = hashedData.substring(0, 32);
 
             console.log("key : ", key, " / len : ", key.length);
             console.log("iv : ", iv, " / len : ", iv.length);
