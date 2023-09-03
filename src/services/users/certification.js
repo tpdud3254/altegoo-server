@@ -96,7 +96,11 @@ export const certification = (req, res) => {
 
             console.log("cipher : ", cipher);
 
-            let encrypted = cipher.update(reqData.trim(), "utf-8", "base64");
+            let encrypted = cipher.update(
+                JSON.stringify(reqData).trim(),
+                "utf-8",
+                "base64"
+            );
             encrypted += cipher.final("base64");
 
             console.log("encrypted : ", encrypted);
