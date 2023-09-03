@@ -87,7 +87,7 @@ export const certification = (req, res) => {
 
             // const secureKey = Buffer.from(key, "utf-8");
 
-            console.log("secureKey : ", secureKey);
+            // console.log("secureKey : ", secureKey);
             const cipher = crypto.createCipheriv(
                 "aes-256-cbc",
                 key,
