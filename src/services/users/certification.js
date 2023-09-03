@@ -16,7 +16,7 @@ export const certification = (req, res) => {
         function hmac256(secretKey, message) {
             const hmac = crypto.createHmac("sha256", secretKey);
             hmac.update(message);
-            return hmac.digest();
+            return hmac;
         }
 
         try {
