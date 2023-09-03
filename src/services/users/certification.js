@@ -60,22 +60,24 @@ export const certification = (req, res) => {
 
             const str = `${dtim.trim()}${no.trim()}${token_val.trim()}`;
 
-            const hash = crypto
-                .createHash("sha256")
-                .update(str)
-                .digest("base64");
+            const hash = crypto.createHash("sha256").update(str).digest();
+
+            const resultVal = Buffer.from(hash).toString("base64");
 
             console.log("hash : ", hash);
 
-            const key = hash.slice(0, 32);
-            const iv = hash.substring(hash.length - 16, hash.length);
-            const hmac_key = hash.substring(0, 32);
+            const key = resultVal.slice(0, 16);
+            const iv = resultVal.substring(
+                resultVal.length - 16,
+                resultVal.length
+            );
+            const hmac_key = resultVal.substring(0, 32);
 
             console.log("key : ", key, " / len : ", key.length);
             console.log("iv : ", iv, " / len : ", iv.length);
             console.log("hmac_key : ", hmac_key, " / len : ", hmac_key.length);
 
-            const reqData = {
+            const reqData = JSON.stringify({
                 requestno: no,
                 returnurl:
                     "https://master.d1p7wg3e032x9j.amplifyapp.com/certification",
@@ -83,24 +85,22 @@ export const certification = (req, res) => {
                 methodtype: "post",
                 popupyn: "Y",
                 receivedata: "datadata",
-            };
+            });
 
             const cipher = crypto.createCipheriv(
                 "aes-256-cbc",
-                key,
+                Buffer.from(key),
                 Buffer.from(iv)
             );
 
-            let encrypted = cipher.update(
-                JSON.stringify(reqData).trim(),
-                "utf-8",
-                "base64"
-            );
-            encrypted += cipher.final("base64");
+            const encrypted = Buffer.concat([
+                cipher.update(reqData, "utf-8"),
+                cipher.final(),
+            ]);
 
-            console.log("encrypted : ", encrypted);
+            const enc_data = encrypted.toString("base64");
 
-            const enc_data = encrypted;
+            console.log("enc_data : ", enc_data);
 
             const textEncoder = new TextEncoder();
 
@@ -108,12 +108,12 @@ export const certification = (req, res) => {
                 // textEncoder.encode(hmac_key),
                 // textEncoder.encode(enc_data)
                 Buffer.from(hmac_key, "utf-8"),
-                Buffer.from(enc_data, "utf-8")
+                Buffer.from(enc_data)
             );
 
             console.log("hmacSha256 : ", hmacSha256);
             // const integrity_value = hmacSha256.toString("base64");
-            const integrity_value = btoa(hmacSha256.toString());
+            const integrity_value = hmacSha256.toString("base64");
 
             console.log("integrity_value: ", integrity_value);
 
