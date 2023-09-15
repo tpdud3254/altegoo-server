@@ -10,7 +10,7 @@ import { saveLicense } from "../../services/users/saveLicense";
 import { saveVehiclePermission } from "../../services/users/saveVehiclePermission";
 import { getUserPoint } from "../../services/users/getUserPoint";
 import prisma from "../../prisma";
-import { getSpecialUserCount } from "../../services/users/getSpecialUserCount";
+import { getDirverCount } from "../../services/users/getDriverUserCount";
 import { getRecommendUser } from "../../services/users/getRecommendUser";
 import { getUserWithId } from "../../services/users/getUserWithId";
 import { addVehicle } from "../../services/users/addVehicle";
@@ -26,7 +26,7 @@ const usersRouter = express.Router();
 usersRouter.get("/search", asyncWrap(getUserExist));
 usersRouter.get("/point", auth, asyncWrap(getUserPoint));
 usersRouter.get("/user/recommend", auth, asyncWrap(getRecommendUser));
-usersRouter.get("/special/count", asyncWrap(getSpecialUserCount));
+usersRouter.get("/driver/count", asyncWrap(getDirverCount));
 usersRouter.get("/user", asyncWrap(getUserWithId));
 usersRouter.get("/certification", asyncWrap(certification));
 

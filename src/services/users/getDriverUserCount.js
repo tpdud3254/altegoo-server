@@ -1,7 +1,7 @@
 import prisma from "../../prisma";
 import { setErrorJson, setResponseJson } from "../../utils";
 
-export const getSpecialUserCount = async (req, res) => {
+export const getDirverCount = async (req, res) => {
     try {
         const userCount = await prisma.user.count({
             where: {

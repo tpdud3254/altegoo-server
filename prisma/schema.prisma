@@ -63,8 +63,7 @@ model Vehicle {
   vehicleWeightId Int?
 }
 
-//P:일반회원(ORDINARY), S:기사회원(PERSONAL)
-//(COMPANY)  C:기업회원(건설), F:기업회원(가구), E:기업회원(가전), H:기업회원(청소/인력), M:기업회원(이사), G:기업회원(기타)
+// C:건설, F:가구, E:가전, H:청소인력), M:이사, G:기타
 model WorkCategory {
   id   Int    @id @default(autoincrement())
   name String
