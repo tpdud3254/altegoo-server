@@ -28,8 +28,19 @@ export const getRealTimeOrderList = async (req, res) => {
 
         if (!order) throw new Error("작업리스트 조회에 실패했습니다.");
 
+        const now = new Date();
+        const list = [];
+        if (order.length > 0) {
+            await Promise.all(
+                order.map((element) => {
+                    const orderDateTime = new Date(element.dateTime);
+                    if (orderDateTime > now) list.push(element);
+                })
+            );
+        }
+
         console.log(order);
-        res.json(setResponseJson({ order }));
+        res.json(setResponseJson({ order: list }));
     } catch (error) {
         res.json(setErrorJson(error.message));
     }
