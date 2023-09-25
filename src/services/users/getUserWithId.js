@@ -9,6 +9,11 @@ export const getUserWithId = async (req, res) => {
     try {
         const user = await prisma.user.findUnique({
             where: { id: parseInt(id) },
+            include: {
+                vehicle: {
+                    include: { weight: true, floor: true, type: true },
+                },
+            },
         });
         res.json(setResponseJson({ user: user }));
     } catch (error) {
