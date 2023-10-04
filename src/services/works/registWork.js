@@ -58,6 +58,7 @@ export const registWork = async (req, res) => {
             });
         }
 
+        //작업등록
         const regist = await prisma.order.create({
             data: {
                 registUser: { connect: { id } },
@@ -99,6 +100,7 @@ export const registWork = async (req, res) => {
 
         if (!regist) throw new Error("작업 등록에 실패하였습니다.");
 
+        //사용한 포인트 차감
         const setPoint =
             usePoint &&
             usePoint > 0 &&
@@ -110,9 +112,10 @@ export const registWork = async (req, res) => {
         console.log("setPoint : ", setPoint);
 
         if (!setPoint && setPoint !== 0)
+            //TODO: 대응
             throw new Error("작업 등록에 실패하였습니다.");
-        //TODO: 대응
 
+        //푸시 알림
         const users = await prisma.user.findMany({
             where: {
                 AND: [
@@ -187,16 +190,19 @@ export const registWork = async (req, res) => {
             console.log(pushResponse);
         }
 
-        //TODO: 푸시한 뒤 일정시간 지난뒤 에 해보기
+        //TODO: 푸시한 뒤 일정시간 지난뒤에 해보기
+        //tts 알림
         if (emergency) {
             process.emit("REGIST", {
                 msg: `긴급 작업이 등록되었습니다.            ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
                 userId: id,
+                orderId: regist.id,
             });
         } else {
             process.emit("REGIST", {
                 msg: `${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
                 userId: id,
+                orderId: regist.id,
             });
         }
 
