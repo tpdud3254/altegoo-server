@@ -40,7 +40,7 @@ export const terminateWork = async (req, res) => {
             const registUser = await prisma.point.update({
                 where: { userId: work.userId },
                 data: {
-                    curPoint: registUserPoint.curPoint + work.savePoint,
+                    curPoint: registUserPoint.curPoint + work.registPoint,
                 },
             });
 

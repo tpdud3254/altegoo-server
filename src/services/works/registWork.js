@@ -26,11 +26,13 @@ export const registWork = async (req, res) => {
         memo,
         emergency,
         price,
-        savePoint,
-        usePoint,
         emergencyPrice,
-        tax,
+        usePoint,
+        orderPrice,
         totalPrice,
+        tax,
+        finalPrice,
+        registPoint,
     } = req.body;
 
     console.log(req.body);
@@ -84,9 +86,13 @@ export const registWork = async (req, res) => {
                 price,
                 emergencyPrice,
                 usePoint,
-                tax,
+                orderPrice,
                 totalPrice,
-                savePoint,
+                tax,
+                finalPrice,
+                recommendationPoint: orderPrice * 0.02,
+                registPoint,
+                orderPoint: orderPrice * 1.1 - orderPrice * 0.02 - registPoint,
                 status: { connect: { id: 1 } },
             },
         });
