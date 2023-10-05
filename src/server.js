@@ -97,6 +97,7 @@ webSocketServer.on("connection", (ws, request) => {
                 type: "REGIST",
                 tts_msg: param.msg,
                 exceptionUserId: param.userId,
+                tts_id: param.orderId,
             })
         );
     });

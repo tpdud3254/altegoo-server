@@ -9,11 +9,12 @@ import {
 } from "../../utils";
 
 export const pushTest = async (req, res) => {
-    // const response = await sendPushToUser(
-    //   "ExponentPushToken[u2z7TMDzFkDHlzxe8pezVt]",
-    //   "send?",
-    //   "send!"
-    // );
+    const response = await sendPushToUser(
+        "ExponentPushToken[slWqrXLEfeSOp2X9uJImwc]",
+        "send?",
+        "send!",
+        { type: "REGIST" }
+    );
 
     // const response = await sendPushToUsers(
     //     [
@@ -36,9 +37,9 @@ export const pushTest = async (req, res) => {
 
     // deletePushForWorks({ id: 101 });
 
-    process.emit("REGIST", {
-        msg: `안녕하세요`,
-    });
+    // process.emit("REGIST", {
+    //     msg: `안녕하세요`,
+    // });
 
     // const pushResponse = await sendPushToUsers(
     //     [

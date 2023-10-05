@@ -93,7 +93,9 @@ export const registWork = async (req, res) => {
                 finalPrice,
                 recommendationPoint: orderPrice * 0.02,
                 registPoint,
-                orderPoint: orderPrice * 1.1 - orderPrice * 0.02 - registPoint,
+                orderPoint: Math.floor(
+                    orderPrice * 1.1 - orderPrice * 0.02 - registPoint
+                ),
                 status: { connect: { id: 1 } },
             },
         });
@@ -149,16 +151,23 @@ export const registWork = async (req, res) => {
 
         if (emergency) {
             users.map((value, index) => {
-                expoTokenList.push(value.pushToken);
+                if (value.pushToken) expoTokenList.push(value.pushToken);
             });
+
+            console.log("expoTokenList : ", expoTokenList);
 
             const pushResponse = await sendPushToUsers(
                 expoTokenList,
                 "긴급 작업 요청",
-                `${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                `${
+                    orderTime.getMonth() + 1
+                }월 ${orderTime.getDate()}일 ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
                 {
+                    type: "REGIST",
                     screen: "OrderDetails",
-                    order: regist,
+                    // order: regist,
+                    userId: id,
+                    orderId: regist.id,
                 }
             );
 
@@ -173,7 +182,8 @@ export const registWork = async (req, res) => {
                     });
 
                     if (correctRegion) {
-                        expoTokenList.push(value.pushToken);
+                        if (value.pushToken)
+                            expoTokenList.push(value.pushToken);
                     }
                 }
             });
@@ -181,9 +191,14 @@ export const registWork = async (req, res) => {
             const pushResponse = await sendPushToUsers(
                 expoTokenList,
                 "작업 요청",
-                `${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                `${
+                    orderTime.getMonth() + 1
+                }월 ${orderTime.getDate()}일 ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
                 {
+                    type: "REGIST",
                     screen: "Home",
+                    userId: id,
+                    orderId: regist.id,
                 }
             );
 
@@ -192,19 +207,23 @@ export const registWork = async (req, res) => {
 
         //TODO: 푸시한 뒤 일정시간 지난뒤에 해보기
         //tts 알림
-        if (emergency) {
-            process.emit("REGIST", {
-                msg: `긴급 작업이 등록되었습니다.            ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
-                userId: id,
-                orderId: regist.id,
-            });
-        } else {
-            process.emit("REGIST", {
-                msg: `${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
-                userId: id,
-                orderId: regist.id,
-            });
-        }
+        // if (emergency) {
+        //     process.emit("REGIST", {
+        //         msg: `긴급 작업이 등록되었습니다.            ${
+        //             orderTime.getMonth() + 1
+        //         }월 ${orderTime.getDate()}일 ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+        //         userId: id,
+        //         orderId: regist.id,
+        //     });
+        // } else {
+        //     process.emit("REGIST", {
+        //         msg: `${
+        //             orderTime.getMonth() + 1
+        //         }월 ${orderTime.getDate()}일 ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+        //         userId: id,
+        //         orderId: regist.id,
+        //     });
+        // }
 
         res.json(setResponseJson({ order: regist }));
     } catch (error) {
