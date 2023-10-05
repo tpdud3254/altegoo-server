@@ -207,23 +207,23 @@ export const registWork = async (req, res) => {
 
         //TODO: 푸시한 뒤 일정시간 지난뒤에 해보기
         //tts 알림
-        // if (emergency) {
-        //     process.emit("REGIST", {
-        //         msg: `긴급 작업이 등록되었습니다.            ${
-        //             orderTime.getMonth() + 1
-        //         }월 ${orderTime.getDate()}일 ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
-        //         userId: id,
-        //         orderId: regist.id,
-        //     });
-        // } else {
-        //     process.emit("REGIST", {
-        //         msg: `${
-        //             orderTime.getMonth() + 1
-        //         }월 ${orderTime.getDate()}일 ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
-        //         userId: id,
-        //         orderId: regist.id,
-        //     });
-        // }
+        if (emergency) {
+            process.emit("REGIST", {
+                msg: `긴급 작업이 등록되었습니다.            ${
+                    orderTime.getMonth() + 1
+                }월 ${orderTime.getDate()}일 ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                userId: id,
+                orderId: regist.id,
+            });
+        } else {
+            process.emit("REGIST", {
+                msg: `${
+                    orderTime.getMonth() + 1
+                }월 ${orderTime.getDate()}일 ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                userId: id,
+                orderId: regist.id,
+            });
+        }
 
         res.json(setResponseJson({ order: regist }));
     } catch (error) {

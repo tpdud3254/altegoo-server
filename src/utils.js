@@ -280,6 +280,8 @@ export const addPushForWorks = async (order) => {
     if (!pushToken) return;
 
     const orderDateTime = new Date(order.workDateTime);
+    const orderMonth = orderDateTime.getMonth() + 1;
+    const orderDate = orderDateTime.getDate();
     const orderHours = orderDateTime.getHours();
     const orderMins = orderDateTime.getMinutes();
 
@@ -296,7 +298,7 @@ export const addPushForWorks = async (order) => {
             const push = await sendPushToUser(
                 pushToken,
                 "작업 시작 예정",
-                `${orderHours}시 ${orderMins}분 ${getRegionToString(
+                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${getRegionToString(
                     order.regionId
                 )}지역의 작업이 24시간 뒤 시작될 예정입니다.`
             );
@@ -310,7 +312,7 @@ export const addPushForWorks = async (order) => {
             const push = await sendPushToUser(
                 pushToken,
                 "작업 시작 예정",
-                `${orderHours}시 ${orderMins}분 ${getRegionToString(
+                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${getRegionToString(
                     order.regionId
                 )}지역의 작업이 12시간 뒤 시작될 예정입니다.`
             );
@@ -324,7 +326,7 @@ export const addPushForWorks = async (order) => {
             const push = await sendPushToUser(
                 pushToken,
                 "작업 시작 예정",
-                `${orderHours}시 ${orderMins}분 ${getRegionToString(
+                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${getRegionToString(
                     order.regionId
                 )}지역의 작업이 2시간 뒤 시작될 예정입니다.`,
                 { screen: "OrderProgress", order }
@@ -338,7 +340,7 @@ export const addPushForWorks = async (order) => {
             const push = await sendPushToUser(
                 pushToken,
                 "작업 시작 예정",
-                `${orderHours}시 ${orderMins}분 ${getRegionToString(
+                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${getRegionToString(
                     order.regionId
                 )}지역의 작업이 10분 뒤 시작될 예정입니다.`,
                 { screen: "OrderProgress", order }
