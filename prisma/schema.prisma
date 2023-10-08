@@ -94,7 +94,7 @@ model Point {
 
 model PointBreakdown {
   id        Int      @id @default(autoincrement())
-  date      DateTime //충전, 출금, 적립, 사용 날짜
+  date      DateTime @default(now()) //충전, 출금, 적립, 사용 날짜
   content   String //포인트 내역 내용
   type      String //충전, 출금, 적립, 사용
   point     Int //거래 포인트

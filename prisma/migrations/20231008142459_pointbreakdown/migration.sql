@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "PointBreakdown" ALTER COLUMN "date" SET DEFAULT CURRENT_TIMESTAMP;

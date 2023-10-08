@@ -1,6 +1,7 @@
 import prisma from "../../prisma";
 import {
     checkRegistUser,
+    getUserExpoToken,
     sendPushToUser,
     setErrorJson,
     setResponseJson,
@@ -31,7 +32,7 @@ export const terminateWork = async (req, res) => {
                 },
             });
 
-            //TODO: 포인트 작업 수정
+            //작업등록포인트 적립
             const registUserPoint = await prisma.point.findFirst({
                 where: { userId: work.userId },
                 select: { curPoint: true },
@@ -44,6 +45,23 @@ export const terminateWork = async (req, res) => {
                 },
             });
 
+            const registUserPointBreakdown = await prisma.pointBreakdown.create(
+                {
+                    data: {
+                        content: "작업 등록 포인트 적립",
+                        type: "적립",
+                        point: work.registPoint,
+                        restPoint: registUser.curPoint,
+                        user: {
+                            connect: {
+                                id: work.userId,
+                            },
+                        },
+                    },
+                }
+            );
+
+            //작업완료포인트 적립
             const acceptUserPoint = await prisma.point.findFirst({
                 where: { userId: work.acceptUser },
                 select: { curPoint: true },
@@ -52,9 +70,67 @@ export const terminateWork = async (req, res) => {
             const acceptUser = await prisma.point.update({
                 where: { userId: work.acceptUser },
                 data: {
-                    curPoint: acceptUserPoint.curPoint + work.totalPrice,
+                    curPoint: acceptUserPoint.curPoint + work.orderPoint,
                 },
             });
+
+            const acceptUserPointBreakdown = await prisma.pointBreakdown.create(
+                {
+                    data: {
+                        content: "작업 완료 포인트 적립",
+                        type: "적립",
+                        point: work.orderPoint,
+                        restPoint: acceptUser.curPoint,
+                        user: {
+                            connect: {
+                                id: work.acceptUser,
+                            },
+                        },
+                    },
+                }
+            );
+
+            //추천인포인트 적립
+            const recommendUser = await prisma.user.findFirst({
+                where: { id: work.userId },
+                select: { recommendUserId: true },
+            });
+
+            //추천회원이 있거나 알테구 계정이 아닐 때 적립
+            if (
+                recommendUser &&
+                recommendUser.recommendUserId &&
+                recommendUser.recommendUserId !== 1
+            ) {
+                const recommendUserPoint = await prisma.point.findFirst({
+                    where: { userId: recommendUser.recommendUserId },
+                    select: { curPoint: true },
+                });
+
+                const updateRecommendUserPoint = await prisma.point.update({
+                    where: { userId: recommendUser.recommendUserId },
+                    data: {
+                        curPoint:
+                            recommendUserPoint.curPoint +
+                            work.recommendationPoint,
+                    },
+                });
+
+                const recommendUserPointBreakdown =
+                    await prisma.pointBreakdown.create({
+                        data: {
+                            content: "추천인 포인트 적립",
+                            type: "적립",
+                            point: work.recommendationPoint,
+                            restPoint: updateRecommendUserPoint.curPoint,
+                            user: {
+                                connect: {
+                                    id: recommendUser.recommendUserId,
+                                },
+                            },
+                        },
+                    });
+            }
 
             if (!registUser || !acceptUser) {
                 throw new Error(
