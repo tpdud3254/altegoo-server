@@ -8,6 +8,25 @@ export const acceptOrder = async (req, res) => {
     if (!orderId || !id) throw new Error("작업 상태를 변경할 수 없습니다.");
 
     try {
+        const now = new Date();
+
+        console.log("now : ", now);
+        const orders = await prisma.order.findMany({
+            where: {
+                AND: [
+                    { acceptUser: id },
+                    { orderStatusId: 2 },
+                    { dateTime: { gt: now } },
+                ],
+            },
+        });
+
+        console.log("my accept list : ", orders.length);
+
+        if (orders.length >= 3) {
+            throw new Error("작업 예약은 3개 이하로 가능합니다.");
+        }
+
         const order = await prisma.order.findUnique({
             where: {
                 id: orderId,
