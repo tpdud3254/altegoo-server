@@ -4,6 +4,7 @@ import { getMyPointInfo } from "../../services/points/getMyPointInfo";
 
 import { asyncWrap, auth } from "../../utils";
 import { getPointBreakdown } from "../../services/points/getPointBreakdown";
+import { withdrawalPoints } from "../../services/points/withdrawalPoints";
 
 const pointsRouter = express.Router();
 
@@ -11,5 +12,7 @@ pointsRouter.get("/my", auth, asyncWrap(getMyPointInfo));
 pointsRouter.get("/breakdown", auth, asyncWrap(getPointBreakdown));
 
 pointsRouter.post("/account/create", asyncWrap(createAccount));
+
+pointsRouter.patch("/withdrawal", auth, asyncWrap(withdrawalPoints));
 
 export default pointsRouter;
