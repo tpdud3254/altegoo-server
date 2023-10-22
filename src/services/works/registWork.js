@@ -40,24 +40,6 @@ export const registWork = async (req, res) => {
     const id = req.id;
 
     try {
-        //첫 등록시 포인트
-        const firstOrder = await prisma.user.findUnique({
-            where: { id },
-            select: {
-                order: true,
-                point: { select: { id: true, curPoint: true } },
-            },
-        });
-
-        console.log("firstOrder.order.length : ", firstOrder.order.length);
-
-        if (firstOrder.order.length === 0) {
-            const point = await prisma.point.update({
-                where: { id: firstOrder.point.id },
-                data: { curPoint: firstOrder.point.curPoint + 10000 },
-            });
-        }
-
         //작업등록
         const regist = await prisma.order.create({
             data: {
