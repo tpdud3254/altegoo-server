@@ -48,23 +48,22 @@ export const terminateWork = async (req, res) => {
                     where: { id: firstOrder.point.id },
                     data: { curPoint: firstOrder.point.curPoint + 10000 },
                 });
-            }
 
-            const firstOrderPointBreakdown = await prisma.pointBreakdown.create(
-                {
-                    data: {
-                        content: "최초 1회 작업 등록 포인트 적립",
-                        type: "적립",
-                        point: 10000,
-                        restPoint: firstOrder.point.curPoint + 10000,
-                        user: {
-                            connect: {
-                                id: work.userId,
+                const firstOrderPointBreakdown =
+                    await prisma.pointBreakdown.create({
+                        data: {
+                            content: "최초 1회 작업 등록 포인트 적립",
+                            type: "적립",
+                            point: 10000,
+                            restPoint: firstOrder.point.curPoint + 10000,
+                            user: {
+                                connect: {
+                                    id: work.userId,
+                                },
                             },
                         },
-                    },
-                }
-            );
+                    });
+            }
 
             //작업등록포인트 적립
             const registUserPoint = await prisma.point.findFirst({
