@@ -128,7 +128,7 @@ export const terminateWork = async (req, res) => {
                 where: { id: work.userId },
                 select: { recommendUserId: true },
             });
-
+            console.log("recommendUser : ", recommendUser);
             //추천회원이 있거나 알테구 계정이 아닐 때 적립
             if (
                 recommendUser &&
@@ -137,32 +137,33 @@ export const terminateWork = async (req, res) => {
             ) {
                 const recommendUserPoint = await prisma.point.findFirst({
                     where: { userId: recommendUser.recommendUserId },
-                    select: { curPoint: true },
                 });
 
-                const updateRecommendUserPoint = await prisma.point.update({
-                    where: { userId: recommendUser.recommendUserId },
-                    data: {
-                        curPoint:
-                            recommendUserPoint.curPoint +
-                            work.recommendationPoint,
-                    },
-                });
-
-                const recommendUserPointBreakdown =
-                    await prisma.pointBreakdown.create({
+                if (recommendUserPoint !== null) {
+                    const updateRecommendUserPoint = await prisma.point.update({
+                        where: { userId: recommendUser.recommendUserId },
                         data: {
-                            content: "추천인 포인트 적립",
-                            type: "적립",
-                            point: work.recommendationPoint,
-                            restPoint: updateRecommendUserPoint.curPoint,
-                            user: {
-                                connect: {
-                                    id: recommendUser.recommendUserId,
-                                },
-                            },
+                            curPoint:
+                                recommendUserPoint.curPoint +
+                                work.recommendationPoint,
                         },
                     });
+
+                    const recommendUserPointBreakdown =
+                        await prisma.pointBreakdown.create({
+                            data: {
+                                content: "추천인 포인트 적립",
+                                type: "적립",
+                                point: work.recommendationPoint,
+                                restPoint: updateRecommendUserPoint.curPoint,
+                                user: {
+                                    connect: {
+                                        id: recommendUser.recommendUserId,
+                                    },
+                                },
+                            },
+                        });
+                }
             }
 
             if (!registUser || !acceptUser) {
