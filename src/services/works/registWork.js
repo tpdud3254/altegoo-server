@@ -198,6 +198,12 @@ export const registWork = async (req, res) => {
                 orderId: regist.id,
             });
         } else {
+            console.log(
+                `${
+                    orderTime.getUTCMonth() + 1
+                }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`
+            );
+            //TODO: datetime UTC로 바꾸기
             process.emit("REGIST", {
                 msg: `${
                     orderTime.getMonth() + 1
