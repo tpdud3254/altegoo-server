@@ -19,7 +19,7 @@ export const removeOrder = async (req, res) => {
                 data: {
                     status: {
                         connect: {
-                            id: 7,
+                            id: 8,
                         },
                     },
                 },

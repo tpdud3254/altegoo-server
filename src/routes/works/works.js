@@ -34,7 +34,7 @@ worksRouter.patch("/status", auth, asyncWrap(setWorkStatus));
 worksRouter.post("/upload", auth, asyncWrap(registWork));
 
 //작업취소 //registUser
-worksRouter.patch("/remove", auth, asyncWrap(removeOrder));
+worksRouter.patch("/cancel", auth, asyncWrap(removeOrder));
 
 //작업예약 //acceptUser
 worksRouter.patch("/order/accept", auth, asyncWrap(acceptOrder));
