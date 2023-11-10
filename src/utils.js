@@ -209,7 +209,7 @@ const EXPO_PUSH_SERVER = "https://exp.host/--/api/v2/push/send";
 export const PUSH_SCHEDULE = [];
 
 const getOrders = async () => {
-    const now = new Date();
+    const now = GetCurrentDateTime();
     const results = [];
 
     const orders = await prisma.order.findMany({
@@ -237,15 +237,15 @@ const getOrders = async () => {
 
 const getHours = (dateTime, hours) => {
     const compareDateTime = new Date(dateTime);
-    compareDateTime.setHours(compareDateTime.getHours() - hours);
+    compareDateTime.setUTCHours(compareDateTime.getUTCHours() - hours);
 
     return compareDateTime;
 };
 
 const getMins = (dateTime, mins) => {
-    const now = new Date();
+    const now = GetCurrentDateTime();
     const compareDateTime = new Date(dateTime);
-    compareDateTime.setMinutes(compareDateTime.getMinutes() - mins);
+    compareDateTime.setUTCMinutes(compareDateTime.getUTCMinutes() - mins);
 
     if (now > compareDateTime) return false;
 
@@ -280,10 +280,10 @@ export const addPushForWorks = async (order) => {
     if (!pushToken) return;
 
     const orderDateTime = new Date(order.dateTime);
-    const orderMonth = orderDateTime.getMonth() + 1;
-    const orderDate = orderDateTime.getDate();
-    const orderHours = orderDateTime.getHours();
-    const orderMins = orderDateTime.getMinutes();
+    const orderMonth = orderDateTime.getUTCMonth() + 1;
+    const orderDate = orderDateTime.getUTCDate();
+    const orderHours = orderDateTime.getUTCHours();
+    const orderMins = orderDateTime.getUTCMinutes();
 
     const before24Hours = getHours(order.dateTime, 24);
     const before12Hours = getHours(order.dateTime, 12);
@@ -485,4 +485,14 @@ export const sendPushToAllUsers = async (title, body, data) => {
     } catch (error) {
         return false;
     }
+};
+
+export const GetCurrentDateTime = () => {
+    const curr = new Date();
+
+    const kr_curr = curr.setHours(curr.getHours() + 9);
+
+    const result = new Date(kr_curr);
+
+    return result;
 };

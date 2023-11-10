@@ -1,5 +1,6 @@
 import prisma from "../../prisma";
 import {
+    GetCurrentDateTime,
     checkRegistUser,
     getUserExpoToken,
     sendPushToUser,
@@ -61,6 +62,7 @@ export const terminateWork = async (req, res) => {
                                     id: work.userId,
                                 },
                             },
+                            date: GetCurrentDateTime(),
                         },
                     });
             }
@@ -90,6 +92,7 @@ export const terminateWork = async (req, res) => {
                                 id: work.userId,
                             },
                         },
+                        date: GetCurrentDateTime(),
                     },
                 }
             );
@@ -119,6 +122,7 @@ export const terminateWork = async (req, res) => {
                                 id: work.acceptUser,
                             },
                         },
+                        date: GetCurrentDateTime(),
                     },
                 }
             );
@@ -161,6 +165,7 @@ export const terminateWork = async (req, res) => {
                                         id: recommendUser.recommendUserId,
                                     },
                                 },
+                                date: GetCurrentDateTime(),
                             },
                         });
                 }

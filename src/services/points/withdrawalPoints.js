@@ -1,5 +1,5 @@
 import prisma from "../../prisma";
-import { setErrorJson, setResponseJson } from "../../utils";
+import { GetCurrentDateTime, setErrorJson, setResponseJson } from "../../utils";
 
 const COMMISSION = 1000;
 export const withdrawalPoints = async (req, res) => {
@@ -56,6 +56,7 @@ export const withdrawalPoints = async (req, res) => {
                         id: id,
                     },
                 },
+                date: GetCurrentDateTime(),
             },
         });
 
@@ -71,6 +72,7 @@ export const withdrawalPoints = async (req, res) => {
                         id: id,
                     },
                 },
+                date: GetCurrentDateTime(),
             },
         });
 

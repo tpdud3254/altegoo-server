@@ -1,5 +1,10 @@
 import prisma from "../../prisma";
-import { addPushForWorks, setErrorJson, setResponseJson } from "../../utils";
+import {
+    GetCurrentDateTime,
+    addPushForWorks,
+    setErrorJson,
+    setResponseJson,
+} from "../../utils";
 
 export const acceptOrder = async (req, res) => {
     const { id: orderId } = req.body;
@@ -8,7 +13,7 @@ export const acceptOrder = async (req, res) => {
     if (!orderId || !id) throw new Error("작업 상태를 변경할 수 없습니다.");
 
     try {
-        const now = new Date();
+        const now = GetCurrentDateTime();
 
         console.log("now : ", now);
         const orders = await prisma.order.findMany({

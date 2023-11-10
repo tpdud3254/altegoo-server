@@ -39,7 +39,7 @@ model User {
   pointBreakdown    PointBreakdown[] //포인트 내역
   order             Order[]
   orderReservation  OrderReservation[]
-  createdAt         DateTime           @default(now())
+  createdAt         DateTime
   updatedAt         DateTime           @updatedAt
   pushToken         String?
 }
@@ -94,7 +94,7 @@ model Point {
 
 model PointBreakdown {
   id        Int      @id @default(autoincrement())
-  date      DateTime @default(now()) //충전, 출금, 적립, 사용 날짜
+  date      DateTime //충전, 출금, 적립, 사용 날짜
   content   String //포인트 내역 내용
   type      String //충전, 출금, 적립, 사용
   point     Int //거래 포인트
@@ -115,7 +115,7 @@ model Order {
   registUser          User               @relation(fields: [userId], references: [id]) //등록자
   userId              Int
   acceptUser          Int? //작업자
-  createdAt           DateTime           @default(now()) //등록날짜, 시간
+  createdAt           DateTime //등록날짜, 시간
   vehicleType         String //1:사다리차 2:스카이차
   direction           String? //올림, 내림, 양사
   floor               String? //작업 층 (올림, 내림일 경우)

@@ -1,5 +1,10 @@
 import prisma from "../../prisma";
-import { sendPushToUsers, setErrorJson, setResponseJson } from "../../utils";
+import {
+    GetCurrentDateTime,
+    sendPushToUsers,
+    setErrorJson,
+    setResponseJson,
+} from "../../utils";
 
 export const registWork = async (req, res) => {
     const {
@@ -79,6 +84,7 @@ export const registWork = async (req, res) => {
                     orderPrice * 1.1 - orderPrice * 0.02 - registPoint
                 ),
                 status: { connect: { id: 1 } },
+                createdAt: GetCurrentDateTime(),
             },
         });
 
@@ -142,8 +148,8 @@ export const registWork = async (req, res) => {
                 expoTokenList,
                 "긴급 작업 요청",
                 `${
-                    orderTime.getMonth() + 1
-                }월 ${orderTime.getDate()}일 ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                    orderTime.getUTCMonth() + 1
+                }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
                 {
                     type: "REGIST",
                     screen: "OrderDetails",
@@ -174,8 +180,8 @@ export const registWork = async (req, res) => {
                 expoTokenList,
                 "작업 요청",
                 `${
-                    orderTime.getMonth() + 1
-                }월 ${orderTime.getDate()}일 ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                    orderTime.getUTCMonth() + 1
+                }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
                 {
                     type: "REGIST",
                     screen: "Home",
@@ -192,22 +198,16 @@ export const registWork = async (req, res) => {
         if (emergency) {
             process.emit("REGIST", {
                 msg: `긴급 작업이 등록되었습니다.            ${
-                    orderTime.getMonth() + 1
-                }월 ${orderTime.getDate()}일 ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                    orderTime.getUTCMonth() + 1
+                }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
                 userId: id,
                 orderId: regist.id,
             });
         } else {
-            console.log(
-                `${
-                    orderTime.getUTCMonth() + 1
-                }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`
-            );
-            //TODO: datetime UTC로 바꾸기
             process.emit("REGIST", {
                 msg: `${
-                    orderTime.getMonth() + 1
-                }월 ${orderTime.getDate()}일 ${orderTime.getHours()}시 ${orderTime.getMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                    orderTime.getUTCMonth() + 1
+                }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
                 userId: id,
                 orderId: regist.id,
             });
