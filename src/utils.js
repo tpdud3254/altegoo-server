@@ -227,7 +227,7 @@ const getOrders = async () => {
     });
 
     orders.map((order) => {
-        const orderDate = new Date(order.workDateTime);
+        const orderDate = new Date(order.dateTime);
 
         if (now < orderDate) results.push(order);
     });
@@ -235,16 +235,16 @@ const getOrders = async () => {
     return results;
 };
 
-const getHours = (workDateTime, hours) => {
-    const compareDateTime = new Date(workDateTime);
+const getHours = (dateTime, hours) => {
+    const compareDateTime = new Date(dateTime);
     compareDateTime.setHours(compareDateTime.getHours() - hours);
 
     return compareDateTime;
 };
 
-const getMins = (workDateTime, mins) => {
+const getMins = (dateTime, mins) => {
     const now = new Date();
-    const compareDateTime = new Date(workDateTime);
+    const compareDateTime = new Date(dateTime);
     compareDateTime.setMinutes(compareDateTime.getMinutes() - mins);
 
     if (now > compareDateTime) return false;
@@ -279,17 +279,17 @@ export const addPushForWorks = async (order) => {
 
     if (!pushToken) return;
 
-    const orderDateTime = new Date(order.workDateTime);
+    const orderDateTime = new Date(order.dateTime);
     const orderMonth = orderDateTime.getMonth() + 1;
     const orderDate = orderDateTime.getDate();
     const orderHours = orderDateTime.getHours();
     const orderMins = orderDateTime.getMinutes();
 
-    const before24Hours = getHours(order.workDateTime, 24);
-    const before12Hours = getHours(order.workDateTime, 12);
-    const before2Hours = getHours(order.workDateTime, 2);
-    const before10Mins = getMins(order.workDateTime, 10);
-    const after5Hours = getHours(order.workDateTime, -5);
+    const before24Hours = getHours(order.dateTime, 24);
+    const before12Hours = getHours(order.dateTime, 12);
+    const before2Hours = getHours(order.dateTime, 2);
+    const before10Mins = getMins(order.dateTime, 10);
+    const after5Hours = getHours(order.dateTime, -5);
 
     const schedules = [];
 
