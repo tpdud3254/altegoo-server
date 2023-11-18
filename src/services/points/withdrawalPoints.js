@@ -17,6 +17,8 @@ export const withdrawalPoints = async (req, res) => {
                             },
                             { orderStatusId: 6 },
                         ],
+                    },
+                    {
                         AND: [
                             {
                                 acceptUser: id,
@@ -28,6 +30,8 @@ export const withdrawalPoints = async (req, res) => {
             },
         });
 
+        console.log("user id : ", id);
+        console.log("withdrwal point orderCount : ", orderCount);
         if (orderCount <= 0) {
             throw new Error(
                 "가입 시 지급된 포인트는 최초 1회 작업 완료 시 출금이 가능합니다."
