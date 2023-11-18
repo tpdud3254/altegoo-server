@@ -34,38 +34,38 @@ export const terminateWork = async (req, res) => {
             });
 
             //첫 등록시 포인트 적립
-            const firstOrder = await prisma.user.findUnique({
-                where: { id: work.userId },
-                select: {
-                    order: true,
-                    point: { select: { id: true, curPoint: true } },
-                },
-            });
+            // const firstOrder = await prisma.user.findUnique({
+            //     where: { id: work.userId },
+            //     select: {
+            //         order: true,
+            //         point: { select: { id: true, curPoint: true } },
+            //     },
+            // });
 
-            console.log("firstOrder.order.length : ", firstOrder.order.length);
+            // console.log("firstOrder.order.length : ", firstOrder.order.length);
 
-            if (firstOrder.order.length === 1) {
-                const point = await prisma.point.update({
-                    where: { id: firstOrder.point.id },
-                    data: { curPoint: firstOrder.point.curPoint + 10000 },
-                });
+            // if (firstOrder.order.length === 1) {
+            //     const point = await prisma.point.update({
+            //         where: { id: firstOrder.point.id },
+            //         data: { curPoint: firstOrder.point.curPoint + 10000 },
+            //     });
 
-                const firstOrderPointBreakdown =
-                    await prisma.pointBreakdown.create({
-                        data: {
-                            content: "최초 1회 작업 등록 포인트 적립",
-                            type: "적립",
-                            point: 10000,
-                            restPoint: firstOrder.point.curPoint + 10000,
-                            user: {
-                                connect: {
-                                    id: work.userId,
-                                },
-                            },
-                            date: GetCurrentDateTime(),
-                        },
-                    });
-            }
+            //     const firstOrderPointBreakdown =
+            //         await prisma.pointBreakdown.create({
+            //             data: {
+            //                 content: "최초 1회 작업 등록 포인트 적립",
+            //                 type: "적립",
+            //                 point: 10000,
+            //                 restPoint: firstOrder.point.curPoint + 10000,
+            //                 user: {
+            //                     connect: {
+            //                         id: work.userId,
+            //                     },
+            //                 },
+            //                 date: GetCurrentDateTime(),
+            //             },
+            //         });
+            // }
 
             //작업등록포인트 적립
             const registUserPoint = await prisma.point.findFirst({
