@@ -10,7 +10,7 @@ import {
 
 export const pushTest = async (req, res) => {
     const response = await sendPushToUser(
-        "ExponentPushToken[slWqrXLEfeSOp2X9uJImwc]",
+        "ExponentPushToken[f8esQ2K9rAkpY_u9Xh4X00]",
         "send?",
         "send!",
         { type: "REGIST" }

@@ -91,6 +91,7 @@ export const registWork = async (req, res) => {
         if (!regist) throw new Error("작업 등록에 실패하였습니다.");
 
         //사용한 포인트 차감
+        //TODO: 다음에 내역 추가
         const setPoint =
             usePoint &&
             usePoint > 0 &&

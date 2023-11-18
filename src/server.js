@@ -35,6 +35,7 @@ app.use(cors());
 //   res.end("ok");
 // });
 
+//TODO: 사용하지 않는 API 정리
 app.get("/", (_, res) => res.status(200).json({ result: true }));
 app.use("/users", usersRouter);
 app.use("/works", worksRouter);
