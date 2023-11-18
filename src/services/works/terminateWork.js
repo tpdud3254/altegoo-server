@@ -179,8 +179,8 @@ export const terminateWork = async (req, res) => {
 
             sendPushToUser(
                 await getUserExpoToken(work.acceptUser),
-                "작업이 완료 되었습니다.",
-                "포인트가 지급 되었습니다."
+                "작업 완료",
+                "작업이 완료 되었습니다."
             );
 
             const workList = await prisma.order.findMany({

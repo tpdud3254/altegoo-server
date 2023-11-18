@@ -298,9 +298,7 @@ export const addPushForWorks = async (order) => {
             const push = await sendPushToUser(
                 pushToken,
                 "작업 시작 예정",
-                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${getRegionToString(
-                    order.regionId
-                )}지역의 작업이 24시간 뒤 시작될 예정입니다.`
+                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${order.simpleAddress1} 작업이 24시간 뒤 시작될 예정입니다.`
             );
         });
 
@@ -312,9 +310,7 @@ export const addPushForWorks = async (order) => {
             const push = await sendPushToUser(
                 pushToken,
                 "작업 시작 예정",
-                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${getRegionToString(
-                    order.regionId
-                )}지역의 작업이 12시간 뒤 시작될 예정입니다.`
+                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${order.simpleAddress1} 작업이 12시간 뒤 시작될 예정입니다.`
             );
         });
 
@@ -326,9 +322,7 @@ export const addPushForWorks = async (order) => {
             const push = await sendPushToUser(
                 pushToken,
                 "작업 시작 예정",
-                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${getRegionToString(
-                    order.regionId
-                )}지역의 작업이 2시간 뒤 시작될 예정입니다.`,
+                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${order.simpleAddress1} 작업이 2시간 뒤 시작될 예정입니다.`,
                 { screen: "OrderProgress", order }
             );
         });
@@ -340,9 +334,7 @@ export const addPushForWorks = async (order) => {
             const push = await sendPushToUser(
                 pushToken,
                 "작업 시작 예정",
-                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${getRegionToString(
-                    order.regionId
-                )}지역의 작업이 10분 뒤 시작될 예정입니다.`,
+                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${order.simpleAddress1} 작업이 10분 뒤 시작될 예정입니다.`,
                 { screen: "OrderProgress", order }
             );
         });
@@ -353,8 +345,8 @@ export const addPushForWorks = async (order) => {
     const startAtTimeJob = scheduleJob(orderDateTime, async function () {
         const push = await sendPushToUser(
             pushToken,
-            "작업 시작",
-            "작업 시작을 누르고 작업을 시작해 주세요.",
+            "작업 시간 입니다.",
+            "작업 시작이 되지 않았으면 작업 시작을 눌러주세요.",
             { screen: "OrderProgress", order }
         );
     });
@@ -364,7 +356,7 @@ export const addPushForWorks = async (order) => {
     const after5HoursJob = scheduleJob(after5Hours, async function () {
         const push = await sendPushToUser(
             pushToken,
-            "작업 진행 중 이신가요?",
+            "아직 작업 중이신가요?",
             "작업이 완료되면 작업 완료를 눌러주세요.",
             { screen: "OrderProgress", order }
         );
