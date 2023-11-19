@@ -180,7 +180,8 @@ export const terminateWork = async (req, res) => {
             sendPushToUser(
                 await getUserExpoToken(work.acceptUser),
                 "작업 완료",
-                "작업이 완료 되었습니다."
+                "작업이 완료 되었습니다.",
+                { screen: "OrderDetails", orderId: work.id }
             );
 
             const workList = await prisma.order.findMany({

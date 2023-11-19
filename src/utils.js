@@ -228,8 +228,9 @@ const getOrders = async () => {
 
     orders.map((order) => {
         const orderDate = new Date(order.dateTime);
-
-        if (now < orderDate) results.push(order);
+        const diff = now.getHours() - orderDate.getHours();
+        console.log("diff : ", diff);
+        if (now < orderDate || diff < 6) results.push(order);
     });
 
     return results;
@@ -268,6 +269,14 @@ export const initPushForWorks = async () => {
 
     await Promise.all(
         orders.map(async (order) => {
+            const isExist = PUSH_SCHEDULE.findIndex(
+                (e) => e.orderId === order.id
+            );
+            if (isExist !== -1) {
+                console.log("이미 있음 ", isExist);
+                return;
+            }
+
             await addPushForWorks(order);
         })
     );
@@ -291,76 +300,108 @@ export const addPushForWorks = async (order) => {
     const before10Mins = getMins(order.dateTime, 10);
     const after5Hours = getHours(order.dateTime, -5);
 
+    console.log("kr before24Hours : ", GetDateTime(before24Hours));
+    console.log("kr before12Hours : ", GetDateTime(before12Hours));
+    console.log("kr before2Hours : ", GetDateTime(before2Hours));
+    console.log("kr before10Mins : ", GetDateTime(before10Mins));
+    console.log("kr after5Hours : ", GetDateTime(after5Hours));
+
+    console.log("before24Hours : ", before24Hours);
+    console.log("before12Hours : ", before12Hours);
+    console.log("before2Hours : ", before2Hours);
+    console.log("before10Mins : ", before10Mins);
+    console.log("after5Hours : ", after5Hours);
+
     const schedules = [];
 
     if (before24Hours) {
-        const before24HoursJob = scheduleJob(before24Hours, async function () {
-            const push = await sendPushToUser(
-                pushToken,
-                "작업 시작 예정",
-                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${order.simpleAddress1} 작업이 24시간 뒤 시작될 예정입니다.`
-            );
-        });
+        const before24HoursJob = scheduleJob(
+            GetDateTime(before24Hours),
+            async function () {
+                const push = await sendPushToUser(
+                    pushToken,
+                    "작업 시작 예정",
+                    `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${order.simpleAddress1} 작업이 24시간 뒤 시작될 예정입니다.`,
+                    { screen: "DriverOrderProgress", orderId: order.id }
+                );
+            }
+        );
 
         if (before24HoursJob) schedules.push(before24HoursJob);
     }
 
     if (before12Hours) {
-        const before12HoursJob = scheduleJob(before12Hours, async function () {
-            const push = await sendPushToUser(
-                pushToken,
-                "작업 시작 예정",
-                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${order.simpleAddress1} 작업이 12시간 뒤 시작될 예정입니다.`
-            );
-        });
+        const before12HoursJob = scheduleJob(
+            GetDateTime(before12Hours),
+            async function () {
+                const push = await sendPushToUser(
+                    pushToken,
+                    "작업 시작 예정",
+                    `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${order.simpleAddress1} 작업이 12시간 뒤 시작될 예정입니다.`,
+                    { screen: "DriverOrderProgress", orderId: order.id }
+                );
+            }
+        );
 
         if (before12HoursJob) schedules.push(before12HoursJob);
     }
 
     if (before2Hours) {
-        const before2HoursJob = scheduleJob(before2Hours, async function () {
-            const push = await sendPushToUser(
-                pushToken,
-                "작업 시작 예정",
-                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${order.simpleAddress1} 작업이 2시간 뒤 시작될 예정입니다.`,
-                { screen: "OrderProgress", order }
-            );
-        });
+        const before2HoursJob = scheduleJob(
+            GetDateTime(before2Hours),
+            async function () {
+                const push = await sendPushToUser(
+                    pushToken,
+                    "작업 시작 예정",
+                    `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${order.simpleAddress1} 작업이 2시간 뒤 시작될 예정입니다.`,
+                    { screen: "DriverOrderProgress", orderId: order.id }
+                );
+            }
+        );
         if (before2HoursJob) schedules.push(before2HoursJob);
     }
 
     if (before10Mins) {
-        const before10MinsJob = scheduleJob(before10Mins, async function () {
-            const push = await sendPushToUser(
-                pushToken,
-                "작업 시작 예정",
-                `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${order.simpleAddress1} 작업이 10분 뒤 시작될 예정입니다.`,
-                { screen: "OrderProgress", order }
-            );
-        });
+        const before10MinsJob = scheduleJob(
+            GetDateTime(before10Mins),
+            async function () {
+                const push = await sendPushToUser(
+                    pushToken,
+                    "작업 시작 예정",
+                    `${orderMonth}월 ${orderDate}일 ${orderHours}시 ${orderMins}분 ${order.simpleAddress1} 작업이 10분 뒤 시작될 예정입니다.`,
+                    { screen: "DriverOrderProgress", orderId: order.id }
+                );
+            }
+        );
 
         if (before10MinsJob) schedules.push(before10MinsJob);
     }
 
-    const startAtTimeJob = scheduleJob(orderDateTime, async function () {
-        const push = await sendPushToUser(
-            pushToken,
-            "작업 시간 입니다.",
-            "작업 시작이 되지 않았으면 작업 시작을 눌러주세요.",
-            { screen: "OrderProgress", order }
-        );
-    });
+    const startAtTimeJob = scheduleJob(
+        GetDateTime(orderDateTime),
+        async function () {
+            const push = await sendPushToUser(
+                pushToken,
+                "작업 시간 입니다.",
+                "작업 시작이 되지 않았으면 작업 시작을 눌러주세요.",
+                { screen: "DriverOrderProgress", orderId: order.id }
+            );
+        }
+    );
 
     if (startAtTimeJob) schedules.push(startAtTimeJob);
 
-    const after5HoursJob = scheduleJob(after5Hours, async function () {
-        const push = await sendPushToUser(
-            pushToken,
-            "아직 작업 중이신가요?",
-            "작업이 완료되면 작업 완료를 눌러주세요.",
-            { screen: "OrderProgress", order }
-        );
-    });
+    const after5HoursJob = scheduleJob(
+        GetDateTime(after5Hours),
+        async function () {
+            const push = await sendPushToUser(
+                pushToken,
+                "아직 작업 중이신가요?",
+                "작업이 완료되면 작업 완료를 눌러주세요.",
+                { screen: "DriverOrderProgress", orderId: order.id }
+            );
+        }
+    );
 
     if (after5HoursJob) schedules.push(after5HoursJob);
 
@@ -483,6 +524,16 @@ export const GetCurrentDateTime = () => {
     const curr = new Date();
 
     const kr_curr = curr.setHours(curr.getHours() + 9);
+
+    const result = new Date(kr_curr);
+
+    return result;
+};
+
+export const GetDateTime = (datetime) => {
+    const curr = new Date(datetime);
+
+    const kr_curr = curr.setHours(curr.getHours() - 9);
 
     const result = new Date(kr_curr);
 

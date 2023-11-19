@@ -111,3 +111,7 @@ httpServer.listen(PORT, handleListen);
 
 gracefulShutdown();
 initPushForWorks();
+
+setInterval(() => {
+    initPushForWorks();
+}, 1000 * 60 * 10);

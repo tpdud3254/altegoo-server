@@ -40,7 +40,7 @@ export const doneWork = async (req, res) => {
                 await getUserExpoToken(updatedOrder.registUser.id),
                 "완료된 작업이 있습니다.",
                 "작업을 최종 완료해주세요.",
-                { screen: "CompleteOrder", order: updatedOrder }
+                { screen: "OrderProgress", orderId: updatedOrder.id }
             );
 
             const workList = await prisma.order.findMany({

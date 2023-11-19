@@ -134,6 +134,7 @@ export const registWork = async (req, res) => {
             },
         });
 
+        console.log("push user : ", users);
         const orderTime = new Date(dateTime);
 
         const expoTokenList = [];
@@ -163,20 +164,23 @@ export const registWork = async (req, res) => {
             console.log(pushResponse);
         } else {
             users.map((value, index) => {
-                if (value.workRegion.length > 0) {
-                    let correctRegion = false;
+                //TODO: 작업 지역에 따라 울리기
+                // if (value.workRegion.length > 0) {
+                //     let correctRegion = false;
 
-                    value.workRegion.map((region) => {
-                        if (region.id === region) correctRegion = true;
-                    });
+                //     value.workRegion.map((region) => {
+                //         if (region.id === region) correctRegion = true;
+                //     });
 
-                    if (correctRegion) {
-                        if (value.pushToken)
-                            expoTokenList.push(value.pushToken);
-                    }
-                }
+                //     if (correctRegion) {
+                //         if (value.pushToken)
+                //             expoTokenList.push(value.pushToken);
+                //     }
+                // }
+                if (value.pushToken) expoTokenList.push(value.pushToken);
             });
 
+            console.log("expoTokenList : ", expoTokenList);
             const pushResponse = await sendPushToUsers(
                 expoTokenList,
                 "작업 요청",
@@ -184,9 +188,7 @@ export const registWork = async (req, res) => {
                     orderTime.getUTCMonth() + 1
                 }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
                 {
-                    type: "REGIST",
-                    screen: "Home",
-                    userId: id,
+                    screen: "OrderDetails",
                     orderId: regist.id,
                 }
             );

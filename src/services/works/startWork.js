@@ -41,7 +41,8 @@ export const startWork = async (req, res) => {
             const push = await sendPushToUser(
                 pushToken,
                 "작업 시작",
-                "작업이 시작되었습니다."
+                "작업이 시작되었습니다.",
+                { screen: "OrderProgress", orderId: updatedOrder.id }
             );
 
             const workList = await prisma.order.findMany({
