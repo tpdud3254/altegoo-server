@@ -156,27 +156,27 @@ export const createAccount = async (req, res) => {
                 },
             });
 
-            //기사 회원 가입 시 10000포인트 적립
-            const point = await prisma.point.update({
-                where: { userId: user.id },
-                data: { curPoint: 10000 },
-            });
+            //기사 회원 가입 시 10000포인트 적립 (삭제)
+            //     const point = await prisma.point.update({
+            //         where: { userId: user.id },
+            //         data: { curPoint: 10000 },
+            //     });
 
-            const firstCreateUser = await prisma.pointBreakdown.create({
-                data: {
-                    content: "첫 가입 포인트 적립",
-                    type: "적립",
-                    point: 10000,
-                    restPoint: 10000,
-                    user: {
-                        connect: {
-                            id: user.id,
-                        },
-                    },
-                    date: GetCurrentDateTime(),
-                },
-            });
-        } else {
+            //     const firstCreateUser = await prisma.pointBreakdown.create({
+            //         data: {
+            //             content: "첫 가입 포인트 적립",
+            //             type: "적립",
+            //             point: 10000,
+            //             restPoint: 10000,
+            //             user: {
+            //                 connect: {
+            //                     id: user.id,
+            //                 },
+            //             },
+            //             date: GetCurrentDateTime(),
+            //         },
+            //     });
+            // } else {
             //기업회원
             user = await prisma.user.create({
                 data: {
