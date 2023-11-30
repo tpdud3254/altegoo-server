@@ -7,7 +7,7 @@ export const getMyWorkList = async (req, res) => {
     console.log(id);
     try {
         const order = await prisma.order.findMany({
-            where: { userId: id },
+            where: { AND: [{ userId: id }, { orderStatusId: { lt: 8 } }] },
             include: {
                 registUser: { select: { id: true } },
                 orderReservation: true,
