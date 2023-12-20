@@ -1,5 +1,9 @@
 import prisma from "../../../prisma";
-import { setErrorJson, setResponseJson } from "../../../utils";
+import {
+    GetCurrentDateTime,
+    setErrorJson,
+    setResponseJson,
+} from "../../../utils";
 
 export const subtractPoints = async (req, res) => {
     const { pointList } = req.body;
@@ -10,13 +14,32 @@ export const subtractPoints = async (req, res) => {
             const point = await Promise.all(
                 pointList.map(async (value, index) => {
                     const point = await prisma.point.update({
-                        where: { id: value.id },
+                        where: { id: value.pointId },
                         data: {
                             curPoint: Number(value.point),
                         },
                     });
 
                     result.push(point);
+
+                    if (point) {
+                        //포인트 차감 내역
+                        const pointBreakdown =
+                            await prisma.pointBreakdown.create({
+                                data: {
+                                    content: "통신비 차감",
+                                    type: "사용",
+                                    point: Number(value.subtractPoint),
+                                    restPoint: Number(value.point),
+                                    user: {
+                                        connect: {
+                                            id: Number(value.userId),
+                                        },
+                                    },
+                                    date: GetCurrentDateTime(),
+                                },
+                            });
+                    }
                 })
             );
         }
