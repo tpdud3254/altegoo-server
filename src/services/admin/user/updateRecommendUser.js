@@ -2,34 +2,47 @@ import prisma from "../../../prisma";
 import { setErrorJson, setResponseJson } from "../../../utils";
 
 export const updateRecommendUser = async (req, res) => {
-  const { id, userId } = req.body;
+    const { id, userId } = req.body;
 
-  console.log(id, userId);
-  try {
-    const recommendUser = await prisma.user.findFirst({
-      where: {
-        userId,
-      },
-    });
+    console.log(id, userId);
+    try {
+        if (userId === 1) {
+            const result = await prisma.user.update({
+                where: { id },
+                data: { recommendUserId: 1 },
+            });
 
-    console.log(recommendUser);
+            res.json(
+                setResponseJson({ recommendUser: { id: 1, name: "알테구" } })
+            );
+        } else {
+            const recommendUser = await prisma.user.findFirst({
+                where: {
+                    id: userId,
+                },
+            });
 
-    if (!recommendUser) throw new Error("유효하지 않은 추천인 입니다.");
-    if (recommendUser.id === id)
-      throw new Error("해당 유저와 추천인이 같습니다. 다시 입력해주세요.");
+            console.log(recommendUser);
 
-    const result = await prisma.user.update({
-      where: { id },
-      data: { recommendUserId: recommendUser.id },
-    });
+            if (!recommendUser) throw new Error("유효하지 않은 추천인 입니다.");
+            if (recommendUser.id === id)
+                throw new Error(
+                    "해당 유저와 추천인이 같습니다. 다시 입력해주세요."
+                );
 
-    console.log(result);
+            const result = await prisma.user.update({
+                where: { id },
+                data: { recommendUserId: recommendUser.id },
+            });
 
-    if (!result) throw new Error("추천인 변경에 실패하였습니다.");
+            console.log(result);
 
-    res.json(setResponseJson({ user: result }));
-  } catch (error) {
-    console.log(error.message);
-    res.json(setErrorJson(error.message));
-  }
+            if (!result) throw new Error("추천인 변경에 실패하였습니다.");
+
+            res.json(setResponseJson({ recommendUser: recommendUser }));
+        }
+    } catch (error) {
+        console.log(error.message);
+        res.json(setErrorJson(error.message));
+    }
 };

@@ -11,10 +11,12 @@ import { deleteUsers } from "../../services/admin/user/deleteUsers";
 import { modifyLicense } from "../../services/admin/user/modifyLicense";
 import { modifyPermission } from "../../services/admin/user/modifyPermission";
 import { modifyVehicle } from "../../services/admin/vehicle/modifyVehicle";
+import { getUserWithPhone } from "../../services/admin/user/getUserWithPhone";
 
 const adminRouter = express.Router();
 
 adminRouter.get("/user", getUser);
+adminRouter.get("/user/phone", getUserWithPhone);
 adminRouter.get("/users", getUsers);
 adminRouter.get("/vehicle/floor", getVehleFloor);
 adminRouter.get("/vehicle/weight", getVehleWeight);
