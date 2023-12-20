@@ -20,6 +20,12 @@ export const deleteUsers = async (req, res) => {
                         where: { userId: Number(value.userId) },
                     });
 
+                    const recommend = await prisma.user.updateMany({
+                        where: { recommendUserId: Number(value.userId) },
+                        data: {
+                            recommendUserId: 1,
+                        },
+                    });
                     const user = await prisma.user.delete({
                         where: { id: Number(value.userId) },
                     });

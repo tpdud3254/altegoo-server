@@ -43,14 +43,19 @@ const getUser = async (req, res) => {
                 });
 
                 list = {
-                    recommendUserList: recommend,
-                    myRecommendUser: [recommendUser],
+                    recommendUserList:
+                        !recommend || recommend.length === 0 ? [] : recommend,
+                    myRecommendUser:
+                        !recommendUser || recommendUser.length === 0
+                            ? []
+                            : [recommendUser],
                     ...(await getUserRestInfo(user)),
                     ...user,
                 };
             } else {
                 list = {
-                    recommendUserList: recommend,
+                    recommendUserList:
+                        !recommend || recommend.length === 0 ? [] : recommend,
                     myRecommendUser: [{ id: 1, name: "알테구" }],
                     ...(await getUserRestInfo(user)),
                     ...user,
@@ -58,8 +63,9 @@ const getUser = async (req, res) => {
             }
         } else {
             list = {
-                recommendUserList: recommend,
-                myRecommendUser: [],
+                recommendUserList:
+                    !recommend || recommend.length === 0 ? [] : recommend,
+                myRecommendUser: [{ id: 1, name: "알테구" }],
                 ...(await getUserRestInfo(user)),
                 ...user,
             };
