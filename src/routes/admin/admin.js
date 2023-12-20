@@ -5,9 +5,11 @@ import getUsers from "../../services/admin/user/gerUsers";
 import { updateRecommendUser } from "../../services/admin/user/updateRecommendUser";
 import getVehleFloor from "../../services/admin/vehicle/getVehleFloor";
 import getVehleWeight from "../../services/admin/vehicle/getVehleWeight";
+import getUser from "../../services/admin/user/getUser";
 
 const adminRouter = express.Router();
 
+adminRouter.get("/user", getUser);
 adminRouter.get("/users", getUsers);
 adminRouter.get("/vehicle/floor", getVehleFloor);
 adminRouter.get("/vehicle/weight", getVehleWeight);
