@@ -10,6 +10,7 @@ import { subtractPoints } from "../../services/admin/points/subtractPoints";
 import { deleteUsers } from "../../services/admin/user/deleteUsers";
 import { modifyLicense } from "../../services/admin/user/modifyLicense";
 import { modifyPermission } from "../../services/admin/user/modifyPermission";
+import { modifyVehicle } from "../../services/admin/vehicle/modifyVehicle";
 
 const adminRouter = express.Router();
 
@@ -25,6 +26,7 @@ adminRouter.post("/upload/permission", modifyPermission);
 adminRouter.patch("/points", updateCurPoints);
 adminRouter.patch("/points/subtract", subtractPoints);
 adminRouter.patch("/recommend", updateRecommendUser);
+adminRouter.patch("/vehicle", modifyVehicle);
 
 adminRouter.delete("/users/delete", deleteUsers);
 
