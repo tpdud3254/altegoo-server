@@ -12,12 +12,14 @@ import { modifyLicense } from "../../services/admin/user/modifyLicense";
 import { modifyPermission } from "../../services/admin/user/modifyPermission";
 import { modifyVehicle } from "../../services/admin/vehicle/modifyVehicle";
 import { getUserWithPhone } from "../../services/admin/user/getUserWithPhone";
+import getMembershipUsers from "../../services/admin/user/getMembershipUsers";
 
 const adminRouter = express.Router();
 
 adminRouter.get("/user", getUser);
 adminRouter.get("/user/phone", getUserWithPhone);
 adminRouter.get("/users", getUsers);
+adminRouter.get("/users/membership", getMembershipUsers);
 adminRouter.get("/vehicle/floor", getVehleFloor);
 adminRouter.get("/vehicle/weight", getVehleWeight);
 
