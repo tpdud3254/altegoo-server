@@ -42,6 +42,7 @@ model User {
   createdAt         DateTime
   updatedAt         DateTime           @updatedAt
   pushToken         String?
+  membership        Boolean            @default(false)
 }
 
 model UserType {

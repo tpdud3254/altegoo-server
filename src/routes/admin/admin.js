@@ -6,6 +6,7 @@ import { updateRecommendUser } from "../../services/admin/user/updateRecommendUs
 import getVehleFloor from "../../services/admin/vehicle/getVehleFloor";
 import getVehleWeight from "../../services/admin/vehicle/getVehleWeight";
 import getUser from "../../services/admin/user/getUser";
+import { subtractPoints } from "../../services/admin/points/subtractPoints";
 
 const adminRouter = express.Router();
 
@@ -14,6 +15,7 @@ adminRouter.get("/users", getUsers);
 adminRouter.get("/vehicle/floor", getVehleFloor);
 adminRouter.get("/vehicle/weight", getVehleWeight);
 adminRouter.patch("/points", updateCurPoints);
+adminRouter.patch("/points/subtract", subtractPoints);
 adminRouter.patch("/recommend", updateRecommendUser);
 adminRouter.post("/notice/add", addNotice);
 
