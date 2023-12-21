@@ -120,6 +120,7 @@ model Order {
   userId              Int
   acceptUser          Int? //작업자
   createdAt           DateTime //등록날짜, 시간
+  updatedAt           DateTime?          @updatedAt
   vehicleType         String //1:사다리차 2:스카이차
   direction           String? //올림, 내림, 양사
   floor               String? //작업 층 (올림, 내림일 경우)
