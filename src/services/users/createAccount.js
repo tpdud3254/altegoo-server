@@ -165,7 +165,7 @@ export const createAccount = async (req, res) => {
             //     const firstCreateUser = await prisma.pointBreakdown.create({
             //         data: {
             //             content: "첫 가입 포인트 적립",
-            //             type: "적립",
+            //             type: "지급",
             //             point: 10000,
             //             restPoint: 10000,
             //             user: {

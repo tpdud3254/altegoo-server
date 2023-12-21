@@ -54,7 +54,7 @@ export const terminateWork = async (req, res) => {
             //         await prisma.pointBreakdown.create({
             //             data: {
             //                 content: "최초 1회 작업 등록 포인트 적립",
-            //                 type: "적립",
+            //                 type: "지급",
             //                 point: 10000,
             //                 restPoint: firstOrder.point.curPoint + 10000,
             //                 user: {
@@ -84,7 +84,7 @@ export const terminateWork = async (req, res) => {
                 {
                     data: {
                         content: "작업 등록 포인트 적립",
-                        type: "적립",
+                        type: "지급",
                         point: work.registPoint,
                         restPoint: registUser.curPoint,
                         user: {
@@ -114,7 +114,7 @@ export const terminateWork = async (req, res) => {
                 {
                     data: {
                         content: "작업 완료 포인트 적립",
-                        type: "적립",
+                        type: "지급",
                         point: work.orderPoint,
                         restPoint: acceptUser.curPoint,
                         user: {
@@ -157,7 +157,7 @@ export const terminateWork = async (req, res) => {
                         await prisma.pointBreakdown.create({
                             data: {
                                 content: "추천인 포인트 적립",
-                                type: "적립",
+                                type: "지급",
                                 point: work.recommendationPoint,
                                 restPoint: updateRecommendUserPoint.curPoint,
                                 user: {

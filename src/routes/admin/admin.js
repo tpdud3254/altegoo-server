@@ -15,6 +15,7 @@ import { getUserWithPhone } from "../../services/admin/user/getUserWithPhone";
 import getMembershipUsers from "../../services/admin/user/getMembershipUsers";
 import getOrders from "../../services/admin/order/getOrders";
 import { cancelOrder } from "../../services/admin/order/cancelOrder";
+import getWithdrawalList from "../../services/admin/points/getWithdrawalList";
 
 const adminRouter = express.Router();
 
@@ -25,6 +26,7 @@ adminRouter.get("/users/membership", getMembershipUsers);
 adminRouter.get("/vehicle/floor", getVehleFloor);
 adminRouter.get("/vehicle/weight", getVehleWeight);
 adminRouter.get("/orders", getOrders);
+adminRouter.get("/withdrawal", getWithdrawalList);
 
 adminRouter.post("/notice/add", addNotice);
 adminRouter.post("/upload/license", modifyLicense);

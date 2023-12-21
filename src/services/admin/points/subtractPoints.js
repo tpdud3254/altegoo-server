@@ -47,7 +47,7 @@ export const subtractPoints = async (req, res) => {
                                     content: pointList.text
                                         ? pointList.text
                                         : "통신비 차감",
-                                    type: "사용",
+                                    type: "차감",
                                     point: Number(value.subtractPoint),
                                     restPoint: Number(value.point),
                                     user: {
