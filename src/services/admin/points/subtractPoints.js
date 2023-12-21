@@ -23,11 +23,30 @@ export const subtractPoints = async (req, res) => {
                     result.push(point);
 
                     if (point) {
+                        const user = await prisma.user.findUnique({
+                            where: { id: value.userId },
+                        });
+
+                        const updatedUser = await prisma.user.update({
+                            where: { id: value.userId },
+                            data: {
+                                finalMembershipDate: GetCurrentDateTime(),
+                                ...(user.membership === false && {
+                                    membership: true,
+                                }),
+                                ...(user.membership === false && {
+                                    membershipDate: GetCurrentDateTime(),
+                                }),
+                            },
+                        });
+
                         //포인트 차감 내역
                         const pointBreakdown =
                             await prisma.pointBreakdown.create({
                                 data: {
-                                    content: "통신비 차감",
+                                    content: pointList.text
+                                        ? pointList.text
+                                        : "통신비 차감",
                                     type: "사용",
                                     point: Number(value.subtractPoint),
                                     restPoint: Number(value.point),

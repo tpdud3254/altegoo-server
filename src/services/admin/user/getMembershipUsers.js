@@ -1,5 +1,11 @@
 import prisma from "../../../prisma";
-import { getUserRestInfo, setErrorJson, setResponseJson } from "../../../utils";
+import {
+    GetDateTime,
+    GetPlusDateTime,
+    getUserRestInfo,
+    setErrorJson,
+    setResponseJson,
+} from "../../../utils";
 
 const getMembershipUsers = async (req, res) => {
     const {
@@ -35,15 +41,23 @@ const getMembershipUsers = async (req, res) => {
                 ...(startDate &&
                     endDate && {
                         AND: [
-                            { createdAt: { gt: startDate } },
-                            { createdAt: { lt: endDate } },
+                            { createdAt: { gt: GetPlusDateTime(startDate) } },
+                            { createdAt: { lt: GetPlusDateTime(endDate) } },
                         ],
                     }),
                 ...(membershipStartDate &&
                     membershipEndDate && {
                         AND: [
-                            { membershipDate: { gt: membershipStartDate } },
-                            { membershipDate: { lt: membershipEndDate } },
+                            {
+                                membershipDate: {
+                                    gt: GetPlusDateTime(membershipStartDate),
+                                },
+                            },
+                            {
+                                membershipDate: {
+                                    lt: GetPlusDateTime(membershipEndDate),
+                                },
+                            },
                         ],
                     }),
                 ...(name && { name }),

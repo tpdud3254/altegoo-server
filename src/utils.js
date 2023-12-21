@@ -530,6 +530,16 @@ export const GetCurrentDateTime = () => {
     return result;
 };
 
+export const GetPlusDateTime = (datetime) => {
+    const curr = new Date(datetime);
+
+    const kr_curr = curr.setHours(curr.getHours() + 9);
+
+    const result = new Date(kr_curr);
+
+    return result;
+};
+
 export const GetDateTime = (datetime) => {
     const curr = new Date(datetime);
 
