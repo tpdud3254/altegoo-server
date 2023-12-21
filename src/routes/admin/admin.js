@@ -14,6 +14,7 @@ import { modifyVehicle } from "../../services/admin/vehicle/modifyVehicle";
 import { getUserWithPhone } from "../../services/admin/user/getUserWithPhone";
 import getMembershipUsers from "../../services/admin/user/getMembershipUsers";
 import getOrders from "../../services/admin/order/getOrders";
+import { cancelOrder } from "../../services/admin/order/cancelOrder";
 
 const adminRouter = express.Router();
 
@@ -33,6 +34,7 @@ adminRouter.patch("/points", updateCurPoints);
 adminRouter.patch("/points/subtract", subtractPoints);
 adminRouter.patch("/recommend", updateRecommendUser);
 adminRouter.patch("/vehicle", modifyVehicle);
+adminRouter.patch("/order/cancel", cancelOrder);
 
 adminRouter.delete("/users/delete", deleteUsers);
 
