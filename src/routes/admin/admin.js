@@ -13,6 +13,7 @@ import { modifyPermission } from "../../services/admin/user/modifyPermission";
 import { modifyVehicle } from "../../services/admin/vehicle/modifyVehicle";
 import { getUserWithPhone } from "../../services/admin/user/getUserWithPhone";
 import getMembershipUsers from "../../services/admin/user/getMembershipUsers";
+import getOrders from "../../services/admin/order/getOrders";
 
 const adminRouter = express.Router();
 
@@ -22,6 +23,7 @@ adminRouter.get("/users", getUsers);
 adminRouter.get("/users/membership", getMembershipUsers);
 adminRouter.get("/vehicle/floor", getVehleFloor);
 adminRouter.get("/vehicle/weight", getVehleWeight);
+adminRouter.get("/orders", getOrders);
 
 adminRouter.post("/notice/add", addNotice);
 adminRouter.post("/upload/license", modifyLicense);

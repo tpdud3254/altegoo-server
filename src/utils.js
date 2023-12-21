@@ -254,6 +254,7 @@ const getMins = (dateTime, mins) => {
 };
 
 export const getUserExpoToken = async (id) => {
+    if (!id) return false;
     const user = await prisma.user.findUnique({
         where: { id },
         select: { pushToken: true },
