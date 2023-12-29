@@ -44,8 +44,8 @@ export const subtractPoints = async (req, res) => {
                         const pointBreakdown =
                             await prisma.pointBreakdown.create({
                                 data: {
-                                    content: pointList.text
-                                        ? pointList.text
+                                    content: pointList[index].text
+                                        ? pointList[index].text
                                         : "통신비 차감",
                                     type: "차감",
                                     point: Number(value.subtractPoint),
