@@ -16,6 +16,7 @@ import getMembershipUsers from "../../services/admin/user/getMembershipUsers";
 import getOrders from "../../services/admin/order/getOrders";
 import { cancelOrder } from "../../services/admin/order/cancelOrder";
 import getWithdrawalList from "../../services/admin/points/getWithdrawalList";
+import { updateOrder } from "../../services/admin/order/updateOrder";
 
 const adminRouter = express.Router();
 
@@ -37,6 +38,7 @@ adminRouter.patch("/points/subtract", subtractPoints);
 adminRouter.patch("/recommend", updateRecommendUser);
 adminRouter.patch("/vehicle", modifyVehicle);
 adminRouter.patch("/order/cancel", cancelOrder);
+adminRouter.patch("/order/update", updateOrder);
 
 adminRouter.delete("/users/delete", deleteUsers);
 

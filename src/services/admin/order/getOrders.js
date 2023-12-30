@@ -13,7 +13,6 @@ const getOrders = async (req, res) => {
         endDate,
     } = req.query;
 
-    console.log("orderStatus : ", orderStatus);
     try {
         let acceptUserData = null;
         if (acceptUser) {
