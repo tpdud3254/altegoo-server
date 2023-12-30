@@ -2,56 +2,89 @@ import prisma from "../../../prisma";
 import { setErrorJson, setResponseJson } from "../../../utils";
 
 export const modifyVehicle = async (req, res) => {
-    const { vehicleId, vehicle } = req.body;
+    const { vehicleId, vehicle, userId } = req.body;
 
     try {
-        console.log(typeof vehicleId);
+        console.log(vehicleId);
 
-        const vehicleResult = await prisma.vehicle.update({
-            where: {
-                id: vehicleId,
-            },
-            data: {
-                number: vehicle.number,
-                type: {
-                    connect: {
-                        id: vehicle.type,
+        let vehicleResult = null;
+        if (!vehicleId) {
+            vehicleResult = await prisma.vehicle.create({
+                data: {
+                    number: vehicle.number,
+                    User: { connect: { id: userId } },
+                    type: {
+                        connect: {
+                            id: vehicle.type,
+                        },
                     },
+                    ...(vehicle.weight && {
+                        weight: {
+                            connect: {
+                                id: vehicle.weight,
+                            },
+                        },
+                    }),
+                    ...(vehicle.floor && {
+                        floor: {
+                            connect: {
+                                id: vehicle.floor,
+                            },
+                        },
+                    }),
                 },
-                ...(vehicle.weight !== null
-                    ? {
-                          weight: {
-                              connect: {
-                                  id: vehicle.weight,
+                include: {
+                    type: true,
+                    floor: true,
+                    weight: true,
+                },
+            });
+        } else {
+            vehicleResult = await prisma.vehicle.update({
+                where: {
+                    id: vehicleId,
+                },
+                data: {
+                    number: vehicle.number,
+                    type: {
+                        connect: {
+                            id: vehicle.type,
+                        },
+                    },
+                    ...(vehicle.weight !== null
+                        ? {
+                              weight: {
+                                  connect: {
+                                      id: vehicle.weight,
+                                  },
                               },
-                          },
-                      }
-                    : {
-                          weight: {
-                              disconnect: true,
-                          },
-                      }),
-                ...(vehicle.floor !== null
-                    ? {
-                          floor: {
-                              connect: {
-                                  id: vehicle.floor,
+                          }
+                        : {
+                              weight: {
+                                  disconnect: true,
                               },
-                          },
-                      }
-                    : {
-                          floor: {
-                              disconnect: true,
-                          },
-                      }),
-            },
-            include: {
-                type: true,
-                floor: true,
-                weight: true,
-            },
-        });
-
+                          }),
+                    ...(vehicle.floor !== null
+                        ? {
+                              floor: {
+                                  connect: {
+                                      id: vehicle.floor,
+                                  },
+                              },
+                          }
+                        : {
+                              floor: {
+                                  disconnect: true,
+                              },
+                          }),
+                },
+                include: {
+                    type: true,
+                    floor: true,
+                    weight: true,
+                },
+            });
+        }
         console.log(vehicleResult);
 
         if (!vehicleResult) throw new Error("차량 등록에 실패하였습니다.");

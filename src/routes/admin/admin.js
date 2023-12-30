@@ -17,6 +17,7 @@ import getOrders from "../../services/admin/order/getOrders";
 import { cancelOrder } from "../../services/admin/order/cancelOrder";
 import getWithdrawalList from "../../services/admin/points/getWithdrawalList";
 import { updateOrder } from "../../services/admin/order/updateOrder";
+import { deleteOrder } from "../../services/admin/order/deleteOrder";
 
 const adminRouter = express.Router();
 
@@ -32,15 +33,16 @@ adminRouter.get("/withdrawal", getWithdrawalList);
 adminRouter.post("/notice/add", addNotice);
 adminRouter.post("/upload/license", modifyLicense);
 adminRouter.post("/upload/permission", modifyPermission);
+adminRouter.post("/vehicle", modifyVehicle);
 
 adminRouter.patch("/points", updateCurPoints);
 adminRouter.patch("/points/subtract", subtractPoints);
 adminRouter.patch("/recommend", updateRecommendUser);
-adminRouter.patch("/vehicle", modifyVehicle);
 adminRouter.patch("/order/cancel", cancelOrder);
 adminRouter.patch("/order/update", updateOrder);
 
 adminRouter.delete("/users/delete", deleteUsers);
+adminRouter.delete("/order", deleteOrder);
 
 //TODO: 포인트는 기존 내역 수정하지 마고 내역쌓기
 export default adminRouter;
