@@ -65,7 +65,7 @@ const getOrders = async (req, res) => {
             include: {
                 registUser: true,
             },
-            orderBy: { id: "asc" },
+            orderBy: { id: "desc" },
         });
 
         async function getUsers() {

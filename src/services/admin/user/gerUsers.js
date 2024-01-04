@@ -50,7 +50,7 @@ const getUsers = async (req, res) => {
                 pointBreakdown: true,
                 order: true,
             },
-            orderBy: { id: "asc" },
+            orderBy: { id: "desc" },
         });
 
         if (!users) throw new Error("유저 리스트를 불러올 수 없습니다.");

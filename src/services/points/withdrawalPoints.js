@@ -67,7 +67,7 @@ export const withdrawalPoints = async (req, res) => {
         //포인트 출금 수수료 내역
         const commissionBreakdown = await prisma.pointBreakdown.create({
             data: {
-                content: "포인트 수수료 차감",
+                content: "포인트 출금 수수료 차감",
                 type: "차감",
                 point: COMMISSION,
                 restPoint: curPoint - withdrawalPoint - COMMISSION,
