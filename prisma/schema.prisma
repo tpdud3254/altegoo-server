@@ -223,3 +223,17 @@ model Notice {
   body        String?
   performance String?
 }
+
+model Admin {
+  id        Int       @id @default(autoincrement()) //database id
+  userId    String    @unique //user 아이디 
+  name      String //이름
+  password  String //비밀번호
+  gender    String //성별
+  phone     String //휴대폰번호
+  position  String //직급
+  email     String //이메일
+  status    Boolean //활성화 여부
+  createdAt DateTime
+  updatedAt DateTime? @updatedAt
+}
