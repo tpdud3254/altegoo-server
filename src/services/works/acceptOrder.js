@@ -2,6 +2,8 @@ import prisma from "../../prisma";
 import {
     GetCurrentDateTime,
     addPushForWorks,
+    getUserExpoToken,
+    sendPushToUser,
     setErrorJson,
     setResponseJson,
 } from "../../utils";
@@ -68,6 +70,13 @@ export const acceptOrder = async (req, res) => {
         if (!updatedOrder) throw new Error("작업상태 변경에 실패했습니다.");
 
         addPushForWorks(updatedOrder);
+
+        sendPushToUser(
+            await getUserExpoToken(updatedOrder.registUser.id),
+            "오더 승인 완료",
+            "앱에서 내용을 확인해주세요.",
+            { screen: "OrderProgress", orderId: updatedOrder.id }
+        );
 
         const workList = await prisma.order.findMany({
             include: {
