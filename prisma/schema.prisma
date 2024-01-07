@@ -20,7 +20,7 @@ model User {
   gender                   String //성별
   sms                      Boolean //이벤트 혜택 수신
   status                   String //user 상태 (정상, 차단, 탈퇴 등)
-  recommendUserId          Int? //내가 추천한 회원 id
+  recommendUserId          Int?               @default(1) //내가 추천한 회원 id
   license                  String? //사업자등록증 url
   vehiclePermission        String? //화물자동차 운송사업 허가증 url
   companyName              String? //회사 이름
