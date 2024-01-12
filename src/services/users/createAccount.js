@@ -176,7 +176,7 @@ export const createAccount = async (req, res) => {
             //             date: GetCurrentDateTime(),
             //         },
             //     });
-            // } else {
+        } else {
             //기업회원
             user = await prisma.user.create({
                 data: {
