@@ -79,9 +79,9 @@ export const registWork = async (req, res) => {
                 tax,
                 finalPrice,
                 recommendationPoint: orderPrice * 0.02,
-                registPoint,
+                registPoint: orderPrice * 0.18,
                 orderPoint: Math.floor(
-                    orderPrice * 1.1 - orderPrice * 0.02 - registPoint
+                    orderPrice * 1.078 - orderPrice * 0.02 - registPoint
                 ),
                 status: { connect: { id: 1 } },
                 createdAt: GetCurrentDateTime(),

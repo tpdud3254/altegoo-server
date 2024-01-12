@@ -52,10 +52,10 @@ export const updateOrder = async (req, res) => {
         if (price) {
             totalPrice = price;
             tax = totalPrice * 0.1;
-            registPoint = price * 0.2;
+            registPoint = price * 0.18;
             finalPrice = totalPrice + tax;
             recommendationPoint = price * 0.02;
-            orderPoint = Math.floor(price * 1.1 - price * 0.02 - registPoint);
+            orderPoint = Math.floor(price * 1.078 - price * 0.02 - registPoint);
         }
 
         const updatedOrder = await prisma.order.update({
