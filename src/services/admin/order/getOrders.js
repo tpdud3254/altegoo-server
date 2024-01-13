@@ -15,6 +15,7 @@ const getOrders = async (req, res) => {
 
     try {
         let acceptUserData = null;
+
         if (acceptUser) {
             acceptUserData = await prisma.user.findUnique({
                 where: { id: Number(acceptUser) },
@@ -78,7 +79,10 @@ const getOrders = async (req, res) => {
                     });
                     orders[index] = {
                         ...orders[index],
-                        ...{ acceptUserName: user.name },
+                        ...{
+                            acceptUserName:
+                                user && user.name ? user.name : null,
+                        },
                     };
                 })
             );
