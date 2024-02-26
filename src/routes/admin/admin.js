@@ -18,6 +18,7 @@ import { cancelOrder } from "../../services/admin/order/cancelOrder";
 import getWithdrawalList from "../../services/admin/points/getWithdrawalList";
 import { updateOrder } from "../../services/admin/order/updateOrder";
 import { deleteOrder } from "../../services/admin/order/deleteOrder";
+import getKakaoUrl from "../../services/admin/getKakaoUrl";
 
 const adminRouter = express.Router();
 
@@ -29,6 +30,7 @@ adminRouter.get("/vehicle/floor", getVehleFloor);
 adminRouter.get("/vehicle/weight", getVehleWeight);
 adminRouter.get("/orders", getOrders);
 adminRouter.get("/withdrawal", getWithdrawalList);
+adminRouter.get("/kakao", getKakaoUrl);
 
 adminRouter.post("/notice/add", addNotice);
 adminRouter.post("/upload/license", modifyLicense);

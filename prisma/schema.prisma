@@ -237,3 +237,8 @@ model Admin {
   createdAt DateTime
   updatedAt DateTime? @updatedAt
 }
+
+model AdminData {
+  id       Int     @id @default(autoincrement()) //database id
+  kakaoUrl String?
+}
