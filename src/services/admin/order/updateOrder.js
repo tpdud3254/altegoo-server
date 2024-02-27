@@ -1,5 +1,5 @@
 import prisma from "../../../prisma";
-import { GetPlusDateTime, setErrorJson, setResponseJson } from "../../../utils";
+import { GetUTCDateTime, setErrorJson, setResponseJson } from "../../../utils";
 
 export const updateOrder = async (req, res) => {
     const {
@@ -70,7 +70,7 @@ export const updateOrder = async (req, res) => {
                     phone,
                 }),
                 ...(workDateTime && {
-                    dateTime: GetPlusDateTime(workDateTime),
+                    dateTime: GetUTCDateTime(workDateTime),
                 }),
                 ...(address1 && { address1 }),
                 ...(detailAddress1 && { detailAddress1 }),

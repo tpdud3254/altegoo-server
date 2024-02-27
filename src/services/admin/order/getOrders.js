@@ -1,5 +1,5 @@
 import prisma from "../../../prisma";
-import { GetPlusDateTime, setErrorJson, setResponseJson } from "../../../utils";
+import { GetUTCDateTime, setErrorJson, setResponseJson } from "../../../utils";
 
 const getOrders = async (req, res) => {
     const {
@@ -27,8 +27,8 @@ const getOrders = async (req, res) => {
                 ...(startDate &&
                     endDate && {
                         AND: [
-                            { dateTime: { gt: GetPlusDateTime(startDate) } },
-                            { dateTime: { lt: GetPlusDateTime(endDate) } },
+                            { dateTime: { gte: GetUTCDateTime(startDate) } },
+                            { dateTime: { lte: GetUTCDateTime(endDate) } },
                         ],
                     }),
                 ...(orderId && { id: Number(orderId) }),

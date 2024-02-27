@@ -1,6 +1,6 @@
 import prisma from "../../prisma";
 import {
-    GetCurrentDateTime,
+    GetUTCDateTime,
     addPushForWorks,
     getUserExpoToken,
     sendPushToUser,
@@ -15,7 +15,7 @@ export const acceptOrder = async (req, res) => {
     if (!orderId || !id) throw new Error("작업 상태를 변경할 수 없습니다.");
 
     try {
-        const now = GetCurrentDateTime(); //DEVELOP: timezone
+        const now = GetUTCDateTime();
 
         console.log("now : ", now);
         const orders = await prisma.order.findMany({

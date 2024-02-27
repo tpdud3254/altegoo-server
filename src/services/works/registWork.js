@@ -1,10 +1,5 @@
 import prisma from "../../prisma";
-import {
-    GetCurrentDateTime,
-    sendPushToUsers,
-    setErrorJson,
-    setResponseJson,
-} from "../../utils";
+import { sendPushToUsers, setErrorJson, setResponseJson } from "../../utils";
 
 export const registWork = async (req, res) => {
     const {

@@ -1,5 +1,5 @@
 import prisma from "../../prisma";
-import { GetCurrentDateTime, setErrorJson, setResponseJson } from "../../utils";
+import { GetUTCDateTime, setErrorJson, setResponseJson } from "../../utils";
 
 export const getMyAcceptList = async (req, res) => {
     const id = req.id;
@@ -53,7 +53,10 @@ export const getMyAcceptList = async (req, res) => {
             const today = await Promise.all(
                 list.map((order, index) => {
                     const dateTime = new Date(order.dateTime);
-                    const today = GetCurrentDateTime(); //DEVELOP: timezone
+                    const today = GetUTCDateTime();
+
+                    today.setUTCHours(23, 59, 0, 0);
+
                     today.setUTCDate(today.getUTCDate() + 1);
                     console.log(
                         `${dateTime.getUTCMonth()}-${dateTime.getUTCDate()} : ${

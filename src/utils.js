@@ -209,7 +209,7 @@ const EXPO_PUSH_SERVER = "https://exp.host/--/api/v2/push/send";
 export const PUSH_SCHEDULE = [];
 
 const getOrders = async () => {
-    const now = GetCurrentDateTime(); //DEVELOP: timezone
+    const now = GetUTCDateTime();
     const results = [];
 
     const orders = await prisma.order.findMany({
@@ -247,7 +247,7 @@ const getHours = (dateTime, hours) => {
 };
 
 const getMins = (dateTime, mins) => {
-    const now = GetCurrentDateTime(); //DEVELOP: timezone
+    const now = GetUTCDateTime();
     const compareDateTime = new Date(dateTime);
     compareDateTime.setUTCMinutes(compareDateTime.getUTCMinutes() - mins);
 
@@ -303,18 +303,6 @@ export const addPushForWorks = async (order) => {
     const before2Hours = getHours(order.dateTime, 2);
     const before10Mins = getMins(order.dateTime, 10);
     const after5Hours = getHours(order.dateTime, -5);
-
-    console.log("kr before24Hours : ", GetDateTime(before24Hours));
-    console.log("kr before12Hours : ", GetDateTime(before12Hours));
-    console.log("kr before2Hours : ", GetDateTime(before2Hours));
-    console.log("kr before10Mins : ", GetDateTime(before10Mins));
-    console.log("kr after5Hours : ", GetDateTime(after5Hours));
-
-    console.log("before24Hours : ", before24Hours);
-    console.log("before12Hours : ", before12Hours);
-    console.log("before2Hours : ", before2Hours);
-    console.log("before10Mins : ", before10Mins);
-    console.log("after5Hours : ", after5Hours);
 
     const schedules = [];
 
@@ -522,26 +510,6 @@ export const sendPushToAllUsers = async (title, body, data) => {
     } catch (error) {
         return false;
     }
-};
-
-export const GetCurrentDateTime = () => {
-    const curr = new Date();
-
-    const kr_curr = curr.setHours(curr.getHours() + 9);
-
-    const result = new Date(kr_curr);
-
-    return result;
-};
-
-export const GetPlusDateTime = (datetime) => {
-    const curr = new Date(datetime);
-
-    const kr_curr = curr.setHours(curr.getHours() + 9);
-
-    const result = new Date(kr_curr);
-
-    return result;
 };
 
 export const GetDateTime = (datetime) => {
