@@ -84,7 +84,6 @@ export const registWork = async (req, res) => {
                     orderPrice * 1.078 - orderPrice * 0.02 - registPoint
                 ),
                 status: { connect: { id: 1 } },
-                createdAt: GetCurrentDateTime(),
             },
         });
 

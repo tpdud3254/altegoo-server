@@ -209,7 +209,7 @@ const EXPO_PUSH_SERVER = "https://exp.host/--/api/v2/push/send";
 export const PUSH_SCHEDULE = [];
 
 const getOrders = async () => {
-    const now = GetCurrentDateTime();
+    const now = GetCurrentDateTime(); //DEVELOP: timezone
     const results = [];
 
     const orders = await prisma.order.findMany({
@@ -226,6 +226,9 @@ const getOrders = async () => {
         },
     });
 
+    if (!orders || orders.length === 0) {
+        return [];
+    }
     orders.map((order) => {
         const orderDate = new Date(order.dateTime);
         const diff = now.getHours() - orderDate.getHours();
@@ -244,7 +247,7 @@ const getHours = (dateTime, hours) => {
 };
 
 const getMins = (dateTime, mins) => {
-    const now = GetCurrentDateTime();
+    const now = GetCurrentDateTime(); //DEVELOP: timezone
     const compareDateTime = new Date(dateTime);
     compareDateTime.setUTCMinutes(compareDateTime.getUTCMinutes() - mins);
 
@@ -545,6 +548,19 @@ export const GetDateTime = (datetime) => {
     const curr = new Date(datetime);
 
     const kr_curr = curr.setHours(curr.getHours() - 9);
+
+    const result = new Date(kr_curr);
+
+    return result;
+};
+
+export const GetUTCDateTime = (datetime) => {
+    let curr = null;
+
+    if (datetime) curr = new Date(datetime);
+    else curr = new Date();
+
+    const kr_curr = curr.setHours(curr.getHours() + 9);
 
     const result = new Date(kr_curr);
 

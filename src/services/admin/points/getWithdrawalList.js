@@ -1,10 +1,5 @@
 import prisma from "../../../prisma";
-import {
-    GetPlusDateTime,
-    getUserRestInfo,
-    setErrorJson,
-    setResponseJson,
-} from "../../../utils";
+import { GetUTCDateTime, setErrorJson, setResponseJson } from "../../../utils";
 
 const getWithdrawalList = async (req, res) => {
     const { startDate, endDate, name, userId, phone, type } = req.query;
@@ -16,8 +11,8 @@ const getWithdrawalList = async (req, res) => {
                 ...(startDate &&
                     endDate && {
                         AND: [
-                            { date: { gt: GetPlusDateTime(startDate) } },
-                            { date: { lt: GetPlusDateTime(endDate) } },
+                            { date: { gte: GetUTCDateTime(startDate) } },
+                            { date: { lte: GetUTCDateTime(endDate) } },
                         ],
                     }),
                 ...(name && { user: { name } }),

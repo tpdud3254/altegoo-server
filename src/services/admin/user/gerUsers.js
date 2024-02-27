@@ -1,6 +1,6 @@
 import prisma from "../../../prisma";
 import {
-    GetPlusDateTime,
+    GetUTCDateTime,
     getUserRestInfo,
     setErrorJson,
     setResponseJson,
@@ -25,8 +25,8 @@ const getUsers = async (req, res) => {
                 ...(startDate &&
                     endDate && {
                         AND: [
-                            { createdAt: { gt: GetPlusDateTime(startDate) } },
-                            { createdAt: { lt: GetPlusDateTime(endDate) } },
+                            { createdAt: { gte: GetUTCDateTime(startDate) } },
+                            { createdAt: { lte: GetUTCDateTime(endDate) } },
                         ],
                     }),
                 ...(name && { name }),

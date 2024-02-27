@@ -1,9 +1,5 @@
 import prisma from "../../../prisma";
-import {
-    GetCurrentDateTime,
-    setErrorJson,
-    setResponseJson,
-} from "../../../utils";
+import { GetUTCDateTime, setErrorJson, setResponseJson } from "../../../utils";
 
 export const subtractPoints = async (req, res) => {
     const { pointList } = req.body;
@@ -30,12 +26,12 @@ export const subtractPoints = async (req, res) => {
                         const updatedUser = await prisma.user.update({
                             where: { id: value.userId },
                             data: {
-                                finalMembershipDate: GetCurrentDateTime(),
+                                finalMembershipDate: GetUTCDateTime(),
                                 ...(user.membership === false && {
                                     membership: true,
                                 }),
                                 ...(user.membership === false && {
-                                    membershipDate: GetCurrentDateTime(),
+                                    membershipDate: GetUTCDateTime(),
                                 }),
                             },
                         });
@@ -55,7 +51,7 @@ export const subtractPoints = async (req, res) => {
                                             id: Number(value.userId),
                                         },
                                     },
-                                    date: GetCurrentDateTime(),
+                                    date: GetUTCDateTime(),
                                 },
                             });
                     }

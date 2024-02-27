@@ -1,6 +1,6 @@
 import prisma from "../../prisma";
 import {
-    GetCurrentDateTime,
+    GetUTCDateTime,
     checkRegistUser,
     getUserExpoToken,
     sendPushToUser,
@@ -80,6 +80,7 @@ export const terminateWork = async (req, res) => {
                 },
             });
 
+            //TODO: 포인트 적립 내역 남기는 부분 util 함수로 빼기
             const registUserPointBreakdown = await prisma.pointBreakdown.create(
                 {
                     data: {
@@ -92,7 +93,7 @@ export const terminateWork = async (req, res) => {
                                 id: work.userId,
                             },
                         },
-                        date: GetCurrentDateTime(),
+                        date: GetUTCDateTime(), //DEVELOP: timezone
                     },
                 }
             );
@@ -122,7 +123,7 @@ export const terminateWork = async (req, res) => {
                                 id: work.acceptUser,
                             },
                         },
-                        date: GetCurrentDateTime(),
+                        date: GetUTCDateTime(), //DEVELOP: timezone
                     },
                 }
             );
@@ -165,7 +166,7 @@ export const terminateWork = async (req, res) => {
                                         id: recommendUser.recommendUserId,
                                     },
                                 },
-                                date: GetCurrentDateTime(),
+                                date: GetUTCDateTime(), //DEVELOP: timezone
                             },
                         });
                 }

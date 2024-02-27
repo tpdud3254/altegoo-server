@@ -1,5 +1,5 @@
 import prisma from "../../prisma";
-import { GetCurrentDateTime, setErrorJson, setResponseJson } from "../../utils";
+import { GetUTCDateTime, setErrorJson, setResponseJson } from "../../utils";
 
 export const chargePoint = async (req, res) => {
     const { pointId, curPoint, point } = req.body;
@@ -28,7 +28,7 @@ export const chargePoint = async (req, res) => {
                         id: id,
                     },
                 },
-                date: GetCurrentDateTime(),
+                date: GetUTCDateTime(),
             },
         });
 

@@ -28,7 +28,7 @@ export const getRealTimeOrderList = async (req, res) => {
 
         if (!order) throw new Error("작업리스트 조회에 실패했습니다.");
 
-        const now = GetCurrentDateTime();
+        const now = GetCurrentDateTime(); //DEVELOP: timezone
         const list = [];
         if (order.length > 0) {
             await Promise.all(

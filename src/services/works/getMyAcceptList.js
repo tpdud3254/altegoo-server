@@ -53,7 +53,7 @@ export const getMyAcceptList = async (req, res) => {
             const today = await Promise.all(
                 list.map((order, index) => {
                     const dateTime = new Date(order.dateTime);
-                    const today = GetCurrentDateTime();
+                    const today = GetCurrentDateTime(); //DEVELOP: timezone
                     today.setUTCDate(today.getUTCDate() + 1);
                     console.log(
                         `${dateTime.getUTCMonth()}-${dateTime.getUTCDate()} : ${

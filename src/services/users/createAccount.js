@@ -1,12 +1,6 @@
 import bcrypt from "bcrypt";
 import prisma from "../../prisma";
-import {
-    GetCurrentDateTime,
-    craeteUserId,
-    getUserRestInfo,
-    setErrorJson,
-    setResponseJson,
-} from "../../utils";
+import { getUserRestInfo, setErrorJson, setResponseJson } from "../../utils";
 
 export const createAccount = async (req, res) => {
     const {
@@ -64,7 +58,6 @@ export const createAccount = async (req, res) => {
                             curPoint: 0,
                         },
                     },
-                    createdAt: GetCurrentDateTime(),
                 },
             });
         } else if (userType === "DRIVER") {
@@ -152,7 +145,6 @@ export const createAccount = async (req, res) => {
                     workRegion: {
                         connect: regionArr,
                     },
-                    createdAt: GetCurrentDateTime(),
                 },
             });
 
@@ -208,7 +200,6 @@ export const createAccount = async (req, res) => {
                         connect: { id: workCategory },
                     },
                     recommendUserId,
-                    createdAt: GetCurrentDateTime(),
                 },
             });
         }

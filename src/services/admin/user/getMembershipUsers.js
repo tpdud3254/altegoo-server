@@ -1,7 +1,6 @@
 import prisma from "../../../prisma";
 import {
-    GetDateTime,
-    GetPlusDateTime,
+    GetUTCDateTime,
     getUserRestInfo,
     setErrorJson,
     setResponseJson,
@@ -41,8 +40,8 @@ const getMembershipUsers = async (req, res) => {
                 ...(startDate &&
                     endDate && {
                         AND: [
-                            { createdAt: { gt: GetPlusDateTime(startDate) } },
-                            { createdAt: { lt: GetPlusDateTime(endDate) } },
+                            { createdAt: { gte: GetUTCDateTime(startDate) } },
+                            { createdAt: { lte: GetUTCDateTime(endDate) } },
                         ],
                     }),
                 ...(membershipStartDate &&
@@ -50,12 +49,12 @@ const getMembershipUsers = async (req, res) => {
                         AND: [
                             {
                                 membershipDate: {
-                                    gt: GetPlusDateTime(membershipStartDate),
+                                    gte: GetUTCDateTime(membershipStartDate),
                                 },
                             },
                             {
                                 membershipDate: {
-                                    lt: GetPlusDateTime(membershipEndDate),
+                                    lte: GetUTCDateTime(membershipEndDate),
                                 },
                             },
                         ],
@@ -83,7 +82,7 @@ const getMembershipUsers = async (req, res) => {
                 pointBreakdown: true,
                 order: true,
             },
-            orderBy: { id: "asc" },
+            orderBy: { id: "desc" },
         });
 
         if (!users) throw new Error("유저 리스트를 불러올 수 없습니다.");
