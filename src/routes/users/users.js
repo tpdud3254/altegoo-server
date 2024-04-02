@@ -20,6 +20,8 @@ import { modifyRegion } from "../../services/users/modifyRegion";
 import { changePassword } from "../../services/users/changePassword";
 import { certification } from "../../services/users/certification";
 import { decoding } from "../../services/users/decoding";
+import { joinRPack } from "../../services/users/joinRPack";
+import { cancelRPack } from "../../services/users/cancelRPack";
 
 const usersRouter = express.Router();
 
@@ -36,6 +38,8 @@ usersRouter.post("/login", asyncWrap(login));
 usersRouter.post("/password", asyncWrap(setPassword));
 usersRouter.post("/edit", auth, asyncWrap(editProfile));
 usersRouter.post("/certification", asyncWrap(decoding));
+usersRouter.post("/rpack/join", asyncWrap(joinRPack));
+usersRouter.post("/rpack/cancel", asyncWrap(cancelRPack));
 
 // usersRouter.post("/certification", asyncWrap(certification));
 
