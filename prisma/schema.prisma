@@ -150,6 +150,7 @@ model Order {
   usePoint            Int //사용포인트
   orderPrice          Int //작업운임
   totalPrice          Int //총결제금액
+  rPackPrice          Int                @default(0) //알팩회원 할인비
   tax                 Int //부가세
   finalPrice          Int //최종결제금액
   recommendationPoint Int //추천인포인트
