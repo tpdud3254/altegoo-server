@@ -46,6 +46,7 @@ model User {
   membershipDate           DateTime?
   finalMembershipDate      DateTime?
   withdrawalMembershipDate DateTime?
+  r_pack                   Boolean?           @default(false)
 }
 
 model UserType {
@@ -237,6 +238,7 @@ model Admin {
 }
 
 model AdminData {
-  id       Int     @id @default(autoincrement()) //database id
-  kakaoUrl String?
+  id          Int     @id @default(autoincrement()) //database id
+  kakaoUrl    String?
+  r_packPrice Int     @default(0)
 }
