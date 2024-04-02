@@ -22,6 +22,7 @@ import { certification } from "../../services/users/certification";
 import { decoding } from "../../services/users/decoding";
 import { joinRPack } from "../../services/users/joinRPack";
 import { cancelRPack } from "../../services/users/cancelRPack";
+import { getRPackPrice } from "../../services/users/getRPackPrice";
 
 const usersRouter = express.Router();
 
@@ -31,6 +32,7 @@ usersRouter.get("/user/recommend", auth, asyncWrap(getRecommendUser));
 usersRouter.get("/driver/count", asyncWrap(getDirverCount));
 usersRouter.get("/user", asyncWrap(getUserWithId));
 usersRouter.get("/certification", asyncWrap(certification));
+usersRouter.get("/rpack/price", asyncWrap(getRPackPrice));
 
 usersRouter.post("/user", asyncWrap(verifyToken));
 usersRouter.post("/create", asyncWrap(createAccount));
