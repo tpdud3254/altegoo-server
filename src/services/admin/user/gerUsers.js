@@ -16,7 +16,7 @@ const getUsers = async (req, res) => {
         status,
         userTypeId,
         workCategoryId,
-        rPackStatus,
+        gugupackStatus,
     } = req.query;
     console.log(req.query);
     try {
@@ -40,8 +40,8 @@ const getUsers = async (req, res) => {
                 // ...(region && {
                 //     accessedRegion: { contains: region },
                 // }),
-                ...(rPackStatus && {
-                    r_pack: rPackStatus === "member" ? true : false,
+                ...(gugupackStatus && {
+                    gugupack: gugupackStatus === "member" ? true : false,
                 }),
             },
             include: {

@@ -1,16 +1,16 @@
 import prisma from "../../prisma";
 import { setErrorJson, setResponseJson } from "../../utils";
 
-export const getRPackPrice = async (req, res) => {
+export const getGugupackPrice = async (req, res) => {
     try {
         const price = await prisma.adminData.findFirst({
             where: { id: 1 },
             select: {
-                r_packPrice: true,
+                gugupackPrice: true,
             },
         });
 
-        if (!price) throw new Error("알팩 요금 조회 실패");
+        if (!price) throw new Error("구구팩 요금 조회 실패");
 
         res.json(
             setResponseJson({

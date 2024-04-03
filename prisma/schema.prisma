@@ -47,6 +47,7 @@ model User {
   finalMembershipDate      DateTime?
   withdrawalMembershipDate DateTime?
   r_pack                   Boolean?           @default(false)
+  gugupack                 Boolean?           @default(false)
 }
 
 model UserType {
@@ -151,6 +152,7 @@ model Order {
   orderPrice          Int //작업운임
   totalPrice          Int //총결제금액
   rPackPrice          Int                @default(0) //알팩회원 할인비
+  gugupackPrice       Int                @default(0) //구구팩 회원 할인비
   tax                 Int //부가세
   finalPrice          Int //최종결제금액
   recommendationPoint Int //추천인포인트
@@ -239,7 +241,8 @@ model Admin {
 }
 
 model AdminData {
-  id          Int     @id @default(autoincrement()) //database id
-  kakaoUrl    String?
-  r_packPrice Int     @default(0)
+  id            Int     @id @default(autoincrement()) //database id
+  kakaoUrl      String?
+  r_packPrice   Int     @default(0)
+  gugupackPrice Int     @default(0)
 }

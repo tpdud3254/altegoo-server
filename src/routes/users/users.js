@@ -20,9 +20,9 @@ import { modifyRegion } from "../../services/users/modifyRegion";
 import { changePassword } from "../../services/users/changePassword";
 import { certification } from "../../services/users/certification";
 import { decoding } from "../../services/users/decoding";
-import { joinRPack } from "../../services/users/joinRPack";
-import { cancelRPack } from "../../services/users/cancelRPack";
-import { getRPackPrice } from "../../services/users/getRPackPrice";
+import { joinGugupack } from "../../services/users/joinGugupack";
+import { cancelGugupack } from "../../services/users/cancelGugupack";
+import { getGugupackPrice } from "../../services/users/getGugupackPrice";
 
 const usersRouter = express.Router();
 
@@ -32,7 +32,7 @@ usersRouter.get("/user/recommend", auth, asyncWrap(getRecommendUser));
 usersRouter.get("/driver/count", asyncWrap(getDirverCount));
 usersRouter.get("/user", asyncWrap(getUserWithId));
 usersRouter.get("/certification", asyncWrap(certification));
-usersRouter.get("/rpack/price", asyncWrap(getRPackPrice));
+usersRouter.get("/gugupack/price", asyncWrap(getGugupackPrice));
 
 usersRouter.post("/user", asyncWrap(verifyToken));
 usersRouter.post("/create", asyncWrap(createAccount));
@@ -40,8 +40,8 @@ usersRouter.post("/login", asyncWrap(login));
 usersRouter.post("/password", asyncWrap(setPassword));
 usersRouter.post("/edit", auth, asyncWrap(editProfile));
 usersRouter.post("/certification", asyncWrap(decoding));
-usersRouter.post("/rpack/join", asyncWrap(joinRPack));
-usersRouter.post("/rpack/cancel", asyncWrap(cancelRPack));
+usersRouter.post("/gugupack/join", asyncWrap(joinGugupack));
+usersRouter.post("/gugupack/cancel", asyncWrap(cancelGugupack));
 
 // usersRouter.post("/certification", asyncWrap(certification));
 
