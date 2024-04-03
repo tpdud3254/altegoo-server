@@ -19,6 +19,7 @@ import getWithdrawalList from "../../services/admin/points/getWithdrawalList";
 import { updateOrder } from "../../services/admin/order/updateOrder";
 import { deleteOrder } from "../../services/admin/order/deleteOrder";
 import getKakaoUrl from "../../services/admin/getKakaoUrl";
+import { setGugupackPrice } from "../../services/admin/price/setGugupackPrice";
 
 const adminRouter = express.Router();
 
@@ -42,6 +43,7 @@ adminRouter.patch("/points/subtract", subtractPoints);
 adminRouter.patch("/recommend", updateRecommendUser);
 adminRouter.patch("/order/cancel", cancelOrder);
 adminRouter.patch("/order/update", updateOrder);
+adminRouter.patch("/price/gugupack", setGugupackPrice);
 
 adminRouter.delete("/users/delete", deleteUsers);
 adminRouter.delete("/order", deleteOrder);
