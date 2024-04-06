@@ -246,3 +246,58 @@ model AdminData {
   r_packPrice   Int     @default(0)
   gugupackPrice Int     @default(0)
 }
+
+model LadderQuantityOption {
+  id                  Int                   @id @default(autoincrement())
+  title               String
+  LadderQuantityPrice LadderQuantityPrice[]
+}
+
+model LadderQuantityPrice {
+  id       Int                  @id @default(autoincrement())
+  option   LadderQuantityOption @relation(fields: [optionId], references: [id])
+  optionId Int
+  price    Int                  @default(0)
+  floor    Int
+
+  @@unique([optionId, floor], name: "identifier")
+}
+
+model LadderTimeOption {
+  id              Int               @id @default(autoincrement())
+  title           String
+  LadderTimePrice LadderTimePrice[]
+}
+
+model LadderTimePrice {
+  id       Int              @id @default(autoincrement())
+  option   LadderTimeOption @relation(fields: [optionId], references: [id])
+  optionId Int
+  price    Int              @default(0)
+  floor    Int
+
+  @@unique([optionId, floor], name: "identifier")
+}
+
+model SkyTimeOption {
+  id           Int            @id @default(autoincrement())
+  title        String
+  SkyTimePrice SkyTimePrice[]
+}
+
+model SkyTimeWeight {
+  id           Int            @id @default(autoincrement())
+  weightTitle  String
+  SkyTimePrice SkyTimePrice[]
+}
+
+model SkyTimePrice {
+  id       Int           @id @default(autoincrement())
+  optoin   SkyTimeOption @relation(fields: [optionId], references: [id])
+  optionId Int
+  price    Int           @default(0)
+  weight   SkyTimeWeight @relation(fields: [weightId], references: [id])
+  weightId Int
+
+  @@unique([optionId, weightId], name: "identifier")
+}

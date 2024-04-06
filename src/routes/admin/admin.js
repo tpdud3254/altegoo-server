@@ -20,6 +20,8 @@ import { updateOrder } from "../../services/admin/order/updateOrder";
 import { deleteOrder } from "../../services/admin/order/deleteOrder";
 import getKakaoUrl from "../../services/admin/getKakaoUrl";
 import { setGugupackPrice } from "../../services/admin/price/setGugupackPrice";
+import { setOrderPrice } from "../../services/admin/price/setOrderPrice";
+import { getOrderPrice } from "../../services/admin/price/getOrderPrice";
 
 const adminRouter = express.Router();
 
@@ -32,6 +34,7 @@ adminRouter.get("/vehicle/weight", getVehleWeight);
 adminRouter.get("/orders", getOrders);
 adminRouter.get("/withdrawal", getWithdrawalList);
 adminRouter.get("/kakao", getKakaoUrl);
+adminRouter.get("/price/order", getOrderPrice);
 
 adminRouter.post("/notice/add", addNotice);
 adminRouter.post("/upload/license", modifyLicense);
@@ -43,6 +46,7 @@ adminRouter.patch("/points/subtract", subtractPoints);
 adminRouter.patch("/recommend", updateRecommendUser);
 adminRouter.patch("/order/cancel", cancelOrder);
 adminRouter.patch("/order/update", updateOrder);
+adminRouter.patch("/price/order", setOrderPrice);
 adminRouter.patch("/price/gugupack", setGugupackPrice);
 
 adminRouter.delete("/users/delete", deleteUsers);
