@@ -28,6 +28,9 @@ import { saveBannerImage } from "../../services/admin/banner/saveBannerImage";
 import { asyncWrap, upload } from "../../utils";
 import { setBannerImage } from "../../services/admin/banner/setBannerImage";
 import { setBannerLink } from "../../services/admin/banner/setBannerLink";
+import { savePopupImage } from "../../services/admin/popup/savePopupImage";
+import { setPopupImage } from "../../services/admin/popup/setPopupImage";
+import { getPopup } from "../../services/admin/popup/getPopup";
 
 const adminRouter = express.Router();
 
@@ -42,6 +45,7 @@ adminRouter.get("/withdrawal", getWithdrawalList);
 adminRouter.get("/kakao", getKakaoUrl);
 adminRouter.get("/price/order", getOrderPrice);
 adminRouter.get("/banner", getBannerList);
+adminRouter.get("/popup", getPopup);
 
 adminRouter.post("/notice/add", addNotice);
 adminRouter.post("/upload/license", modifyLicense);
@@ -49,6 +53,8 @@ adminRouter.post("/upload/permission", modifyPermission);
 adminRouter.post("/vehicle", modifyVehicle);
 adminRouter.post("/banner", upload.single("file"), asyncWrap(saveBannerImage));
 adminRouter.post("/upload/banner", setBannerImage);
+adminRouter.post("/popup", upload.single("file"), asyncWrap(savePopupImage));
+adminRouter.post("/upload/popup", setPopupImage);
 
 adminRouter.patch("/points", updateCurPoints);
 adminRouter.patch("/points/subtract", subtractPoints);
