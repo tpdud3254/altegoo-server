@@ -302,6 +302,12 @@ model Admin {
   updatedAt DateTime
 }
 
+model Banner {
+  id       Int     @id @default(autoincrement())
+  imageUrl String?
+  link     String?
+}
+
 model AdminData {
   id            Int     @id @default(autoincrement()) //database id
   kakaoUrl      String?
