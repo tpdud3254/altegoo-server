@@ -23,6 +23,11 @@ import { setGugupackPrice } from "../../services/admin/price/setGugupackPrice";
 import { setOrderPrice } from "../../services/admin/price/setOrderPrice";
 import { getOrderPrice } from "../../services/admin/price/getOrderPrice";
 import { setReservationBlock } from "../../services/admin/user/setReservationBlock";
+import { getBannerList } from "../../services/admin/banner/getBannerList";
+import { saveBannerImage } from "../../services/admin/banner/saveBannerImage";
+import { asyncWrap, upload } from "../../utils";
+import { setBannerImage } from "../../services/admin/banner/setBannerImage";
+import { setBannerLink } from "../../services/admin/banner/setBannerLink";
 
 const adminRouter = express.Router();
 
@@ -36,11 +41,14 @@ adminRouter.get("/orders", getOrders);
 adminRouter.get("/withdrawal", getWithdrawalList);
 adminRouter.get("/kakao", getKakaoUrl);
 adminRouter.get("/price/order", getOrderPrice);
+adminRouter.get("/banner", getBannerList);
 
 adminRouter.post("/notice/add", addNotice);
 adminRouter.post("/upload/license", modifyLicense);
 adminRouter.post("/upload/permission", modifyPermission);
 adminRouter.post("/vehicle", modifyVehicle);
+adminRouter.post("/banner", upload.single("file"), asyncWrap(saveBannerImage));
+adminRouter.post("/upload/banner", setBannerImage);
 
 adminRouter.patch("/points", updateCurPoints);
 adminRouter.patch("/points/subtract", subtractPoints);
@@ -50,6 +58,7 @@ adminRouter.patch("/order/update", updateOrder);
 adminRouter.patch("/price/order", setOrderPrice);
 adminRouter.patch("/price/gugupack", setGugupackPrice);
 adminRouter.patch("/user/block", setReservationBlock);
+adminRouter.patch("/banner/link", setBannerLink);
 
 adminRouter.delete("/users/delete", deleteUsers);
 adminRouter.delete("/order", deleteOrder);
