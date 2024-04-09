@@ -313,6 +313,7 @@ model AdminData {
   kakaoUrl      String?
   r_packPrice   Int     @default(0)
   gugupackPrice Int     @default(0)
+  popupUrl      String?
 }
 
 model LadderQuantityOption {
