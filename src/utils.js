@@ -534,3 +534,48 @@ export const GetUTCDateTime = (datetime) => {
 
     return result;
 };
+
+export const Callback = async (req, res, next) => {
+    const { receipt_id, method_symbol, status } = req.body;
+
+    console.log("payment callback : ", req.body);
+
+    try {
+        if (method_symbol === "vbank" && status === 1) {
+            const vBankOrder = await prisma.vBankOrder.findUnique({
+                where: {
+                    receipt_id,
+                },
+            });
+
+            req.id = vBankOrder.userId;
+            req.body = {
+                ...vBankOrder,
+                region: vBankOrder.regionId,
+                vBank: true,
+            };
+
+            if (vBankOrder) {
+                const result = await prisma.vBankOrder.update({
+                    where: { receipt_id },
+                    data: {
+                        standBy: false,
+                        orderStatusId: 7,
+                    },
+                });
+            }
+
+            next();
+        }
+        res.json({ success: true });
+    } catch (error) {
+        res.json(setErrorJson(error.message));
+    }
+};
+
+export const SetTimer = (callbackFn, ms) => {
+    console.log("start");
+    setTimeout(callbackFn, ms);
+};
+
+export const SetIntervalTimer = (fn, callbackFn, interval, ms) => {};

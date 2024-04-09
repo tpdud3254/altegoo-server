@@ -6,6 +6,8 @@ import { getOrder } from "../../services/orders/getOrder";
 import { deleteOrder } from "../../services/orders/deleteOrder";
 import { getMyAcceptList } from "../../services/orders/getMyAcceptList";
 import { getRealTimeOrderList } from "../../services/orders/getRealTimeOrderList";
+import { getVBankOrder } from "../../services/orders/getVBankOrder";
+import { getMyVBankOrderList } from "../../services/orders/getMyVBankOrderList";
 
 const ordersRouter = express.Router();
 
@@ -14,6 +16,8 @@ ordersRouter.get("/mylist/all", auth, asyncWrap(getMyOrderList)); //작업내역
 ordersRouter.get("/info", asyncWrap(getOrder));
 ordersRouter.get("/accept", auth, asyncWrap(getMyAcceptList));
 ordersRouter.get("/realtime", auth, asyncWrap(getRealTimeOrderList));
+ordersRouter.get("/vbank/info", asyncWrap(getVBankOrder));
+ordersRouter.get("/vbank/list", auth, asyncWrap(getMyVBankOrderList));
 
 ordersRouter.delete("/delete", auth, asyncWrap(deleteOrder));
 

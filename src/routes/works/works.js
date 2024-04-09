@@ -17,6 +17,7 @@ import { startWork } from "../../services/works/startWork";
 import { doneWork } from "../../services/works/doneWork";
 import { terminateWork } from "../../services/works/terminateWork";
 import { removeOrder } from "../../services/works/removeOrder";
+import { registVBankWork } from "../../services/works/registVBankWork";
 
 const worksRouter = express.Router();
 
@@ -32,6 +33,7 @@ worksRouter.patch("/status", auth, asyncWrap(setWorkStatus));
 ///////////////////////////////////////////////////////////////////////////////////////
 //작업등록
 worksRouter.post("/upload", auth, asyncWrap(registWork));
+worksRouter.post("/upload/vbank", auth, asyncWrap(registVBankWork));
 
 //작업취소 //registUser
 worksRouter.patch("/cancel", auth, asyncWrap(removeOrder));

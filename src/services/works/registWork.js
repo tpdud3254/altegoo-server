@@ -1,5 +1,11 @@
 import prisma from "../../prisma";
-import { sendPushToUsers, setErrorJson, setResponseJson } from "../../utils";
+import {
+    getUserExpoToken,
+    sendPushToUser,
+    sendPushToUsers,
+    setErrorJson,
+    setResponseJson,
+} from "../../utils";
 
 export const registWork = async (req, res) => {
     const {
@@ -34,9 +40,10 @@ export const registWork = async (req, res) => {
         tax,
         finalPrice,
         registPoint,
+        vBank,
     } = req.body;
 
-    console.log(req.body);
+    console.log("registWork body : ", req.body);
 
     const id = req.id;
 
@@ -101,6 +108,14 @@ export const registWork = async (req, res) => {
         if (!setPoint && setPoint !== 0)
             //TODO: 대응
             throw new Error("작업 등록에 실패하였습니다.");
+
+        if (vBank)
+            sendPushToUser(
+                await getUserExpoToken(regist.userId),
+                "입금 확인 완료",
+                "요청하신 작업이 등록되었습니다.",
+                { screen: "OrderProgress", orderId: regist.id }
+            );
 
         const orderTime = new Date(dateTime);
 
@@ -212,7 +227,7 @@ export const registWork = async (req, res) => {
             }
         }
 
-        res.json(setResponseJson({ order: regist }));
+        if (!vBank) res.json(setResponseJson({ order: regist }));
     } catch (error) {
         res.json(setErrorJson(error.message));
     }
