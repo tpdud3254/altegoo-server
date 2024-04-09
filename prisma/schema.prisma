@@ -49,6 +49,7 @@ model User {
   r_pack                   Boolean?           @default(false)
   gugupack                 Boolean?           @default(false)
   VBankOrder               VBankOrder[]
+  reservationBlock         Boolean            @default(false)
 }
 
 model UserType {

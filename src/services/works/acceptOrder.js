@@ -15,6 +15,16 @@ export const acceptOrder = async (req, res) => {
     if (!orderId || !id) throw new Error("작업 상태를 변경할 수 없습니다.");
 
     try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id,
+            },
+        });
+
+        if (user?.reservationBlock) {
+            throw new Error("예약이 불가합니다. \n고객센터로 문의해주세요.");
+        }
+
         const now = GetUTCDateTime();
 
         console.log("now : ", now);

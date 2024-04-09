@@ -22,6 +22,7 @@ import getKakaoUrl from "../../services/admin/getKakaoUrl";
 import { setGugupackPrice } from "../../services/admin/price/setGugupackPrice";
 import { setOrderPrice } from "../../services/admin/price/setOrderPrice";
 import { getOrderPrice } from "../../services/admin/price/getOrderPrice";
+import { setReservationBlock } from "../../services/admin/user/setReservationBlock";
 
 const adminRouter = express.Router();
 
@@ -48,6 +49,7 @@ adminRouter.patch("/order/cancel", cancelOrder);
 adminRouter.patch("/order/update", updateOrder);
 adminRouter.patch("/price/order", setOrderPrice);
 adminRouter.patch("/price/gugupack", setGugupackPrice);
+adminRouter.patch("/user/block", setReservationBlock);
 
 adminRouter.delete("/users/delete", deleteUsers);
 adminRouter.delete("/order", deleteOrder);
