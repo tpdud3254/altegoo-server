@@ -31,6 +31,8 @@ import { setBannerLink } from "../../services/admin/banner/setBannerLink";
 import { savePopupImage } from "../../services/admin/popup/savePopupImage";
 import { setPopupImage } from "../../services/admin/popup/setPopupImage";
 import { getPopup } from "../../services/admin/popup/getPopup";
+import { getMembershipPrice } from "../../services/admin/price/getMembershipPrice";
+import { setMembershipPrice } from "../../services/admin/price/setMembershipPrice";
 
 const adminRouter = express.Router();
 
@@ -44,6 +46,7 @@ adminRouter.get("/orders", getOrders);
 adminRouter.get("/withdrawal", getWithdrawalList);
 adminRouter.get("/kakao", getKakaoUrl);
 adminRouter.get("/price/order", getOrderPrice);
+adminRouter.get("/price/membership", getMembershipPrice);
 adminRouter.get("/banner", getBannerList);
 adminRouter.get("/popup", getPopup);
 
@@ -63,6 +66,7 @@ adminRouter.patch("/order/cancel", cancelOrder);
 adminRouter.patch("/order/update", updateOrder);
 adminRouter.patch("/price/order", setOrderPrice);
 adminRouter.patch("/price/gugupack", setGugupackPrice);
+adminRouter.patch("/price/membership", setMembershipPrice);
 adminRouter.patch("/user/block", setReservationBlock);
 adminRouter.patch("/banner/link", setBannerLink);
 

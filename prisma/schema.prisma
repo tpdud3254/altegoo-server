@@ -309,11 +309,12 @@ model Banner {
 }
 
 model AdminData {
-  id            Int     @id @default(autoincrement()) //database id
-  kakaoUrl      String?
-  r_packPrice   Int     @default(0)
-  gugupackPrice Int     @default(0)
-  popupUrl      String?
+  id              Int     @id @default(autoincrement()) //database id
+  kakaoUrl        String?
+  r_packPrice     Int     @default(0)
+  gugupackPrice   Int     @default(0)
+  membershipPrice Int     @default(0)
+  popupUrl        String?
 }
 
 model LadderQuantityOption {
