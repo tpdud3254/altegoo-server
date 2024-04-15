@@ -47,6 +47,9 @@ export const registWork = async (req, res) => {
 
     const id = req.id;
 
+    const orderPoint =
+        orderPrice * 1.078 - orderPrice * 0.02 - orderPrice * 0.18;
+
     try {
         //작업등록
         const regist = await prisma.order.create({
@@ -84,9 +87,7 @@ export const registWork = async (req, res) => {
                 finalPrice,
                 recommendationPoint: orderPrice * 0.02,
                 registPoint: orderPrice * 0.18,
-                orderPoint: Math.floor(
-                    orderPrice * 1.078 - orderPrice * 0.02 - registPoint
-                ),
+                orderPoint: Math.floor(orderPoint),
                 status: { connect: { id: 1 } },
             },
         });

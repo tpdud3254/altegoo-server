@@ -33,7 +33,7 @@ export const acceptOrder = async (req, res) => {
                 AND: [
                     { acceptUser: id },
                     { orderStatusId: 2 },
-                    { dateTime: { gt: now } },
+                    { dateTime: { gt: now.toString() } },
                 ],
             },
         });
