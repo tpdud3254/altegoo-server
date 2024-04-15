@@ -20,6 +20,10 @@ export const deleteUsers = async (req, res) => {
                         where: { userId: Number(value.userId) },
                     });
 
+                    const vBankOrder = await prisma.vBankOrder.deleteMany({
+                        where: { userId: Number(value.userId) },
+                    });
+
                     const recommend = await prisma.user.updateMany({
                         where: { recommendUserId: Number(value.userId) },
                         data: {
