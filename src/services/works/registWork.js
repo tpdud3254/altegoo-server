@@ -39,7 +39,6 @@ export const registWork = async (req, res) => {
         gugupackPrice,
         tax,
         finalPrice,
-        registPoint,
         vBank,
     } = req.body;
 
@@ -47,8 +46,15 @@ export const registWork = async (req, res) => {
 
     const id = req.id;
 
-    const orderPoint =
-        orderPrice * 1.078 - orderPrice * 0.02 - orderPrice * 0.18;
+    const recommendationPoint = orderPrice * 0.02;
+
+    let registPoint = orderPrice * 0.18;
+    let orderPoint = orderPrice * 1.078 - orderPrice * 0.02 - orderPrice * 0.18;
+
+    if (Number(gugupackPrice) > 0) {
+        registPoint = registPoint - 10000;
+        orderPoint = orderPoint + 10000;
+    }
 
     try {
         //작업등록
@@ -85,8 +91,8 @@ export const registWork = async (req, res) => {
                 gugupackPrice,
                 tax,
                 finalPrice,
-                recommendationPoint: orderPrice * 0.02,
-                registPoint: orderPrice * 0.18,
+                recommendationPoint: Math.floor(recommendationPoint),
+                registPoint: Math.floor(registPoint),
                 orderPoint: Math.floor(orderPoint),
                 status: { connect: { id: 1 } },
             },

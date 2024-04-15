@@ -39,7 +39,6 @@ export const registVBankWork = async (req, res) => {
         gugupackPrice,
         tax,
         finalPrice,
-        registPoint,
         receipt_id,
         vbank_account,
         vbank_code,
@@ -51,9 +50,6 @@ export const registVBankWork = async (req, res) => {
     console.log(req.body);
 
     const id = req.id;
-
-    const orderPoint =
-        orderPrice * 1.078 - orderPrice * 0.02 - orderPrice * 0.18;
 
     try {
         //작업등록
@@ -90,9 +86,9 @@ export const registVBankWork = async (req, res) => {
                 gugupackPrice,
                 tax,
                 finalPrice,
-                recommendationPoint: orderPrice * 0.02,
-                registPoint: orderPrice * 0.18,
-                orderPoint: Math.floor(orderPoint),
+                recommendationPoint: 0,
+                registPoint: 0,
+                orderPoint: 0,
                 status: { connect: { id: 1 } },
                 receipt_id,
                 vbank_account,
