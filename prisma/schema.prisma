@@ -8,9 +8,7 @@ datasource db {
 }
 
 model User {
-  //TODO: userName 삭제
   id                       Int                @id @default(autoincrement()) //database id
-  userNumber               String? //user 일련변호 (UserClass와 함께 사용) (TODO: userId => userNumber로 이름 변경 없어질지도 모름)
   userType                 UserType           @relation(fields: [userTypeId], references: [id]) //user 구분
   userTypeId               Int
   name                     String //본명
