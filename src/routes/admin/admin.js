@@ -33,6 +33,7 @@ import { setPopupImage } from "../../services/admin/popup/setPopupImage";
 import { getPopup } from "../../services/admin/popup/getPopup";
 import { getMembershipPrice } from "../../services/admin/price/getMembershipPrice";
 import { setMembershipPrice } from "../../services/admin/price/setMembershipPrice";
+import { modifyCompanyName } from "../../services/admin/user/modifyCompanyName";
 
 const adminRouter = express.Router();
 
@@ -54,6 +55,7 @@ adminRouter.post("/notice/add", addNotice);
 adminRouter.post("/upload/license", modifyLicense);
 adminRouter.post("/upload/permission", modifyPermission);
 adminRouter.post("/vehicle", modifyVehicle);
+adminRouter.post("/company", modifyCompanyName);
 adminRouter.post("/banner", upload.single("file"), asyncWrap(saveBannerImage));
 adminRouter.post("/upload/banner", setBannerImage);
 adminRouter.post("/popup", upload.single("file"), asyncWrap(savePopupImage));
