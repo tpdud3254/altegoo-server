@@ -32,6 +32,7 @@ const getUser = async (req, res) => {
 
         const recommend = await prisma.user.findMany({
             where: { recommendUserId: Number(id) },
+            include: { point: true, workCategory: true },
         });
 
         let list = null;
