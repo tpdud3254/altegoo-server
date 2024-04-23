@@ -95,7 +95,7 @@ export const registWork = async (req, res) => {
                 recommendationPoint: Math.floor(recommendationPoint),
                 registPoint: Math.floor(registPoint),
                 orderPoint: Math.floor(orderPoint),
-                method: method,
+                method: vBank ? "vbank" : method,
                 status: { connect: { id: 1 } },
             },
         });

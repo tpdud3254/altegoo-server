@@ -1,5 +1,10 @@
 import prisma from "../../../prisma";
-import { GetUTCDateTime, setErrorJson, setResponseJson } from "../../../utils";
+import {
+    GetDateTime,
+    GetUTCDateTime,
+    setErrorJson,
+    setResponseJson,
+} from "../../../utils";
 
 const getOrders = async (req, res) => {
     const {
@@ -24,13 +29,6 @@ const getOrders = async (req, res) => {
 
         const orders = await prisma.order.findMany({
             where: {
-                ...(startDate &&
-                    endDate && {
-                        AND: [
-                            { dateTime: { gte: GetUTCDateTime(startDate) } },
-                            { dateTime: { lte: GetUTCDateTime(endDate) } },
-                        ],
-                    }),
                 ...(orderId && { id: Number(orderId) }),
                 ...((acceptUser || acceptUserData) && {
                     acceptUser: Number(acceptUserData.id),
@@ -66,19 +64,74 @@ const getOrders = async (req, res) => {
             include: {
                 registUser: true,
             },
-            orderBy: { id: "desc" },
+            orderBy: { createdAt: "desc" },
         });
 
+        const vBankOrders = await prisma.vBankOrder.findMany({
+            where: {
+                AND: [{ standBy: true }, { orderStatusId: 1 }],
+                ...(orderId && { id: Number(orderId) }),
+                ...((acceptUser || acceptUserData) && {
+                    acceptUser: Number(acceptUserData.id),
+                }),
+                ...(registUser && {
+                    registUser: {
+                        name: registUser,
+                    },
+                }),
+                ...(orderType && { vehicleType: orderType }),
+                ...(region && {
+                    address1: { contains: region.toString() },
+                }),
+            },
+            include: {
+                registUser: true,
+            },
+            orderBy: { createdAt: "desc" },
+        });
+
+        let originalList = null;
+
+        if (orderStatus && orderStatus === "7") {
+            originalList = [...vBankOrders];
+        } else {
+            originalList = [...orders, ...vBankOrders];
+        }
+
+        let filterdWithDate = null;
+
+        if (startDate && endDate) {
+            filterdWithDate = originalList.filter((value) => {
+                const datetime = GetDateTime(value.dateTime);
+                const start = GetUTCDateTime(startDate);
+                const end = GetUTCDateTime(endDate);
+
+                return datetime >= start && datetime < end;
+            });
+        } else {
+            filterdWithDate = originalList;
+        }
+
+        const sortedList = filterdWithDate.sort((a, b) => {
+            const datetime1 = GetUTCDateTime(a.createdAt);
+            const datetime2 = GetUTCDateTime(b.createdAt);
+
+            if (datetime1 < datetime2) return 1;
+            if (datetime1 > datetime2) return -1;
+            return 0;
+        });
+
+        console.log("sorted : ", sortedList);
         async function getUsers() {
             const usersList = await Promise.all(
-                orders.map(async (order, index) => {
+                sortedList.map(async (order, index) => {
                     if (!order.acceptUser) return;
                     const user = await prisma.user.findUnique({
                         where: { id: order.acceptUser },
                         select: { name: true },
                     });
-                    orders[index] = {
-                        ...orders[index],
+                    sortedList[index] = {
+                        ...sortedList[index],
                         ...{
                             acceptUserName:
                                 user && user.name ? user.name : null,
@@ -90,9 +143,9 @@ const getOrders = async (req, res) => {
 
         await getUsers();
 
-        if (!orders) throw new Error("유저 리스트를 불러올 수 없습니다.");
+        if (!sortedList) throw new Error("유저 리스트를 불러올 수 없습니다.");
 
-        res.json(setResponseJson({ orders: orders }));
+        res.json(setResponseJson({ orders: sortedList }));
     } catch (error) {
         console.log(error.message);
         res.json(setErrorJson(error.message));
