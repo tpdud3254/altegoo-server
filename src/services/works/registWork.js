@@ -40,6 +40,7 @@ export const registWork = async (req, res) => {
         tax,
         finalPrice,
         vBank,
+        method,
     } = req.body;
 
     console.log("registWork body : ", req.body);
@@ -94,6 +95,7 @@ export const registWork = async (req, res) => {
                 recommendationPoint: Math.floor(recommendationPoint),
                 registPoint: Math.floor(registPoint),
                 orderPoint: Math.floor(orderPoint),
+                method: method,
                 status: { connect: { id: 1 } },
             },
         });

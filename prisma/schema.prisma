@@ -164,6 +164,7 @@ model Order {
   orderStatusId       Int
   orderReservation    OrderReservation[] //예약대기
   pushStatus          String? //BEFORE_24HOURS, BEFORE_12HOURS, BEFORE_2HOURS, BEFORE_10MINS, AFTER_WORKDATETIME, DONE
+  method              String?
 }
 
 model VBankOrder {
@@ -213,6 +214,7 @@ model VBankOrder {
   orderStatusId       Int
   orderReservation    OrderReservation[] //예약대기
   pushStatus          String? //BEFORE_24HOURS, BEFORE_12HOURS, BEFORE_2HOURS, BEFORE_10MINS, AFTER_WORKDATETIME, DONE
+  method              String?
   standBy             Boolean            @default(true)
   receipt_id          String             @unique
   vbank_account       String
