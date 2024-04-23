@@ -69,7 +69,7 @@ const getOrders = async (req, res) => {
 
         const vBankOrders = await prisma.vBankOrder.findMany({
             where: {
-                AND: [{ standBy: true }, { orderStatusId: 1 }],
+                standBy: true,
                 ...(orderId && { id: Number(orderId) }),
                 ...((acceptUser || acceptUserData) && {
                     acceptUser: Number(acceptUserData.id),
