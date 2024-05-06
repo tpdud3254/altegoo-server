@@ -216,6 +216,8 @@ model VBankOrder {
   pushStatus          String? //BEFORE_24HOURS, BEFORE_12HOURS, BEFORE_2HOURS, BEFORE_10MINS, AFTER_WORKDATETIME, DONE
   method              String?
   standBy             Boolean            @default(true)
+  isDesignation       Boolean            @default(false)
+  driverId            Int?
   receipt_id          String             @unique
   vbank_account       String
   vbank_code          String

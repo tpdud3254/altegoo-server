@@ -12,6 +12,7 @@ export const getUserExist = async (req, res) => {
                 userId: user.id,
                 name: user.name,
                 phone: user.phone,
+                userTypeId: user.userTypeId,
             })
         );
     } catch (error) {
