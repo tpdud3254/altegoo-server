@@ -143,7 +143,7 @@ export const registWork = async (req, res) => {
                 await getUserExpoToken(driverId),
                 "지정 작업 요청",
                 "지정 작업이 등록되었습니다. 앱에서 확인해주세요.",
-                { screen: "OrderProgress", orderId: regist.id }
+                { screen: "DriverOrderProgress", orderId: regist.id }
             );
         } else {
             const orderTime = new Date(dateTime);
