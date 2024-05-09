@@ -49,10 +49,10 @@ export const registWork = async (req, res) => {
 
     const id = req.id;
 
-    const recommendationPoint = orderPrice * 0.02;
+    const recommendationPoint = orderPrice * 0.04;
 
-    let registPoint = orderPrice * 0.18;
-    let orderPoint = orderPrice * 1.078 - orderPrice * 0.02 - orderPrice * 0.18;
+    let registPoint = orderPrice * 0.15;
+    let orderPoint = orderPrice * 1.067 - orderPrice * 0.04 - orderPrice * 0.15;
 
     if (Number(gugupackPrice) > 0) {
         registPoint = registPoint - 10000;
@@ -142,7 +142,7 @@ export const registWork = async (req, res) => {
             sendPushToUser(
                 await getUserExpoToken(driverId),
                 "지정 작업 요청",
-                "지정 작업이 등록되었습니다.",
+                "지정 작업이 등록되었습니다. 앱에서 확인해주세요.",
                 { screen: "OrderProgress", orderId: regist.id }
             );
         } else {
