@@ -1,4 +1,9 @@
-import { existUser, setErrorJson, setResponseJson } from "../../utils";
+import {
+    existUser,
+    getUserRestInfo,
+    setErrorJson,
+    setResponseJson,
+} from "../../utils";
 
 export const getUserExist = async (req, res) => {
     const { phone } = req.query;
@@ -7,12 +12,16 @@ export const getUserExist = async (req, res) => {
     //TODO 예외처리 보강강
     try {
         const user = await existUser(phone);
+
+        const restInfo = await getUserRestInfo(user);
+
+        delete user.password;
+
         res.json(
             setResponseJson({
                 userId: user.id,
-                name: user.name,
-                phone: user.phone,
-                userTypeId: user.userTypeId,
+                ...user,
+                ...restInfo,
             })
         );
     } catch (error) {
