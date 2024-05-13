@@ -165,6 +165,7 @@ model Order {
   orderReservation    OrderReservation[] //예약대기
   pushStatus          String? //BEFORE_24HOURS, BEFORE_12HOURS, BEFORE_2HOURS, BEFORE_10MINS, AFTER_WORKDATETIME, DONE
   method              String?
+  isDesignation       Boolean            @default(false)
 }
 
 model VBankOrder {
