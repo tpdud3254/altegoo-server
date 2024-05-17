@@ -35,6 +35,8 @@ import { getMembershipPrice } from "../../services/admin/price/getMembershipPric
 import { setMembershipPrice } from "../../services/admin/price/setMembershipPrice";
 import { modifyCompanyName } from "../../services/admin/user/modifyCompanyName";
 import { registWork } from "../../services/admin/order/registWork";
+import getPostpaidOrders from "../../services/admin/order/getPostpaidOrders";
+import setPostpaidOrder from "../../services/admin/order/setPostpaidOrder";
 
 const adminRouter = express.Router();
 
@@ -45,6 +47,7 @@ adminRouter.get("/users/membership", getMembershipUsers);
 adminRouter.get("/vehicle/floor", getVehleFloor);
 adminRouter.get("/vehicle/weight", getVehleWeight);
 adminRouter.get("/orders", getOrders);
+adminRouter.get("/orders/postpaid", getPostpaidOrders);
 adminRouter.get("/withdrawal", getWithdrawalList);
 adminRouter.get("/kakao", getKakaoUrl);
 adminRouter.get("/price/order", getOrderPrice);
@@ -73,6 +76,7 @@ adminRouter.patch("/price/gugupack", setGugupackPrice);
 adminRouter.patch("/price/membership", setMembershipPrice);
 adminRouter.patch("/user/block", setReservationBlock);
 adminRouter.patch("/banner/link", setBannerLink);
+adminRouter.patch("/order/calculate", asyncWrap(setPostpaidOrder));
 
 adminRouter.delete("/users/delete", deleteUsers);
 adminRouter.delete("/order", deleteOrder);

@@ -168,6 +168,7 @@ model Order {
   isDesignation       Boolean            @default(false)
   paymentType         Int                @default(0)
   paymentDate         DateTime?
+  isCalculated        Boolean            @default(false)
 }
 
 model VBankOrder {
