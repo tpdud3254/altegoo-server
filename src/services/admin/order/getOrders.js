@@ -16,6 +16,7 @@ const getOrders = async (req, res) => {
         region,
         startDate,
         endDate,
+        standBy,
     } = req.query;
 
     try {
@@ -83,6 +84,25 @@ const getOrders = async (req, res) => {
                 ...(region && {
                     address1: { contains: region.toString() },
                 }),
+                ...(orderStatus &&
+                    orderStatus === "2" && {
+                        OR: [{ orderStatusId: 2 }, { orderStatusId: 3 }],
+                    }),
+                ...(orderStatus &&
+                    orderStatus === "6" && {
+                        OR: [{ orderStatusId: 7 }, { orderStatusId: 8 }],
+                    }),
+                ...(orderStatus &&
+                    orderStatus === "1" && {
+                        orderStatusId: 1,
+                    }),
+                ...(orderStatus &&
+                    orderStatus !== "2" &&
+                    orderStatus !== "6" &&
+                    orderStatus !== "1" && {
+                        orderStatusId: Number(orderStatus) + 1,
+                    }),
+                ...(standBy && { orderStatusId: 1 }),
             },
             include: {
                 registUser: true,
@@ -92,10 +112,12 @@ const getOrders = async (req, res) => {
 
         let originalList = null;
 
-        if (orderStatus && orderStatus === "7") {
+        if (standBy) {
             originalList = [...vBankOrders];
         } else {
-            originalList = [...orders, ...vBankOrders];
+            if (orderStatus && orderStatus === "1") {
+                originalList = [...orders];
+            } else originalList = [...orders, ...vBankOrders];
         }
 
         let filterdWithDate = null;
