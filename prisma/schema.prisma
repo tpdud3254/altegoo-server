@@ -166,6 +166,8 @@ model Order {
   pushStatus          String? //BEFORE_24HOURS, BEFORE_12HOURS, BEFORE_2HOURS, BEFORE_10MINS, AFTER_WORKDATETIME, DONE
   method              String?
   isDesignation       Boolean            @default(false)
+  paymentType         Int                @default(0)
+  paymentDate         DateTime?
 }
 
 model VBankOrder {

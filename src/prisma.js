@@ -57,6 +57,23 @@ prisma.$use(async (params, next) => {
                     );
                     params.args.data.updatedAt = new Date(newUpdatedAt);
 
+                    if (params.args.data.paymentType === 1) {
+                        const paymentDate = new Date(params.args.data.dateTime);
+                        const newPaymentDate = paymentDate.setHours(
+                            paymentDate.getHours() + 9
+                        );
+                        params.args.data.paymentDate = new Date(newPaymentDate);
+                    }
+
+                    if (params.args.data.paymentType === 2) {
+                        const paymentDate = new Date(
+                            params.args.data.paymentDate
+                        );
+                        const newPaymentDate = paymentDate.setHours(
+                            paymentDate.getHours() + 9
+                        );
+                        params.args.data.paymentDate = new Date(newPaymentDate);
+                    }
                     break;
                 }
                 //수정

@@ -34,6 +34,7 @@ import { getPopup } from "../../services/admin/popup/getPopup";
 import { getMembershipPrice } from "../../services/admin/price/getMembershipPrice";
 import { setMembershipPrice } from "../../services/admin/price/setMembershipPrice";
 import { modifyCompanyName } from "../../services/admin/user/modifyCompanyName";
+import { registWork } from "../../services/admin/order/registWork";
 
 const adminRouter = express.Router();
 
@@ -60,6 +61,7 @@ adminRouter.post("/banner", upload.single("file"), asyncWrap(saveBannerImage));
 adminRouter.post("/upload/banner", setBannerImage);
 adminRouter.post("/popup", upload.single("file"), asyncWrap(savePopupImage));
 adminRouter.post("/upload/popup", setPopupImage);
+adminRouter.post("/upload/work", asyncWrap(registWork));
 
 adminRouter.patch("/points", updateCurPoints);
 adminRouter.patch("/points/subtract", subtractPoints);
