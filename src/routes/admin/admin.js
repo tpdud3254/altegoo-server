@@ -1,7 +1,7 @@
 import express from "express";
 import { addNotice } from "../../services/admin/notice/addNotice";
 import { updateCurPoints } from "../../services/admin/points/updateCurPoints";
-import getUsers from "../../services/admin/user/gerUsers";
+import getUsers from "../../services/admin/user/getUsers";
 import { updateRecommendUser } from "../../services/admin/user/updateRecommendUser";
 import getVehleFloor from "../../services/admin/vehicle/getVehleFloor";
 import getVehleWeight from "../../services/admin/vehicle/getVehleWeight";
@@ -37,6 +37,8 @@ import { modifyCompanyName } from "../../services/admin/user/modifyCompanyName";
 import { registWork } from "../../services/admin/order/registWork";
 import getPostpaidOrders from "../../services/admin/order/getPostpaidOrders";
 import setPostpaidOrder from "../../services/admin/order/setPostpaidOrder";
+import { getGugupackSubscribeList } from "../../services/admin/user/getGugupackSubscribeList";
+import { confirmGugupack } from "../../services/admin/user/confirmGugupack";
 
 const adminRouter = express.Router();
 
@@ -54,6 +56,7 @@ adminRouter.get("/price/order", getOrderPrice);
 adminRouter.get("/price/membership", getMembershipPrice);
 adminRouter.get("/banner", getBannerList);
 adminRouter.get("/popup", getPopup);
+adminRouter.get("/gugupack/subscribe", getGugupackSubscribeList);
 
 adminRouter.post("/notice/add", addNotice);
 adminRouter.post("/upload/license", modifyLicense);
@@ -65,6 +68,7 @@ adminRouter.post("/upload/banner", setBannerImage);
 adminRouter.post("/popup", upload.single("file"), asyncWrap(savePopupImage));
 adminRouter.post("/upload/popup", setPopupImage);
 adminRouter.post("/upload/work", asyncWrap(registWork));
+adminRouter.post("/gugupack/confirm", asyncWrap(confirmGugupack));
 
 adminRouter.patch("/points", updateCurPoints);
 adminRouter.patch("/points/subtract", subtractPoints);

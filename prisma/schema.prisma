@@ -8,30 +8,30 @@ datasource db {
 }
 
 model User {
-  id                       Int                @id @default(autoincrement()) //database id
-  userType                 UserType           @relation(fields: [userTypeId], references: [id]) //user 구분
+  id                       Int                 @id @default(autoincrement()) //database id
+  userType                 UserType            @relation(fields: [userTypeId], references: [id]) //user 구분
   userTypeId               Int
   name                     String //본명
-  phone                    String             @unique //핸드폰번호 (실직적인 user Id)
+  phone                    String              @unique //핸드폰번호 (실직적인 user Id)
   password                 String //비밀번호
   birth                    String //생년월일
   gender                   String //성별
   sms                      Boolean //이벤트 혜택 수신
   status                   String //user 상태 (정상, 차단, 탈퇴 등)
-  recommendUserId          Int?               @default(1) //내가 추천한 회원 id
+  recommendUserId          Int?                @default(1) //내가 추천한 회원 id
   license                  String? //사업자등록증 url
   vehiclePermission        String? //화물자동차 운송사업 허가증 url
   companyName              String? //회사 이름
   companyPersonName        String? //회사 담당자 이름
   vehicle                  Vehicle[] //차량정보
-  workCategory             WorkCategory?      @relation(fields: [workCategoryId], references: [id])
+  workCategory             WorkCategory?       @relation(fields: [workCategoryId], references: [id])
   workCategoryId           Int?
-  workRegion               Region[]           @relation("userWorkRegion")
+  workRegion               Region[]            @relation("userWorkRegion")
   avatar                   String? //프로필 사진 url
   greeting                 String? //인사말
   accessedRegion           String? //마지막 접속 지역
   withdrawalDate           DateTime? //탈퇴날짜 //NEXT: timezone
-  grade                    Grade              @relation(fields: [gradeId], references: [id]) //회원 등급
+  grade                    Grade               @relation(fields: [gradeId], references: [id]) //회원 등급
   gradeId                  Int
   point                    Point?
   pointBreakdown           PointBreakdown[] //포인트 내역
@@ -40,14 +40,15 @@ model User {
   createdAt                DateTime
   updatedAt                DateTime
   pushToken                String?
-  membership               Boolean            @default(false)
+  membership               Boolean             @default(false)
   membershipDate           DateTime?
   finalMembershipDate      DateTime?
   withdrawalMembershipDate DateTime?
-  r_pack                   Boolean?           @default(false)
-  gugupack                 Boolean?           @default(false)
+  r_pack                   Boolean?            @default(false)
+  gugupack                 Boolean?            @default(false)
   VBankOrder               VBankOrder[]
-  reservationBlock         Boolean            @default(false)
+  reservationBlock         Boolean             @default(false)
+  subscribeGugupack        SubscribeGugupack[]
 }
 
 model UserType {
@@ -376,4 +377,13 @@ model SkyTimePrice {
   weightId Int
 
   @@unique([optionId, weightId], name: "identifier")
+}
+
+model SubscribeGugupack {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  status    Boolean  @default(false) //false: 승인 전, true: 승인 완료
+  createdAt DateTime
+  updatedAt DateTime
 }
