@@ -1,5 +1,6 @@
 import prisma from "../../prisma";
 import {
+    GetCommissionList,
     getUserExpoToken,
     sendPushToUser,
     sendPushToUsers,
@@ -43,20 +44,32 @@ export const registWork = async (req, res) => {
         method,
         isDesignation,
         driverId,
+        cardCommission,
     } = req.body;
 
     console.log("registWork body : ", req.body);
 
     const id = req.id;
 
-    const recommendationPoint = orderPrice * 0.04;
+    const commissionList = await GetCommissionList();
 
-    let registPoint = orderPrice * 0.15;
-    let orderPoint = orderPrice * 1.067 - orderPrice * 0.04 - orderPrice * 0.15;
+    const recommendationPoint = orderPrice * commissionList.recommendationPoint;
+
+    let registPoint = orderPrice * commissionList.registPoint;
+    let orderPoint =
+        finalPrice -
+        finalPrice * commissionList.cardCommission -
+        recommendationPoint -
+        registPoint;
 
     if (Number(gugupackPrice) > 0) {
-        registPoint = registPoint - 10000;
-        orderPoint = orderPoint + 10000;
+        if (registPoint - 10000 < 0) {
+            orderPoint = orderPoint + registPoint;
+            registPoint = 0;
+        } else {
+            registPoint = registPoint - 10000;
+            orderPoint = orderPoint + 10000;
+        }
     }
 
     try {
@@ -100,6 +113,9 @@ export const registWork = async (req, res) => {
                 method: vBank ? "vbank" : method,
                 status: { connect: { id: 1 } },
                 isDesignation: isDesignation,
+                cardCommission: cardCommission
+                    ? cardCommission
+                    : commissionList.cardCommission,
             },
         });
 

@@ -1,5 +1,10 @@
 import prisma from "../../../prisma";
-import { GetUTCDateTime, setErrorJson, setResponseJson } from "../../../utils";
+import {
+    GetCommissionList,
+    GetUTCDateTime,
+    setErrorJson,
+    setResponseJson,
+} from "../../../utils";
 
 export const updateOrder = async (req, res) => {
     const {
@@ -42,6 +47,8 @@ export const updateOrder = async (req, res) => {
             phone = userPhone.phone;
         }
 
+        const commissionList = await GetCommissionList();
+
         let totalPrice = null;
         let tax = null;
         let registPoint = null;
@@ -52,10 +59,14 @@ export const updateOrder = async (req, res) => {
         if (price) {
             totalPrice = price;
             tax = totalPrice * 0.1;
-            registPoint = price * 0.15;
+            registPoint = price * commissionList.registPoint;
             finalPrice = totalPrice + tax;
-            recommendationPoint = price * 0.04;
-            orderPoint = Math.floor(price * 1.067 - price * 0.04 - registPoint);
+            recommendationPoint = price * commissionList.recommendationPoint;
+            orderPoint =
+                finalPrice -
+                finalPrice * commissionList.cardCommission -
+                recommendationPoint -
+                registPoint;
         }
 
         const updatedOrder = await prisma.order.update({
@@ -99,9 +110,11 @@ export const updateOrder = async (req, res) => {
                 ...(totalPrice && { totalPrice }),
                 ...(tax && { tax }),
                 ...(finalPrice && { finalPrice }),
-                ...(recommendationPoint && { recommendationPoint }),
-                ...(registPoint && { registPoint }),
-                ...(orderPoint && { orderPoint }),
+                ...(recommendationPoint && {
+                    recommendationPoint: Math.floor(recommendationPoint),
+                }),
+                ...(registPoint && { registPoint: Math.floor(registPoint) }),
+                ...(orderPoint && { orderPoint: Math.floor(orderPoint) }),
             },
             include: {
                 registUser: true,

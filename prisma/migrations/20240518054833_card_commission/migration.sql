@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Order" ADD COLUMN     "cardCommission" DOUBLE PRECISION NOT NULL DEFAULT 0.02;
+
+-- AlterTable
+ALTER TABLE "VBankOrder" ADD COLUMN     "cardCommission" DOUBLE PRECISION NOT NULL DEFAULT 0.02;

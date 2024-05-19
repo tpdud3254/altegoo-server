@@ -1,5 +1,6 @@
 import prisma from "../../prisma";
 import {
+    GetCommissionList,
     SetTimer,
     getUserExpoToken,
     sendPushToUser,
@@ -55,6 +56,8 @@ export const registVBankWork = async (req, res) => {
     const id = req.id;
 
     try {
+        const commissionList = await GetCommissionList();
+
         //작업등록
         const regist = await prisma.vBankOrder.create({
             data: {
@@ -102,6 +105,7 @@ export const registVBankWork = async (req, res) => {
                 vbank_name,
                 vbank_expired_at,
                 vbank_tid,
+                cardCommission: commissionList.cardCommission,
             },
         });
 

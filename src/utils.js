@@ -579,3 +579,24 @@ export const SetTimer = (callbackFn, ms) => {
 };
 
 export const SetIntervalTimer = (fn, callbackFn, interval, ms) => {};
+
+export const GetCommissionList = async () => {
+    const list = await prisma.commission.findMany();
+
+    if (!list) throw new Error("수수료 정보를 찾을 수 없습니다.");
+
+    let result = {};
+
+    for (let index = 0; index < list.length; index++) {
+        if (list[index].name === "registPoint")
+            result = { registPoint: list[index].commission, ...result };
+        else if (list[index].name === "recommendationPoint")
+            result = { recommendationPoint: list[index].commission, ...result };
+        else if (list[index].name === "cardCommission")
+            result = { cardCommission: list[index].commission, ...result };
+        else if (list[index].name === "tax")
+            result = { tax: list[index].commission, ...result };
+    }
+
+    return result;
+};

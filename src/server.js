@@ -14,6 +14,7 @@ import { gracefulShutdown } from "node-schedule";
 import { initPushForWorks } from "./utils";
 import ordersRouter from "./routes/orders/orders";
 import paymentRouter from "./routes/payment/payment";
+import commissionRouter from "./routes/commission/commission";
 
 // import { Server } from "socket.io";
 
@@ -45,6 +46,7 @@ app.use("/points", pointsRouter);
 app.use("/payment", paymentRouter);
 app.use("/push", pushRouter);
 app.use("/admin", adminRouter);
+app.use("/commission", commissionRouter);
 
 app.get("/*", (_, res) => res.redirect("/"));
 

@@ -160,6 +160,7 @@ model Order {
   recommendationPoint Int //추천인포인트
   registPoint         Int //작업등록포인트
   orderPoint          Int //작업완료포인트
+  cardCommission      Float
   savePoint           Int? //적립 예정 포인트 //TODO: 삭제
   status              OrderStatus        @relation(fields: [orderStatusId], references: [id]) //작업 상태 (작업요청, 작업예약, 작업 중, 작업완료)
   orderStatusId       Int
@@ -215,6 +216,7 @@ model VBankOrder {
   registPoint         Int //작업등록포인트
   orderPoint          Int //작업완료포인트
   savePoint           Int? //적립 예정 포인트 //TODO: 삭제
+  cardCommission      Float
   status              OrderStatus        @relation(fields: [orderStatusId], references: [id]) //작업 상태 (작업요청, 작업예약, 작업 중, 작업완료)
   orderStatusId       Int
   orderReservation    OrderReservation[] //예약대기
@@ -232,8 +234,10 @@ model VBankOrder {
 }
 
 model Commission {
-  id         Int   @id @default(autoincrement())
-  commission Float //수수료
+  id          Int    @id @default(autoincrement())
+  commission  Float //수수료
+  description String //설명
+  name        String @unique @default("")
 }
 
 model OrderTheme {
