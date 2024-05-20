@@ -1,5 +1,5 @@
 import prisma from "../../../prisma";
-import { setErrorJson, setResponseJson } from "../../../utils";
+import { getUserRestInfo, setErrorJson, setResponseJson } from "../../../utils";
 
 export const updateRecommendUser = async (req, res) => {
     const { id, userId } = req.body;
@@ -37,9 +37,17 @@ export const updateRecommendUser = async (req, res) => {
 
             console.log(result);
 
+            delete recommendUser.password;
+
+            const restInfo = await getUserRestInfo(recommendUser);
+
             if (!result) throw new Error("추천인 변경에 실패하였습니다.");
 
-            res.json(setResponseJson({ recommendUser: recommendUser }));
+            res.json(
+                setResponseJson({
+                    recommendUser: { ...recommendUser, ...restInfo },
+                })
+            );
         }
     } catch (error) {
         console.log(error.message);
