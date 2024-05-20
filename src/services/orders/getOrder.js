@@ -11,7 +11,7 @@ export const getOrder = async (req, res) => {
         const order = await prisma.order.findUnique({
             where: { id: orderId },
             include: {
-                registUser: { select: { id: true } },
+                registUser: { select: { id: true, name: true } },
                 orderReservation: true,
             },
         });
