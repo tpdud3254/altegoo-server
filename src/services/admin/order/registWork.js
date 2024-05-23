@@ -138,6 +138,9 @@ export const registWork = async (req, res) => {
             //TODO: 대응
             throw new Error("작업 등록에 실패하였습니다.");
 
+        const pushCannel =
+            vehicleType === "사다리차" ? "ladder_push" : "sky_push";
+
         if (isDesignation) {
             const result = await prisma.order.update({
                 where: {
@@ -153,7 +156,8 @@ export const registWork = async (req, res) => {
                 await getUserExpoToken(driverId),
                 "지정 작업 요청",
                 "지정 작업이 등록되었습니다. 앱에서 확인해주세요.",
-                { screen: "DriverOrderProgress", orderId: regist.id }
+                { screen: "DriverOrderProgress", orderId: regist.id },
+                pushCannel
             );
         } else {
             const orderTime = new Date(dateTime);
@@ -176,9 +180,6 @@ export const registWork = async (req, res) => {
                 //     userId: id,
                 //     orderId: regist.id,
                 // });
-
-                const pushCannel =
-                    vehicleType === "사다리차" ? "ladder_push" : "sky_push";
 
                 //푸시 알림
                 const users = await prisma.user.findMany({
