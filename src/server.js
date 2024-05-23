@@ -119,3 +119,7 @@ initPushForWorks();
 setInterval(() => {
     initPushForWorks();
 }, 1000 * 60 * 10);
+
+const test = async () => {};
+
+test();

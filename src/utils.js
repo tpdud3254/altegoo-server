@@ -284,7 +284,7 @@ export const initPushForWorks = async () => {
             await addPushForWorks(order);
         })
     );
-    console.log("PUSH_SCHEDULE : ", PUSH_SCHEDULE);
+    // console.log("PUSH_SCHEDULE : ", PUSH_SCHEDULE);
 };
 
 export const addPushForWorks = async (order) => {
@@ -426,45 +426,83 @@ function chunkArr(data = [], size = 10) {
     return arr;
 }
 
-export const sendPushToUser = async (expoToken, title, body, data) => {
+const FCM_PUSH_SERVER = "https://fcm.googleapis.com/fcm/send";
+export const sendPushToUser = async (
+    expoToken,
+    title,
+    message,
+    data,
+    channelId
+) => {
     try {
-        const response = await axios.post(EXPO_PUSH_SERVER, {
-            to: expoToken,
-            title,
-            body,
-            data,
-            sound: "default",
-            priority: "high",
-        });
-
-        if (!response) throw new Error("푸시 알림 전송에 실패하였습니다.");
-
-        return response;
+        await fetch(FCM_PUSH_SERVER, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `key=AAAAT6XyPEg:APA91bFYzu2tSoeg2MjUhSP0pvwXDpubxDKs7fVCG65vzv-a4bbrfjITSA6mtPe6Pqv4KpKckYaS-WeaET-zIuQ8PIsvnDfRK-6tSwbKKYXuW8IxZEoNLJKPHHB6wwn0bG3Tdhas1SYe`,
+            },
+            body: JSON.stringify({
+                to: expoToken,
+                priority: "high",
+                data: {
+                    title,
+                    message,
+                    data,
+                    vibrate: true,
+                    channelId: channelId ? channelId : "default",
+                    priority: "high",
+                },
+            }),
+        })
+            .then((res) => {
+                return res;
+            })
+            .catch(() => {
+                throw new Error("푸시 알림 전송에 실패하였습니다.");
+            });
     } catch (error) {
         return false;
     }
 };
 
-export const sendPushToUsers = async (expoTokenList, title, body, data) => {
+export const sendPushToUsers = async (
+    expoTokenList,
+    title,
+    message,
+    data,
+    channelId
+) => {
     try {
         const chunkedArr = chunkArr(expoTokenList, 100);
         const responseArr = [];
 
         await Promise.all(
             chunkedArr.map(async (value, index) => {
-                const response = await axios.post(EXPO_PUSH_SERVER, {
-                    to: [...value],
-                    title,
-                    body,
-                    data,
-                    sound: "default",
-                    priority: "high",
-                });
-
-                if (!response)
-                    throw new Error("푸시 알림 전송에 실패하였습니다.");
-
-                responseArr.push(response);
+                await fetch(FCM_PUSH_SERVER, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `key=AAAAT6XyPEg:APA91bFYzu2tSoeg2MjUhSP0pvwXDpubxDKs7fVCG65vzv-a4bbrfjITSA6mtPe6Pqv4KpKckYaS-WeaET-zIuQ8PIsvnDfRK-6tSwbKKYXuW8IxZEoNLJKPHHB6wwn0bG3Tdhas1SYe`,
+                    },
+                    body: JSON.stringify({
+                        registration_ids: [...value],
+                        priority: "high",
+                        data: {
+                            title,
+                            message,
+                            data,
+                            vibrate: true,
+                            channelId: channelId ? channelId : "default",
+                            priority: "high",
+                        },
+                    }),
+                })
+                    .then((res) => {
+                        return res;
+                    })
+                    .catch(() => {
+                        throw new Error("푸시 알림 전송에 실패하였습니다.");
+                    });
             })
         );
         return responseArr;
@@ -473,7 +511,7 @@ export const sendPushToUsers = async (expoTokenList, title, body, data) => {
     }
 };
 
-export const sendPushToAllUsers = async (title, body, data) => {
+export const sendPushToAllUsers = async (title, message, data, channelId) => {
     try {
         const userTokenList = await prisma.user.findMany({
             select: {
@@ -491,19 +529,31 @@ export const sendPushToAllUsers = async (title, body, data) => {
 
         await Promise.all(
             chunkedArr.map(async (value, index) => {
-                const response = await axios.post(EXPO_PUSH_SERVER, {
-                    to: [...value],
-                    title,
-                    body,
-                    data,
-                    sound: "default",
-                    priority: "high",
-                });
-
-                if (!response)
-                    throw new Error("푸시 알림 전송에 실패하였습니다.");
-
-                responseArr.push(response);
+                await fetch(FCM_PUSH_SERVER, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `key=AAAAT6XyPEg:APA91bFYzu2tSoeg2MjUhSP0pvwXDpubxDKs7fVCG65vzv-a4bbrfjITSA6mtPe6Pqv4KpKckYaS-WeaET-zIuQ8PIsvnDfRK-6tSwbKKYXuW8IxZEoNLJKPHHB6wwn0bG3Tdhas1SYe`,
+                    },
+                    body: JSON.stringify({
+                        registration_ids: [...value],
+                        priority: "high",
+                        data: {
+                            title,
+                            message,
+                            data,
+                            vibrate: true,
+                            channelId: channelId ? channelId : "default",
+                            priority: "high",
+                        },
+                    }),
+                })
+                    .then((res) => {
+                        return res;
+                    })
+                    .catch(() => {
+                        throw new Error("푸시 알림 전송에 실패하였습니다.");
+                    });
             })
         );
         return responseArr;

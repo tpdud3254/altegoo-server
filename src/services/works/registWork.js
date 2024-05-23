@@ -165,23 +165,27 @@ export const registWork = async (req, res) => {
         } else {
             const orderTime = new Date(dateTime);
 
-            //tts 알림
             if (emergency) {
-                process.emit("REGIST", {
-                    msg: `긴급 작업이 등록되었습니다.            ${
-                        orderTime.getUTCMonth() + 1
-                    }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
-                    userId: id,
-                    orderId: regist.id,
-                });
+                //tts 알림
+                // process.emit("REGIST", {
+                //     msg: `긴급 작업이 등록되었습니다.            ${
+                //         orderTime.getUTCMonth() + 1
+                //     }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                //     userId: id,
+                //     orderId: regist.id,
+                // });
             } else {
-                process.emit("REGIST", {
-                    msg: `${
-                        orderTime.getUTCMonth() + 1
-                    }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
-                    userId: id,
-                    orderId: regist.id,
-                });
+                //tts 알림
+                // process.emit("REGIST", {
+                //     msg: `${
+                //         orderTime.getUTCMonth() + 1
+                //     }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                //     userId: id,
+                //     orderId: regist.id,
+                // });
+
+                const pushCannel =
+                    vehicleType === "사다리차" ? "ladder_push" : "sky_push";
 
                 //푸시 알림
                 const users = await prisma.user.findMany({
@@ -235,7 +239,8 @@ export const registWork = async (req, res) => {
                             // order: regist,
                             userId: id,
                             orderId: regist.id,
-                        }
+                        },
+                        pushCannel
                     );
 
                     console.log(pushResponse);
@@ -268,7 +273,8 @@ export const registWork = async (req, res) => {
                         {
                             screen: "OrderDetails",
                             orderId: regist.id,
-                        }
+                        },
+                        pushCannel
                     );
 
                     console.log(pushResponse);
