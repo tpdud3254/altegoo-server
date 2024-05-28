@@ -39,6 +39,7 @@ import getPostpaidOrders from "../../services/admin/order/getPostpaidOrders";
 import setPostpaidOrder from "../../services/admin/order/setPostpaidOrder";
 import { getGugupackSubscribeList } from "../../services/admin/user/getGugupackSubscribeList";
 import { confirmGugupack } from "../../services/admin/user/confirmGugupack";
+import { cancelMembership } from "../../services/admin/user/cancelMembership";
 
 const adminRouter = express.Router();
 
@@ -81,6 +82,7 @@ adminRouter.patch("/price/membership", setMembershipPrice);
 adminRouter.patch("/user/block", setReservationBlock);
 adminRouter.patch("/banner/link", setBannerLink);
 adminRouter.patch("/order/calculate", asyncWrap(setPostpaidOrder));
+adminRouter.patch("/users/membership/cancel", cancelMembership);
 
 adminRouter.delete("/users/delete", deleteUsers);
 adminRouter.delete("/order", deleteOrder);
