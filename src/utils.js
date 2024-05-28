@@ -232,7 +232,7 @@ const getOrders = async () => {
     orders.map((order) => {
         const orderDate = new Date(order.dateTime);
         const diff = now.getHours() - orderDate.getHours();
-        console.log("diff : ", diff);
+        // console.log("diff : ", diff);
         if (now < orderDate || diff < 6) results.push(order);
     });
 
