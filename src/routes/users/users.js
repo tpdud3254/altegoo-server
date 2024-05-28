@@ -23,6 +23,7 @@ import { decoding } from "../../services/users/decoding";
 import { cancelGugupack } from "../../services/users/cancelGugupack";
 import { getGugupackPrice } from "../../services/users/getGugupackPrice";
 import { subscribeGugupack } from "../../services/users/subscribeGugupack";
+import { waitingGugupack } from "../../services/users/waitingGugupack";
 
 const usersRouter = express.Router();
 
@@ -34,6 +35,7 @@ usersRouter.get("/user", asyncWrap(getUserWithId));
 usersRouter.get("/certification", asyncWrap(certification));
 usersRouter.get("/gugupack/price", asyncWrap(getGugupackPrice));
 usersRouter.get("/gugupack/subscribe", auth, asyncWrap(subscribeGugupack));
+usersRouter.get("/gugupack/waiting", auth, asyncWrap(waitingGugupack));
 
 usersRouter.post("/user", asyncWrap(verifyToken));
 usersRouter.post("/create", asyncWrap(createAccount));
