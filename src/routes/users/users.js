@@ -24,12 +24,14 @@ import { cancelGugupack } from "../../services/users/cancelGugupack";
 import { getGugupackPrice } from "../../services/users/getGugupackPrice";
 import { subscribeGugupack } from "../../services/users/subscribeGugupack";
 import { waitingGugupack } from "../../services/users/waitingGugupack";
+import { searchRecommendUser } from "../../services/users/searchRecommendUser";
 
 const usersRouter = express.Router();
 
 usersRouter.get("/search", asyncWrap(getUserExist));
 usersRouter.get("/point", auth, asyncWrap(getUserPoint));
 usersRouter.get("/user/recommend", auth, asyncWrap(getRecommendUser));
+usersRouter.get("/user/search/recommend", asyncWrap(searchRecommendUser));
 usersRouter.get("/driver/count", asyncWrap(getDirverCount));
 usersRouter.get("/user", asyncWrap(getUserWithId));
 usersRouter.get("/certification", asyncWrap(certification));
