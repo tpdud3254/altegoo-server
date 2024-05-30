@@ -277,7 +277,7 @@ export const initPushForWorks = async () => {
                 (e) => e.orderId === order.id
             );
             if (isExist !== -1) {
-                console.log("이미 있음 ", isExist);
+                // console.log("이미 있음 ", isExist);
                 return;
             }
 
