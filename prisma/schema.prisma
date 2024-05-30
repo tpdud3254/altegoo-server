@@ -12,6 +12,7 @@ model User {
   userType                 UserType            @relation(fields: [userTypeId], references: [id]) //user 구분
   userTypeId               Int
   name                     String //본명
+  nickname                 String?
   phone                    String              @unique //핸드폰번호 (실직적인 user Id)
   password                 String //비밀번호
   birth                    String //생년월일

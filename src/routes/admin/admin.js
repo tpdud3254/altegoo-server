@@ -40,6 +40,7 @@ import setPostpaidOrder from "../../services/admin/order/setPostpaidOrder";
 import { getGugupackSubscribeList } from "../../services/admin/user/getGugupackSubscribeList";
 import { confirmGugupack } from "../../services/admin/user/confirmGugupack";
 import { cancelMembership } from "../../services/admin/user/cancelMembership";
+import { modifyNickname } from "../../services/admin/user/modifyNickname";
 
 const adminRouter = express.Router();
 
@@ -64,6 +65,7 @@ adminRouter.post("/upload/license", modifyLicense);
 adminRouter.post("/upload/permission", modifyPermission);
 adminRouter.post("/vehicle", modifyVehicle);
 adminRouter.post("/company", modifyCompanyName);
+adminRouter.post("/nickname", modifyNickname);
 adminRouter.post("/banner", upload.single("file"), asyncWrap(saveBannerImage));
 adminRouter.post("/upload/banner", setBannerImage);
 adminRouter.post("/popup", upload.single("file"), asyncWrap(savePopupImage));
