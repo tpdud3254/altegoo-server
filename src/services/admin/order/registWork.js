@@ -46,6 +46,7 @@ export const registWork = async (req, res) => {
         finalPrice,
         gugupackPrice,
         method,
+        push,
     } = req.body;
 
     console.log("registWork body : ", req.body);
@@ -172,106 +173,105 @@ export const registWork = async (req, res) => {
                 //     orderId: regist.id,
                 // });
             } else {
-                //tts 알림
-                // process.emit("REGIST", {
-                //     msg: `${
-                //         orderTime.getUTCMonth() + 1
-                //     }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
-                //     userId: id,
-                //     orderId: regist.id,
-                // });
+                if (push) {
+                    //tts 알림
+                    // process.emit("REGIST", {
+                    //     msg: `${
+                    //         orderTime.getUTCMonth() + 1
+                    //     }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                    //     userId: id,
+                    //     orderId: regist.id,
+                    // });
 
-                //푸시 알림
-                const users = await prisma.user.findMany({
-                    where: {
-                        AND: [
-                            {
-                                NOT: {
-                                    userTypeId: 1,
-                                }, //일반회원 제외
-                            },
-                            {
-                                NOT: {
-                                    userTypeId: 3,
-                                }, //기업회원 제외
-                            },
-                            {
-                                NOT: {
-                                    id, //자기 자신 제외
+                    //푸시 알림
+                    const users = await prisma.user.findMany({
+                        where: {
+                            AND: [
+                                {
+                                    NOT: {
+                                        userTypeId: 1,
+                                    }, //일반회원 제외
                                 },
+                                {
+                                    NOT: {
+                                        userTypeId: 3,
+                                    }, //기업회원 제외
+                                },
+                                {
+                                    NOT: {
+                                        id, //자기 자신 제외
+                                    },
+                                },
+                            ],
+                        },
+                        select: {
+                            id: true,
+                            pushToken: true,
+                            workRegion: true,
+                        },
+                    });
+
+                    console.log("push user : ", users);
+
+                    const expoTokenList = [];
+
+                    if (emergency) {
+                        // users.map((value, index) => {
+                        //     if (value.pushToken)
+                        //         expoTokenList.push(value.pushToken);
+                        // });
+                        // console.log("expoTokenList : ", expoTokenList);
+                        // const pushResponse = await sendPushToUsers(
+                        //     expoTokenList,
+                        //     "긴급 작업 요청",
+                        //     `${
+                        //         orderTime.getUTCMonth() + 1
+                        //     }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                        //     {
+                        //         type: "REGIST",
+                        //         screen: "OrderDetails",
+                        //         // order: regist,
+                        //         userId: id,
+                        //         orderId: regist.id,
+                        //     },
+                        //     pushCannel
+                        // );
+                        // console.log(pushResponse);
+                    } else {
+                        users.map((value, index) => {
+                            //TODO: 작업 지역에 따라 울리기
+                            // if (value.workRegion.length > 0) {
+                            //     let correctRegion = false;
+
+                            //     value.workRegion.map((region) => {
+                            //         if (region.id === region) correctRegion = true;
+                            //     });
+
+                            //     if (correctRegion) {
+                            //         if (value.pushToken)
+                            //             expoTokenList.push(value.pushToken);
+                            //     }
+                            // }
+                            if (value.pushToken)
+                                expoTokenList.push(value.pushToken);
+                        });
+
+                        console.log("expoTokenList : ", expoTokenList);
+                        const pushResponse = await sendPushToUsers(
+                            expoTokenList,
+                            "작업 요청",
+                            `${
+                                orderTime.getUTCMonth() + 1
+                            }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
+                            {
+                                screen: "OrderDetails",
+                                orderId: regist.id,
                             },
-                        ],
-                    },
-                    select: {
-                        id: true,
-                        pushToken: true,
-                        workRegion: true,
-                    },
-                });
+                            pushCannel
+                        );
 
-                console.log("push user : ", users);
-
-                const expoTokenList = [];
-
-                if (emergency) {
-                    users.map((value, index) => {
-                        if (value.pushToken)
-                            expoTokenList.push(value.pushToken);
-                    });
-
-                    console.log("expoTokenList : ", expoTokenList);
-
-                    const pushResponse = await sendPushToUsers(
-                        expoTokenList,
-                        "긴급 작업 요청",
-                        `${
-                            orderTime.getUTCMonth() + 1
-                        }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
-                        {
-                            type: "REGIST",
-                            screen: "OrderDetails",
-                            // order: regist,
-                            userId: id,
-                            orderId: regist.id,
-                        },
-                        pushCannel
-                    );
-
-                    console.log(pushResponse);
-                } else {
-                    users.map((value, index) => {
-                        //TODO: 작업 지역에 따라 울리기
-                        // if (value.workRegion.length > 0) {
-                        //     let correctRegion = false;
-
-                        //     value.workRegion.map((region) => {
-                        //         if (region.id === region) correctRegion = true;
-                        //     });
-
-                        //     if (correctRegion) {
-                        //         if (value.pushToken)
-                        //             expoTokenList.push(value.pushToken);
-                        //     }
-                        // }
-                        if (value.pushToken)
-                            expoTokenList.push(value.pushToken);
-                    });
-
-                    console.log("expoTokenList : ", expoTokenList);
-                    const pushResponse = await sendPushToUsers(
-                        expoTokenList,
-                        "작업 요청",
-                        `${
-                            orderTime.getUTCMonth() + 1
-                        }월 ${orderTime.getUTCDate()}일 ${orderTime.getUTCHours()}시 ${orderTime.getUTCMinutes()}분 ${simpleAddress1}에 작업이 등록되었습니다.`,
-                        {
-                            screen: "OrderDetails",
-                            orderId: regist.id,
-                        },
-                        pushCannel
-                    );
-
-                    console.log(pushResponse);
+                        console.log(pushResponse);
+                    }
                 }
             }
         }
