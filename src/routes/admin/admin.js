@@ -41,6 +41,11 @@ import { getGugupackSubscribeList } from "../../services/admin/user/getGugupackS
 import { confirmGugupack } from "../../services/admin/user/confirmGugupack";
 import { cancelMembership } from "../../services/admin/user/cancelMembership";
 import { modifyNickname } from "../../services/admin/user/modifyNickname";
+import { createAccount } from "../../services/admin/createAccount";
+import { checkAccount } from "../../services/admin/checkAccount";
+import { login } from "../../services/admin/login";
+import { verifyToken } from "../../services/admin/verifyToken";
+import { getAdminList } from "../../services/admin/getAdminList";
 
 const adminRouter = express.Router();
 
@@ -59,7 +64,12 @@ adminRouter.get("/price/membership", getMembershipPrice);
 adminRouter.get("/banner", getBannerList);
 adminRouter.get("/popup", getPopup);
 adminRouter.get("/gugupack/subscribe", getGugupackSubscribeList);
+adminRouter.get("/list", getAdminList);
 
+adminRouter.post("/login", login);
+adminRouter.post("/token", asyncWrap(verifyToken));
+adminRouter.post("/check", checkAccount);
+adminRouter.post("/create", createAccount);
 adminRouter.post("/notice/add", addNotice);
 adminRouter.post("/upload/license", modifyLicense);
 adminRouter.post("/upload/permission", modifyPermission);

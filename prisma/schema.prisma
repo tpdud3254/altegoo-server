@@ -300,33 +300,10 @@ model Notice {
   performance String?
 }
 
-model Admin {
-  id        Int      @id @default(autoincrement()) //database id
-  userId    String   @unique //user 아이디 
-  name      String //이름
-  password  String //비밀번호
-  gender    String //성별
-  phone     String //휴대폰번호
-  position  String //직급
-  email     String //이메일
-  status    Boolean //활성화 여부
-  createdAt DateTime
-  updatedAt DateTime
-}
-
 model Banner {
   id       Int     @id @default(autoincrement())
   imageUrl String?
   link     String?
-}
-
-model AdminData {
-  id              Int     @id @default(autoincrement()) //database id
-  kakaoUrl        String?
-  r_packPrice     Int     @default(0)
-  gugupackPrice   Int     @default(0)
-  membershipPrice Int     @default(0)
-  popupUrl        String?
 }
 
 model LadderQuantityOption {
@@ -391,4 +368,44 @@ model SubscribeGugupack {
   status    Boolean  @default(false) //false: 승인 전, true: 승인 완료
   createdAt DateTime
   updatedAt DateTime
+}
+
+model AdminData {
+  id              Int     @id @default(autoincrement()) //database id
+  kakaoUrl        String?
+  r_packPrice     Int     @default(0)
+  gugupackPrice   Int     @default(0)
+  membershipPrice Int     @default(0)
+  popupUrl        String?
+}
+
+model Admin {
+  id                Int           @id @default(autoincrement()) //database id
+  userId            String        @unique //user 아이디 (연락처)
+  password          String //비밀번호
+  name              String //이름
+  idNumber          String //주민번호
+  bankAccountName   String //예금주
+  bank              String //은행
+  bankAccountNumber String //계좌번호
+  telecom           Telecom       @relation(fields: [telecomId], references: [id]) //통신사
+  telecomId         Int
+  position          AdminPosition @relation(fields: [positionId], references: [id]) //직책
+  positionId        Int
+  permission        String        @default("") //권한
+  status            Boolean       @default(false) //활성화 여부
+  createdAt         DateTime
+  updatedAt         DateTime
+}
+
+model Telecom {
+  id    Int     @id @default(autoincrement()) //database id
+  value String
+  Admin Admin[]
+}
+
+model AdminPosition {
+  id       Int     @id @default(autoincrement()) //database id
+  position String
+  Admin    Admin[]
 }
