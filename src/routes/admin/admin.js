@@ -46,6 +46,7 @@ import { checkAccount } from "../../services/admin/checkAccount";
 import { login } from "../../services/admin/login";
 import { verifyToken } from "../../services/admin/verifyToken";
 import { getAdminList } from "../../services/admin/getAdminList";
+import { toggleAdminStatus } from "../../services/admin/toggleAdminStatus";
 
 const adminRouter = express.Router();
 
@@ -95,6 +96,7 @@ adminRouter.patch("/user/block", setReservationBlock);
 adminRouter.patch("/banner/link", setBannerLink);
 adminRouter.patch("/order/calculate", asyncWrap(setPostpaidOrder));
 adminRouter.patch("/users/membership/cancel", cancelMembership);
+adminRouter.patch("/status", toggleAdminStatus);
 
 adminRouter.delete("/users/delete", deleteUsers);
 adminRouter.delete("/order", deleteOrder);
