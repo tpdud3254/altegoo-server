@@ -21,8 +21,8 @@ export const createAccount = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const permission = {
-        menuPermissions: [],
-        submenuPermissions: [],
+        menuPermissions: ["user"],
+        submenuPermissions: ["user_search"],
         functionPermissions: [],
     };
 

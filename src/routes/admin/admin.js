@@ -48,6 +48,7 @@ import { verifyToken } from "../../services/admin/verifyToken";
 import { getAdminList } from "../../services/admin/getAdminList";
 import { toggleAdminStatus } from "../../services/admin/toggleAdminStatus";
 import { updateAccount } from "../../services/admin/updateAccount";
+import { deleteAdmin } from "../../services/admin/deleteAdmin";
 
 const adminRouter = express.Router();
 
@@ -101,6 +102,7 @@ adminRouter.patch("/users/membership/cancel", cancelMembership);
 adminRouter.patch("/status", toggleAdminStatus);
 
 adminRouter.delete("/users/delete", deleteUsers);
+adminRouter.delete("/delete", deleteAdmin);
 adminRouter.delete("/order", deleteOrder);
 
 //TODO: 포인트는 기존 내역 수정하지 마고 내역쌓기
