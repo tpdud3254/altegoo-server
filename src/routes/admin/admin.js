@@ -47,6 +47,7 @@ import { login } from "../../services/admin/login";
 import { verifyToken } from "../../services/admin/verifyToken";
 import { getAdminList } from "../../services/admin/getAdminList";
 import { toggleAdminStatus } from "../../services/admin/toggleAdminStatus";
+import { updateAccount } from "../../services/admin/updateAccount";
 
 const adminRouter = express.Router();
 
@@ -71,6 +72,7 @@ adminRouter.post("/login", login);
 adminRouter.post("/token", asyncWrap(verifyToken));
 adminRouter.post("/check", checkAccount);
 adminRouter.post("/create", createAccount);
+adminRouter.post("/update", updateAccount);
 adminRouter.post("/notice/add", addNotice);
 adminRouter.post("/upload/license", modifyLicense);
 adminRouter.post("/upload/permission", modifyPermission);
