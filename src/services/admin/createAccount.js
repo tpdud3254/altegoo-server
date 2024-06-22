@@ -23,7 +23,7 @@ export const createAccount = async (req, res) => {
     const permission = {
         menuPermissions: [],
         submenuPermissions: [],
-        funtionPermissions: [],
+        functionPermissions: [],
     };
 
     try {
