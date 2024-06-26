@@ -30,7 +30,7 @@ const getUsers = async (req, res) => {
                         ],
                     }),
                 ...(name && { name }),
-                ...(phone && { phone }),
+                ...(phone && { phone: { contains: phone } }),
                 ...(gender && { gender }),
                 ...(status && { status }),
                 ...(userTypeId && { userTypeId: Number(userTypeId) }),
