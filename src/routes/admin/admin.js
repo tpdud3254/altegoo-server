@@ -49,6 +49,7 @@ import { getAdminList } from "../../services/admin/getAdminList";
 import { toggleAdminStatus } from "../../services/admin/toggleAdminStatus";
 import { updateAccount } from "../../services/admin/updateAccount";
 import { deleteAdmin } from "../../services/admin/deleteAdmin";
+import getVehicleCraneWeight from "../../services/admin/vehicle/getVehicleCraneWeight";
 
 const adminRouter = express.Router();
 
@@ -58,6 +59,7 @@ adminRouter.get("/users", getUsers);
 adminRouter.get("/users/membership", getMembershipUsers);
 adminRouter.get("/vehicle/floor", getVehleFloor);
 adminRouter.get("/vehicle/weight", getVehleWeight);
+adminRouter.get("/vehicle/crane", getVehicleCraneWeight);
 adminRouter.get("/orders", getOrders);
 adminRouter.get("/orders/postpaid", getPostpaidOrders);
 adminRouter.get("/withdrawal", getWithdrawalList);

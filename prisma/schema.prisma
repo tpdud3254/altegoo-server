@@ -59,16 +59,20 @@ model UserType {
 }
 
 model Vehicle {
-  id              Int            @id @default(autoincrement())
-  number          String
-  type            VehicleType    @relation(fields: [vehicleTypeId], references: [id])
-  vehicleTypeId   Int
-  floor           VehicleFloor?  @relation(fields: [vehicleFloorId], references: [id])
-  vehicleFloorId  Int?
-  User            User?          @relation(fields: [userId], references: [id])
-  userId          Int?
-  weight          VehicleWeight? @relation(fields: [vehicleWeightId], references: [id])
-  vehicleWeightId Int?
+  id                   Int                 @id @default(autoincrement())
+  number               String
+  type                 VehicleType         @relation(fields: [vehicleTypeId], references: [id])
+  vehicleTypeId        Int
+  floor                VehicleFloor?       @relation(fields: [vehicleFloorId], references: [id])
+  vehicleFloorId       Int?
+  User                 User?               @relation(fields: [userId], references: [id])
+  userId               Int?
+  weight               VehicleWeight?      @relation(fields: [vehicleWeightId], references: [id])
+  vehicleWeightId      Int?
+  craneType            CraneType?          @relation(fields: [craneTypeId], references: [id])
+  craneTypeId          Int?
+  vehicleCraneWeight   VehicleCraneWeight? @relation(fields: [vehicleCraneWeightId], references: [id])
+  vehicleCraneWeightId Int?
 }
 
 // C:건설, F:가구, E:가전, H:청소인력), M:이사, G:기타
@@ -267,7 +271,7 @@ model OrderReservation {
 
 model VehicleType {
   id      Int       @id @default(autoincrement())
-  type    String // ex) 스카이, 사다리
+  type    String // ex) 스카이, 사다리, 크레인
   Vehicle Vehicle[]
 }
 
@@ -281,6 +285,21 @@ model VehicleFloor {
   id      Int       @id @default(autoincrement())
   floor   String // ex) 10층, 15층
   Vehicle Vehicle[]
+}
+
+model CraneType {
+  id                 Int                  @id @default(autoincrement())
+  type               String // ex) 카고크레인, 크레인, 대형크레인
+  Vehicle            Vehicle[]
+  VehicleCraneWeight VehicleCraneWeight[]
+}
+
+model VehicleCraneWeight {
+  id          Int       @id @default(autoincrement())
+  craneType   CraneType @relation(fields: [craneTypeId], references: [id])
+  craneTypeId Int
+  weight      String // ex) 1톤, 2톤
+  Vehicle     Vehicle[]
 }
 
 model Manager {

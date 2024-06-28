@@ -15,6 +15,7 @@ const getUsers = async (req, res) => {
         endDate,
         status,
         userTypeId,
+        vehicleTypeId,
         workCategoryId,
         gugupackStatus,
     } = req.query;
@@ -46,7 +47,15 @@ const getUsers = async (req, res) => {
             },
             include: {
                 userType: true,
-                vehicle: true,
+                vehicle: {
+                    include: {
+                        type: true,
+                        craneType: true,
+                        vehicleCraneWeight: true,
+                        floor: true,
+                        weight: true,
+                    },
+                },
                 workRegion: true,
                 grade: true,
                 point: true,
@@ -58,9 +67,31 @@ const getUsers = async (req, res) => {
 
         if (!users) throw new Error("유저 리스트를 불러올 수 없습니다.");
 
-        async function getRecommendUser() {
+        let result = [];
+
+        async function filterWithVehicle() {
             const usersList = await Promise.all(
                 users.map(async (user, index) => {
+                    if (user.vehicle.length > 0) {
+                        if (
+                            Number(vehicleTypeId) ===
+                            user.vehicle[0].vehicleTypeId
+                        )
+                            result.push(user);
+                    }
+                })
+            );
+        }
+
+        if (vehicleTypeId) {
+            filterWithVehicle();
+        } else {
+            result = users;
+        }
+
+        async function getRecommendUser() {
+            const usersList = await Promise.all(
+                result.map(async (user, index) => {
                     delete user.password;
 
                     if (user.recommendUserId) {
@@ -70,23 +101,23 @@ const getUsers = async (req, res) => {
                                 select: { name: true, id: true },
                             });
 
-                            users[index] = {
+                            result[index] = {
                                 recommendUser: recommendUser,
                                 ...(await getUserRestInfo(user)),
-                                ...users[index],
+                                ...result[index],
                             };
                         } else {
-                            users[index] = {
+                            result[index] = {
                                 recommendUser: { id: 1, name: "알테구" },
                                 ...(await getUserRestInfo(user)),
-                                ...users[index],
+                                ...result[index],
                             };
                         }
                     } else {
-                        users[index] = {
+                        result[index] = {
                             recommendUser: null,
                             ...(await getUserRestInfo(user)),
-                            ...users[index],
+                            ...result[index],
                         };
                     }
                 })
@@ -97,7 +128,7 @@ const getUsers = async (req, res) => {
 
         // console.log(users);
 
-        res.json(setResponseJson({ users: users }));
+        res.json(setResponseJson({ users: result }));
     } catch (error) {
         console.log(error.message);
         res.json(setErrorJson(error.message));

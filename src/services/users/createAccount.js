@@ -83,6 +83,20 @@ export const createAccount = async (req, res) => {
                                         id: vehicle.type,
                                     },
                                 },
+                                ...(vehicle.vehicleCraneWeight && {
+                                    vehicleCraneWeight: {
+                                        connect: {
+                                            id: vehicle.vehicleCraneWeight,
+                                        },
+                                    },
+                                }),
+                                ...(vehicle.craneType && {
+                                    craneType: {
+                                        connect: {
+                                            id: vehicle.craneType,
+                                        },
+                                    },
+                                }),
                                 ...(vehicle.weight && {
                                     weight: {
                                         connect: {

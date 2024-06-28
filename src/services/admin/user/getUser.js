@@ -14,6 +14,8 @@ const getUser = async (req, res) => {
                 vehicle: {
                     include: {
                         type: true,
+                        craneType: true,
+                        vehicleCraneWeight: true,
                         floor: true,
                         weight: true,
                     },

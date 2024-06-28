@@ -88,6 +88,8 @@ export const getUserRestInfo = async (user) => {
         select: {
             number: true,
             type: true,
+            craneType: true,
+            vehicleCraneWeight: true,
             floor: true,
             weight: true,
         },
