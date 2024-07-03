@@ -3,7 +3,6 @@ import { createAccount } from "../../services/users/createAccount";
 import { getUserExist } from "../../services/users/getUserExist";
 import { login } from "../../services/users/login";
 import { setPassword } from "../../services/users/setPassword";
-import { editProfile } from "../../services/users/editProfile";
 import { asyncWrap, auth, existUser, upload, uploadFile } from "../../utils";
 import { verifyToken } from "../../services/users/verifyToken";
 import { saveLicense } from "../../services/users/saveLicense";
@@ -43,7 +42,7 @@ usersRouter.post("/user", asyncWrap(verifyToken));
 usersRouter.post("/create", asyncWrap(createAccount));
 usersRouter.post("/login", asyncWrap(login));
 usersRouter.post("/password", asyncWrap(setPassword));
-usersRouter.post("/edit", auth, asyncWrap(editProfile));
+// usersRouter.post("/edit", auth, asyncWrap(editProfile));
 usersRouter.post("/certification", asyncWrap(decoding));
 usersRouter.post("/gugupack/cancel", asyncWrap(cancelGugupack));
 

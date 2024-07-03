@@ -11,10 +11,19 @@ export const getUserWithId = async (req, res) => {
             where: { id: parseInt(id) },
             include: {
                 vehicle: {
-                    include: { weight: true, floor: true, type: true },
+                    include: {
+                        weight: true,
+                        floor: true,
+                        type: true,
+                        craneType: true,
+                        vehicleCraneWeight: true,
+                    },
                 },
             },
         });
+
+        delete user.password;
+
         res.json(setResponseJson({ user: user }));
     } catch (error) {
         console.log(error.message);

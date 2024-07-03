@@ -9,6 +9,7 @@ export const modifyVehicle = async (req, res) => {
 
         let vehicleResult = null;
         if (!vehicleId) {
+            //TODO: 추후에 수정해야할듯
             vehicleResult = await prisma.vehicle.create({
                 data: {
                     number: vehicle.number,

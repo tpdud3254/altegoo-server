@@ -16,6 +16,8 @@ export const getUserWithPhone = async (req, res) => {
                         type: true,
                         floor: true,
                         weight: true,
+                        craneType: true,
+                        vehicleCraneWeight: true,
                     },
                 },
                 workRegion: true,

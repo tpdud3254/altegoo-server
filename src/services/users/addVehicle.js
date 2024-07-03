@@ -35,6 +35,20 @@ export const addVehicle = async (req, res) => {
                                     },
                                 },
                             }),
+                            ...(vehicle.vehicleCraneWeight && {
+                                vehicleCraneWeight: {
+                                    connect: {
+                                        id: vehicle.vehicleCraneWeight,
+                                    },
+                                },
+                            }),
+                            ...(vehicle.craneType && {
+                                craneType: {
+                                    connect: {
+                                        id: vehicle.craneType,
+                                    },
+                                },
+                            }),
                         },
                     });
 
