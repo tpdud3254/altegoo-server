@@ -648,6 +648,10 @@ export const GetCommissionList = async () => {
             result = { cardCommission: list[index].commission, ...result };
         else if (list[index].name === "tax")
             result = { tax: list[index].commission, ...result };
+        else if (list[index].name === "postpaidRegistPoint")
+            result = { postpaidRegistPoint: list[index].commission, ...result };
+        else if (list[index].name === "postpaidRcmdPoint")
+            result = { postpaidRcmdPoint: list[index].commission, ...result };
     }
 
     return result;

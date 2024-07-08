@@ -54,10 +54,15 @@ export const registWork = async (req, res) => {
     const id = registUser;
 
     const commissionList = await GetCommissionList();
+    const recommendationPoint =
+        paymentType === 0
+            ? orderPrice * commissionList.recommendationPoint
+            : orderPrice * commissionList.postpaidRcmdPoint;
 
-    const recommendationPoint = orderPrice * commissionList.recommendationPoint;
-
-    let registPoint = orderPrice * commissionList.registPoint;
+    let registPoint =
+        paymentType === 0
+            ? orderPrice * commissionList.registPoint
+            : orderPrice * commissionList.postpaidRegistPoint;
     let orderPoint =
         finalPrice -
         finalPrice * commissionList.cardCommission -
