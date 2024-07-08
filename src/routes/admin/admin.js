@@ -50,6 +50,7 @@ import { toggleAdminStatus } from "../../services/admin/toggleAdminStatus";
 import { updateAccount } from "../../services/admin/updateAccount";
 import { deleteAdmin } from "../../services/admin/deleteAdmin";
 import getVehicleCraneWeight from "../../services/admin/vehicle/getVehicleCraneWeight";
+import { confirmMembership } from "../../services/admin/user/confirmMembership";
 
 const adminRouter = express.Router();
 
@@ -101,6 +102,7 @@ adminRouter.patch("/user/block", setReservationBlock);
 adminRouter.patch("/banner/link", setBannerLink);
 adminRouter.patch("/order/calculate", asyncWrap(setPostpaidOrder));
 adminRouter.patch("/users/membership/cancel", cancelMembership);
+adminRouter.patch("/users/membership/confirm", confirmMembership);
 adminRouter.patch("/status", toggleAdminStatus);
 
 adminRouter.delete("/users/delete", deleteUsers);
