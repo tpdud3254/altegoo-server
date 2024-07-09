@@ -51,6 +51,7 @@ import { updateAccount } from "../../services/admin/updateAccount";
 import { deleteAdmin } from "../../services/admin/deleteAdmin";
 import getVehicleCraneWeight from "../../services/admin/vehicle/getVehicleCraneWeight";
 import { confirmMembership } from "../../services/admin/user/confirmMembership";
+import { remitPoints } from "../../services/admin/points/remitPoints";
 
 const adminRouter = express.Router();
 
@@ -91,6 +92,7 @@ adminRouter.post("/upload/work", asyncWrap(registWork));
 adminRouter.post("/gugupack/confirm", asyncWrap(confirmGugupack));
 
 adminRouter.patch("/points", updateCurPoints);
+adminRouter.patch("/points/remit", remitPoints);
 adminRouter.patch("/points/subtract", subtractPoints);
 adminRouter.patch("/recommend", updateRecommendUser);
 adminRouter.patch("/order/cancel", cancelOrder);
