@@ -18,9 +18,26 @@ const getUsers = async (req, res) => {
         vehicleTypeId,
         workCategoryId,
         gugupackStatus,
+        membership,
+        requestAdminId,
+        requestAdminPhone,
     } = req.query;
-    console.log(req.query);
+    console.log("req.query: ", req.query);
     try {
+        let adminUserid = null;
+        if (requestAdminPhone && requestAdminPhone !== "admin") {
+            const userId = await prisma.user.findFirst({
+                where: {
+                    phone: requestAdminPhone,
+                },
+                select: {
+                    id: true,
+                },
+            });
+
+            adminUserid = userId.id;
+        }
+
         const users = await prisma.user.findMany({
             where: {
                 ...(startDate &&
@@ -34,6 +51,10 @@ const getUsers = async (req, res) => {
                 ...(phone && { phone: { contains: phone } }),
                 ...(gender && { gender }),
                 ...(status && { status }),
+                // ...(membership &&
+                //     membership === "membership" && { membership: true }),
+                // ...(membership &&
+                //     membership === "normal" && { membership: false }),
                 ...(userTypeId && { userTypeId: Number(userTypeId) }),
                 ...(workCategoryId && {
                     workCategoryId: Number(workCategoryId),
@@ -43,6 +64,9 @@ const getUsers = async (req, res) => {
                 // }),
                 ...(gugupackStatus && {
                     gugupack: gugupackStatus === "member" ? true : false,
+                }),
+                ...(adminUserid && {
+                    OR: [{ recommendUserId: adminUserid }, { id: adminUserid }],
                 }),
             },
             include: {
