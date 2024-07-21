@@ -45,6 +45,7 @@ export const registWork = async (req, res) => {
         isDesignation,
         driverId,
         cardCommission,
+        paymentType,
     } = req.body;
 
     console.log("registWork body : ", req.body);
@@ -116,6 +117,8 @@ export const registWork = async (req, res) => {
                 cardCommission: cardCommission
                     ? cardCommission
                     : commissionList.cardCommission,
+                paymentType: paymentType ? paymentType : 0,
+                paymentDate: dateTime,
             },
         });
 
