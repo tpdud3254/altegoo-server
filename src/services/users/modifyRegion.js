@@ -9,14 +9,11 @@ export const modifyRegion = async (req, res) => {
     console.log(region);
     try {
         const regionArr = [];
-        const disconnectArr = [
-            { id: 1 },
-            { id: 2 },
-            { id: 3 },
-            { id: 4 },
-            { id: 5 },
-            { id: 6 },
-        ];
+        const disconnectArr = [];
+
+        for (let index = 0; index < 18; index++) {
+            disconnectArr.push({ id: index + 1 });
+        }
 
         async function setRegion() {
             const regionResult = await Promise.all(
