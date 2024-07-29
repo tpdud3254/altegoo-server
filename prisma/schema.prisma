@@ -86,6 +86,7 @@ model WorkCategory {
 model Region {
   id         Int          @id @default(autoincrement())
   region     String //작업지역
+  desc       String?
   user       User[]       @relation("userWorkRegion")
   order      Order[]
   VBankOrder VBankOrder[]

@@ -17,11 +17,11 @@
         "@babel/node": "^7.20.7",
         "@babel/preset-env": "^7.20.2",
         "nodemon": "^2.0.20",
-        "prisma": "^5.12.1"
+        "prisma": "^5.17.0"
     },
     "dependencies": {
         "@bootpay/backend-js": "^2.1.8",
-        "@prisma/client": "^5.12.1",
+        "@prisma/client": "^5.17.0",
         "@socket.io/admin-ui": "^0.5.1",
         "aws-sdk": "^2.1326.0",
         "axios": "^1.5.0",
