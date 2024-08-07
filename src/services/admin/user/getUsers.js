@@ -18,6 +18,7 @@ const getUsers = async (req, res) => {
         vehicleTypeId,
         workCategoryId,
         gugupackStatus,
+        region,
         membership,
         requestAdminId,
         requestAdminPhone,
@@ -67,6 +68,13 @@ const getUsers = async (req, res) => {
                 }),
                 ...(adminUserid && {
                     OR: [{ recommendUserId: adminUserid }, { id: adminUserid }],
+                }),
+                ...(region && {
+                    workRegion: {
+                        some: {
+                            id: Number(region),
+                        },
+                    },
                 }),
             },
             include: {

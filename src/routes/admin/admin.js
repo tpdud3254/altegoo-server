@@ -52,6 +52,7 @@ import { deleteAdmin } from "../../services/admin/deleteAdmin";
 import getVehicleCraneWeight from "../../services/admin/vehicle/getVehicleCraneWeight";
 import { confirmMembership } from "../../services/admin/user/confirmMembership";
 import { remitPoints } from "../../services/admin/points/remitPoints";
+import getRegion from "../../services/admin/user/getRegion";
 
 const adminRouter = express.Router();
 
@@ -72,6 +73,7 @@ adminRouter.get("/banner", getBannerList);
 adminRouter.get("/popup", getPopup);
 adminRouter.get("/gugupack/subscribe", getGugupackSubscribeList);
 adminRouter.get("/list", getAdminList);
+adminRouter.get("/region", getRegion);
 
 adminRouter.post("/login", login);
 adminRouter.post("/token", asyncWrap(verifyToken));
