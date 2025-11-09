@@ -69,13 +69,14 @@ const getUsers = async (req, res) => {
                 ...(adminUserid && {
                     OR: [{ recommendUserId: adminUserid }, { id: adminUserid }],
                 }),
-                ...(region && {
-                    workRegion: {
-                        some: {
-                            id: Number(region),
+                ...(region &&
+                    region !== "all" && {
+                        workRegion: {
+                            some: {
+                                id: Number(region),
+                            },
                         },
-                    },
-                }),
+                    }),
             },
             include: {
                 userType: true,
